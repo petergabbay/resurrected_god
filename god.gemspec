@@ -47,7 +47,6 @@ Gem::Specification.new do |s|
   s.files = %w[
     Announce.txt
     Gemfile
-    History.txt
     LICENSE
     README.md
     Rakefile

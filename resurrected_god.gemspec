@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
 
   s.authors = ["Tom Preston-Werner", "Kevin Clark", "Eric Lindvall", "mishina2228"]
   s.email = %w[god-rb@googlegroups.com temma182008+github@gmail.com]
-  s.homepage = 'http://god.rubyforge.org/'
+  s.homepage = 'https://github.com/mishina2228/resurrected_god'
 
   s.rubyforge_project = 'god'
   s.rubygems_version = '1.3.5'

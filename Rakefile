@@ -55,7 +55,6 @@ Rake::TestTask.new(:test) do |test|
   test.verbose = true
 end
 
-require 'rake/testtask'
 Rake::TestTask.new(:system_test) do |test|
   test.libs << 'lib' << 'test'
   test.pattern = 'test/**/test_god_system.rb'
@@ -70,7 +69,6 @@ task :coverage do
   sh "open coverage/index.html"
 end
 
-require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title = "#{name} #{version}"

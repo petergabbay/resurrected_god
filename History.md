@@ -1,5 +1,7 @@
-## master / unreleased
+## 0.14.0 / 2022-03-06
 
+  * Major Changes
+    * Renamed to ResurrectedGod (resurrected_god)
   * Minor Enhancements
     * Change the format of History to Markdown
     * Added `god/version.rb` to make version control easier

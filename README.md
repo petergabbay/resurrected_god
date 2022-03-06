@@ -1,5 +1,7 @@
-God: The Ruby Framework for Process Management
+ResurrectedGod: The Ruby Framework for Process Management
 ==============================================
+
+This project is forked from original [mojombo/god](https://github.com/mojombo/god).
 
 * Authors: Tom Preston-Werner, Kevin Clark, Eric Lindvall
 * Website: http://godrb.com

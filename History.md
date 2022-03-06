@@ -1,3 +1,9 @@
+## master / unreleased
+
+  * Minor Enhancements
+    * Change the format of History to Markdown
+    * Added `god/version.rb` to make version control easier
+
 ## 0.13.8 / unreleased
 
   * Bug fixes

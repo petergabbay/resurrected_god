@@ -3,6 +3,8 @@ require 'rake'
 require 'rdoc/task'
 require 'date'
 
+require_relative 'lib/god/version'
+
 #############################################################################
 #
 # Helper functions
@@ -14,8 +16,7 @@ def name
 end
 
 def version
-  line = File.read("lib/#{name}.rb")[/^\s*VERSION\s*=\s*.*/]
-  line.match(/.*VERSION\s*=\s*['"](.*)['"]/)[1]
+  God::VERSION
 end
 
 def date

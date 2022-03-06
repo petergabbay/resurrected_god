@@ -1,9 +1,11 @@
+require_relative 'lib/god/version'
+
 Gem::Specification.new do |s|
   s.specification_version = 2 if s.respond_to? :specification_version=
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
 
   s.name = 'god'
-  s.version = '0.13.8'
+  s.version = God::VERSION
 
   s.summary = "Process monitoring framework."
   s.description = "An easy to configure, easy to extend monitoring framework written in Ruby."
@@ -116,6 +118,7 @@ Gem::Specification.new do |s|
     lib/god/task.rb
     lib/god/timeline.rb
     lib/god/trigger.rb
+    lib/god/version.rb
     lib/god/watch.rb
     test/configs/child_events/child_events.god
     test/configs/child_events/simple_server.rb

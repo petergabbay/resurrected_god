@@ -65,6 +65,7 @@ if $load_god
   require 'god/registry'
   require 'god/process'
 
+  require 'god/version'
   require 'god/cli/version'
   require 'god/cli/command'
 
@@ -160,9 +161,6 @@ if $load_god
   end
 
   module God
-    # The String version number for this package.
-    VERSION = '0.14.0'
-
     # The Integer number of lines of backlog to keep for the logger.
     LOG_BUFFER_SIZE_DEFAULT = 100
 

@@ -113,7 +113,7 @@ Init_kqueue_handler_ext()
   kq = kqueue();
 
   if (kq == -1) {
-    rb_raise(rb_eStandardError, "kqueue initilization failed");
+    rb_raise(rb_eStandardError, "kqueue initialization failed");
   }
 
   proc_exit = rb_intern("proc_exit");

@@ -1,9 +1,6 @@
 require_relative 'lib/god/version'
 
 Gem::Specification.new do |s|
-  s.specification_version = 2 if s.respond_to? :specification_version=
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-
   s.name = 'resurrected_god'
   s.version = God::VERSION
 
@@ -14,8 +11,6 @@ Gem::Specification.new do |s|
   s.email = %w[god-rb@googlegroups.com temma182008+github@gmail.com]
   s.homepage = 'https://github.com/mishina2228/resurrected_god'
 
-  s.rubyforge_project = 'god'
-  s.rubygems_version = '1.3.5'
   s.require_paths = %w[lib ext]
 
   s.executables = ["god"]
@@ -43,16 +38,11 @@ Gem::Specification.new do |s|
   s.add_development_dependency('activesupport', [ '>= 2.3.10', '< 4.0.0' ])
   s.add_development_dependency('statsd-ruby')
   s.add_development_dependency('i18n', '< 0.7.0')
-  # = MANIFEST =
   s.files = %w[
-    Announce.txt
-    Gemfile
+    History.md
     LICENSE
     README.md
-    Rakefile
     bin/god
-    doc/god.asciidoc
-    doc/intro.asciidoc
     ext/god/.gitignore
     ext/god/extconf.rb
     ext/god/kqueue_handler.c
@@ -118,74 +108,5 @@ Gem::Specification.new do |s|
     lib/god/trigger.rb
     lib/god/version.rb
     lib/god/watch.rb
-    test/configs/child_events/child_events.god
-    test/configs/child_events/simple_server.rb
-    test/configs/child_polls/child_polls.god
-    test/configs/child_polls/simple_server.rb
-    test/configs/complex/complex.god
-    test/configs/complex/simple_server.rb
-    test/configs/contact/contact.god
-    test/configs/contact/simple_server.rb
-    test/configs/daemon_events/daemon_events.god
-    test/configs/daemon_events/simple_server.rb
-    test/configs/daemon_events/simple_server_stop.rb
-    test/configs/daemon_polls/daemon_polls.god
-    test/configs/daemon_polls/simple_server.rb
-    test/configs/degrading_lambda/degrading_lambda.god
-    test/configs/degrading_lambda/tcp_server.rb
-    test/configs/keepalive/keepalive.god
-    test/configs/keepalive/keepalive.rb
-    test/configs/lifecycle/lifecycle.god
-    test/configs/matias/matias.god
-    test/configs/real.rb
-    test/configs/running_load/running_load.god
-    test/configs/stop_options/simple_server.rb
-    test/configs/stop_options/stop_options.god
-    test/configs/stress/simple_server.rb
-    test/configs/stress/stress.god
-    test/configs/task/logs/.placeholder
-    test/configs/task/task.god
-    test/configs/test.rb
-    test/configs/usr1_trapper.rb
-    test/helper.rb
-    test/suite.rb
-    test/test_airbrake.rb
-    test/test_behavior.rb
-    test/test_campfire.rb
-    test/test_condition.rb
-    test/test_conditions_disk_usage.rb
-    test/test_conditions_http_response_code.rb
-    test/test_conditions_process_running.rb
-    test/test_conditions_socket_responding.rb
-    test/test_conditions_tries.rb
-    test/test_contact.rb
-    test/test_driver.rb
-    test/test_email.rb
-    test/test_event_handler.rb
-    test/test_god.rb
-    test/test_god_system.rb
-    test/test_handlers_kqueue_handler.rb
-    test/test_hipchat.rb
-    test/test_jabber.rb
-    test/test_logger.rb
-    test/test_metric.rb
-    test/test_process.rb
-    test/test_prowl.rb
-    test/test_registry.rb
-    test/test_sensu.rb
-    test/test_slack.rb
-    test/test_socket.rb
-    test/test_statsd.rb
-    test/test_sugar.rb
-    test/test_system_portable_poller.rb
-    test/test_system_process.rb
-    test/test_task.rb
-    test/test_timeline.rb
-    test/test_trigger.rb
-    test/test_watch.rb
-    test/test_webhook.rb
   ]
-  # = MANIFEST =
-
-  s.test_files = s.files.select { |path| path =~ /^test\/test_.*\.rb/ }
 end

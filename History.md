@@ -2,6 +2,8 @@
 
 * Minor Enhancements
   * Reduce included files to reduce the gem file size
+  * Use Gemfile instead of Gem::Specification#add_development_dependency
+  * Migrate CI from Travis CI to GitHub Actions
 
 ## 0.14.0 / 2022-03-06
 

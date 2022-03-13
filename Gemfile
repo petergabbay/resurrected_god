@@ -3,3 +3,23 @@ gemspec
 
 gem 'redcarpet', '< 3.0.0'
 gem 'sanitize', '2.0.3'
+
+gem 'json', '~> 1.6'
+gem 'rake'
+gem 'minitest'
+gem 'rdoc', '~> 3.10'
+gem 'twitter', '~> 5.0'
+gem 'prowly', '~> 0.3'
+gem 'xmpp4r', '~> 0.5'
+gem 'dike', '~> 0.0.3'
+# gem 'rcov', '~> 0.9'
+gem 'daemons', '~> 1.1'
+gem 'mocha', '~> 0.10'
+gem 'gollum', '~> 1.3.1'
+#the last version to support 1.8.7 is 0.99.6
+gem 'mustache', '~> 0.99.0', '< 0.99.7'
+gem 'airbrake', '~> 3.1.7'
+gem 'nokogiri', '~> 1.5.0'
+gem 'activesupport', '>= 2.3.10', '< 4.0.0'
+gem 'statsd-ruby'
+gem 'i18n', '< 0.7.0'

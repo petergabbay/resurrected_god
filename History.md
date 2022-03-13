@@ -1,3 +1,8 @@
+## master
+
+* Minor Enhancements
+  * Reduce included files to reduce the gem file size
+
 ## 0.14.0 / 2022-03-06
 
   * Major Changes

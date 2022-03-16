@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/helper'
+require_relative '../lib/god/contacts/email'
 
 class TestEmail < Minitest::Test
   def setup

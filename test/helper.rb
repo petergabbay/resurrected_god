@@ -13,17 +13,17 @@ require 'set'
 
 include God
 
-if Process.uid != 0 and RbConfig::CONFIG['host_os'] == "linux"
-  abort <<-EOF
-\n
-*********************************************************************
-*                                                                   *
-*               You need to run these tests as root                 *
-*           chroot and netlink (linux only) require it              *
-*                                                                   *
-*********************************************************************
-EOF
-end
+# if Process.uid != 0 and RbConfig::CONFIG['host_os'] == "linux"
+#   abort <<-EOF
+# \n
+# *********************************************************************
+# *                                                                   *
+# *               You need to run these tests as root                 *
+# *           chroot and netlink (linux only) require it              *
+# *                                                                   *
+# *********************************************************************
+# EOF
+# end
 
 begin
   require 'mocha/setup'

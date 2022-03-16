@@ -22,3 +22,7 @@ gem 'nokogiri'
 gem 'activesupport'
 gem 'statsd-ruby'
 gem 'i18n'
+
+if RUBY_VERSION >= '3.1'
+  gem 'net-smtp'
+end

@@ -11,6 +11,14 @@ Gem::Specification.new do |s|
   s.email = %w[god-rb@googlegroups.com temma182008+github@gmail.com]
   s.homepage = 'https://github.com/mishina2228/resurrected_god'
 
+  s.metadata = {
+    'bug_tracker_uri' => "#{s.homepage}/issues",
+    'changelog_uri' => "#{s.homepage}/blob/master/History.md",
+    'homepage_uri' => s.homepage,
+    'rubygems_mfa_required' => 'true',
+    'source_code_uri' => "#{s.homepage}/tree/v#{s.version}"
+  }
+
   s.require_paths = %w[lib ext]
 
   s.executables = ["god"]

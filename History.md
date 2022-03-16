@@ -1,5 +1,8 @@
 ## master
 
+* Major Changes
+  * Drop support for Ruby 2.5 and earlier  
+    Now Ruby 2.6+ is required.
 * Minor Enhancements
   * Reduce included files to reduce the gem file size
   * Use Gemfile instead of `Gem::Specification#add_development_dependency`

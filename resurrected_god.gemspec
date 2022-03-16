@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
     'source_code_uri' => "#{s.homepage}/tree/v#{s.version}"
   }
 
+  s.required_ruby_version = Gem::Requirement.new('>= 2.6.0')
   s.require_paths = %w[lib ext]
 
   s.executables = ["god"]

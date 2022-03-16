@@ -21,7 +21,7 @@ application available.
 Documentation
 -------------
 
-See in-repo documentation at `REPO_ROOT/doc`.  
+See in-repo documentation at [doc](doc).  
 See online documentation at http://godrb.com.
 
 Community

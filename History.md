@@ -2,7 +2,9 @@
 
 * Major Changes
   * Drop support for Ruby 2.5 and earlier  
-    Now Ruby 2.6+ is required.
+    * Now Ruby 2.6+ is required.
+  * Drop support for HipChat
+    * HipChat has been out of service since February 2019.
 * Minor Enhancements
   * Reduce included files to reduce the gem file size
   * Use Gemfile instead of `Gem::Specification#add_development_dependency`

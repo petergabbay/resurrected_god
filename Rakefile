@@ -24,10 +24,6 @@ def date
   Date.today.to_s
 end
 
-def rubyforge_project
-  name
-end
-
 def gemspec_file
   "#{name}.gemspec"
 end

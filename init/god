@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# god       Startup script for god (http://god.rubyforge.org)
+# god       Startup script for god (https://rubygems.org/gems/resurrected_god)
 #
 # chkconfig: - 85 15
 # description: God is an easy to configure, easy to extend monitoring \

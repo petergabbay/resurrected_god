@@ -1,10 +1,5 @@
 require 'monitor'
 
-# Ruby 1.9.1 specific fixes.
-if RUBY_VERSION.between?('1.9', '1.9.1')
-  require 'god/compat19'
-end
-
 module God
   # The TimedEvent class represents an event in the future. This class is used
   # by the drivers to schedule upcoming conditional tests and other scheduled

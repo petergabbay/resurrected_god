@@ -37,14 +37,7 @@ module God
       def text(data)
         text = ""
         text << "<!channel> " if arg(:notify_channel)
-
-        if RUBY_VERSION =~ /^1\.8/
-          text << arg(:format).gsub(/%\{(\w+)\}/) do |match|
-            data[$1.to_sym]
-          end
-        else
-          text << arg(:format) % data
-        end
+        text << arg(:format) % data
 
         text
       end

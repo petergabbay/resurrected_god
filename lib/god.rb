@@ -69,11 +69,6 @@ if $load_god
   require 'god/cli/version'
   require 'god/cli/command'
 
-  # ruby 1.8 specific configuration
-  if RUBY_VERSION < '1.9'
-    $KCODE = 'u'
-  end
-
   CONTACT_DEPS = {}
   CONTACT_LOAD_SUCCESS = {}
 

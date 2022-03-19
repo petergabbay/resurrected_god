@@ -7,7 +7,7 @@ module God
     # Trigger when the percent of CPU use of a process is above a specified limit.
     # On multi-core systems, this number could conceivably be above 100.
     #
-    # Paramaters
+    # Parameters
     #   Required
     #     +pid_file+ is the pid file of the process in question. Automatically
     #                populated for Watches.

@@ -9,7 +9,7 @@ module God
     #
     # Trigger based on the response from an HTTP request.
     #
-    # Paramaters
+    # Parameters
     #   Required
     #     +host+ is the hostname to connect [required]
     #     --one of code_is or code_is_not--

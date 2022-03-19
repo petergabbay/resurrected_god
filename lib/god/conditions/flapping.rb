@@ -7,7 +7,7 @@ module God
     # Trigger when a Task transitions to or from a state or states a given number
     # of times within a given period.
     #
-    # Paramaters
+    # Parameters
     #   Required
     #     +times+ is the number of times that the Task must transition before
     #             triggering.

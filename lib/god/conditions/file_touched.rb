@@ -6,7 +6,7 @@ module God
     #
     # Trigger when a specified file is touched.
     #
-    # Paramaters
+    # Parameters
     #   Required
     #     +path+ is the path to the file to watch.
     #

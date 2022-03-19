@@ -6,7 +6,7 @@ module God
     #
     # Trigger when the resident memory of a process is above a specified limit.
     #
-    # Paramaters
+    # Parameters
     #   Required
     #     +pid_file+ is the pid file of the process in question. Automatically
     #                populated for Watches.

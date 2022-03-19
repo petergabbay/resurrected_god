@@ -1,6 +1,7 @@
 ResurrectedGod: The Ruby Framework for Process Management
 ==============================================
 
+[![Gem Version](https://badge.fury.io/rb/resurrected_god.svg)](https://badge.fury.io/rb/resurrected_god)
 [![CI](https://github.com/mishina2228/resurrected_god/actions/workflows/ci.yml/badge.svg)](https://github.com/mishina2228/resurrected_god/actions/workflows/ci.yml)
 
 **This project is forked from original [mojombo/god](https://github.com/mojombo/god).**

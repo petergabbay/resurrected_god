@@ -694,17 +694,17 @@ end
 #
 #   # validate
 #
-#   def test_validate_should_abort_if_pid_file_directory_is_unwriteable
+#   def test_validate_should_abort_if_pid_file_directory_is_unwritable
 #     God.expects(:test).returns(false)
 #     assert_abort do
-#       God.validater
+#       God.validator
 #     end
 #   end
 #
 #   def test_validate_should_not_abort_if_pid_file_directory_is_writeable
 #     God.expects(:test).returns(true)
 #     assert_nothing_raised do
-#       God.validater
+#       God.validator
 #     end
 #   end
 # end

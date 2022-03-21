@@ -9,11 +9,11 @@ module God
       sym = kind.to_s.capitalize.gsub(/_(.)/) { $1.upcase }.intern
       c = God::Conditions.const_get(sym).new
 
-      unless c.kind_of?(PollCondition) || c.kind_of?(EventCondition) || c.kind_of?(TriggerCondition)
+      unless c.is_a?(PollCondition) || c.is_a?(EventCondition) || c.is_a?(TriggerCondition)
         abort "Condition '#{c.class.name}' must subclass God::PollCondition, God::EventCondition, or God::TriggerCondition"
       end
 
-      if !EventHandler.loaded? && c.kind_of?(EventCondition)
+      if !EventHandler.loaded? && c.is_a?(EventCondition)
         abort "Condition '#{c.class.name}' requires an event system but none has been loaded"
       end
 

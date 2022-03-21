@@ -261,6 +261,6 @@ module God
           puts 'No matching task or group'
         end
       end
-    end # Command
+    end
   end
 end

@@ -50,7 +50,7 @@ module God
 
       # Inherit interval from watch if no poll condition specific interval was
       # set.
-      if c.kind_of?(PollCondition) && !c.interval
+      if c.is_a?(PollCondition) && !c.interval
         if self.watch.interval
           c.interval = self.watch.interval
         else

@@ -161,6 +161,6 @@ module God
           false
         end
       end
-    end # Run
+    end
   end
 end

@@ -37,7 +37,7 @@ module God
       end
 
       def prepare
-        if self.times.kind_of?(Integer)
+        if self.times.is_a?(Integer)
           self.times = [self.times, self.times]
         end
 

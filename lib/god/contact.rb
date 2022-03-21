@@ -8,7 +8,7 @@ module God
       sym = kind.to_s.capitalize.gsub(/_(.)/) { $1.upcase }.intern
       c = God::Contacts.const_get(sym).new
 
-      unless c.kind_of?(Contact)
+      unless c.is_a?(Contact)
         abort "Contact '#{c.class.name}' must subclass God::Contact"
       end
 

@@ -66,10 +66,10 @@ module God
           :link_names => 1,
           :text => text,
           :channel => arg(:channel)
-        }.tap { |payload|
+        }.tap do |payload|
           payload[:username] = arg(:username) if arg(:username)
           payload[:icon_emoji] = arg(:emoji) if arg(:emoji)
-        }.to_json
+        end.to_json
 
         res = http.request(req)
 

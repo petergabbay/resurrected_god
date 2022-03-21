@@ -90,7 +90,7 @@ module God
         self.code_is = Array(self.code_is).map { |x| x.to_i } if self.code_is
         self.code_is_not = Array(self.code_is_not).map { |x| x.to_i } if self.code_is_not
 
-        if self.times.kind_of?(Integer)
+        if self.times.is_a?(Integer)
           self.times = [self.times, self.times]
         end
 

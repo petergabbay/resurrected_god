@@ -1,4 +1,4 @@
-$:.unshift File.expand_path('../../lib', __FILE__) # For use/testing when no gem is installed
+$:.unshift File.expand_path('../lib', __dir__) # For use/testing when no gem is installed
 
 # Use this flag to actually load all of the god infrastructure
 $load_god = true
@@ -106,15 +106,17 @@ end
 #   end
 # end
 
-module Minitest::Assertions
-  def assert_abort
-    assert_raises SystemExit do
+module Minitest
+  module Assertions
+    def assert_abort
+      assert_raises SystemExit do
+        yield
+      end
+    end
+
+    def assert_nothing_raised
       yield
     end
-  end
-
-  def assert_nothing_raised
-    yield
   end
 end
 

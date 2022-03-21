@@ -5,7 +5,7 @@ module God
       OR  = 0x2
       NOT = 0x4
 
-      def initialize()
+      def initialize
         super
 
         @oper_stack = []
@@ -55,21 +55,17 @@ module God
       end
 
       def test
-        if @this.nil?
-          # Although this() makes sense semantically and therefore
-          # encourages easy-to-read conditions, being able to omit it
-          # allows for more DRY code in some cases, so we deal with a
-          # nil @this here by initially setting res to true or false,
-          # depending on whether the first operator used is AND or OR
-          # respectively.
-          if 0 < @op_stack[0] & AND
-            res = true
-          else
-            res = false
-          end
-        else
-          res = @this.test
-        end
+        res = if @this.nil?
+                # Although this() makes sense semantically and therefore
+                # encourages easy-to-read conditions, being able to omit it
+                # allows for more DRY code in some cases, so we deal with a
+                # nil @this here by initially setting res to true or false,
+                # depending on whether the first operator used is AND or OR
+                # respectively.
+                0 < @op_stack[0] & AND
+              else
+                @this.test
+              end
 
         @op_stack.each do |op|
           cond = @oper_stack.shift

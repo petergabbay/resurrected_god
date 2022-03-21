@@ -38,9 +38,9 @@ module God
 
       def pass?
         begin
-          Timeout::timeout(@interval) {
+          Timeout.timeout(@interval) do
             self.lambda.call()
-          }
+          end
         rescue Timeout::Error
           false
         end

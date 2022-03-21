@@ -241,7 +241,7 @@ module God
         end
       end
 
-      if command.kind_of?(String)
+      if command.is_a?(String)
         pid = nil
 
         if [:start, :restart].include?(action) && @tracking_pid
@@ -287,7 +287,7 @@ module God
           @tracking_pid = true
           @pid_file = default_pid_file
         end
-      elsif command.kind_of?(Proc)
+      elsif command.is_a?(Proc)
         # lambda command
         command.call
       else
@@ -330,7 +330,7 @@ module God
         end
 
         # close any other file descriptors
-        3.upto(256) { |fd| IO::new(fd).close rescue nil }
+        3.upto(256) { |fd| IO.new(fd).close rescue nil }
 
         if self.env && self.env.is_a?(Hash)
           self.env.each do |(key, value)|

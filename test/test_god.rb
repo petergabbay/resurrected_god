@@ -32,7 +32,7 @@ class TestGod < MiniTest::Test
 
   def test_init_should_initialize_watches_to_empty_array
     God.internal_init {}
-    assert_equal Hash.new, God.watches
+    assert_equal({}, God.watches)
   end
 
   # # init

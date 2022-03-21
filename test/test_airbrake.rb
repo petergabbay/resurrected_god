@@ -1,4 +1,3 @@
-#!/usr/bin/env ruby
 require File.dirname(__FILE__) + '/helper'
 
 class TestAirbrake < Minitest::Test

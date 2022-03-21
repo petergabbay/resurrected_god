@@ -15,7 +15,7 @@ module God
       # Returns true if +RequiredPaths+ are readable.
       def self.usable?
         RequiredPaths.all? do |path|
-          test(?r, path) && readable?(path)
+          test('r', path) && readable?(path)
         end
       end
 

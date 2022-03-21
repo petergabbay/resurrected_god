@@ -5,7 +5,7 @@ class TestConditionsSocketResponding < Minitest::Test
 
   def test_valid_should_return_false_if_no_options_set
     c = Conditions::SocketResponding.new
-    c.watch = stub(:name => 'foo')
+    c.watch = stub(name: 'foo')
     assert_equal false, c.valid?
   end
 
@@ -40,7 +40,7 @@ class TestConditionsSocketResponding < Minitest::Test
     c = Conditions::SocketResponding.new
     c.path = 'some-path'
     c.family = 'unix'
-    c.watch = stub(:name => 'foo')
+    c.watch = stub(name: 'foo')
     assert_equal true, c.valid?
   end
 

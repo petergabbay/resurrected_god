@@ -31,11 +31,11 @@ module God
 
       def notify(message, time, priority, category, host)
         data = {
-          :message => message,
-          :time => time,
-          :priority => priority,
-          :category => category,
-          :host => host
+          message: message,
+          time: time,
+          priority: priority,
+          category: category,
+          host: host
         }
 
         uri = URI.parse(arg(:url))

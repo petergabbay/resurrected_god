@@ -45,13 +45,13 @@ module God
     def self.normalize(spec)
       case spec
       when String
-        { :contacts => Array(spec) }
+        { contacts: Array(spec) }
       when Array
         unless spec.select { |x| !x.instance_of?(String) }.empty?
           raise ArgumentError.new("contains non-String elements")
         end
 
-        { :contacts => spec }
+        { contacts: spec }
       when Hash
         copy = spec.dup
 

@@ -423,7 +423,7 @@ class TestGod < MiniTest::Test
 
     w = God.watches['foo']
     w.state = :up
-    assert_equal({ 'foo' => { :state => :up, :group => nil } }, God.status)
+    assert_equal({ 'foo' => { state: :up, group: nil } }, God.status)
   end
 
   def test_status_should_show_state_with_group
@@ -431,14 +431,14 @@ class TestGod < MiniTest::Test
 
     w = God.watches['foo']
     w.state = :up
-    assert_equal({ 'foo' => { :state => :up, :group => 'g' } }, God.status)
+    assert_equal({ 'foo' => { state: :up, group: 'g' } }, God.status)
   end
 
   def test_status_should_show_unmonitored_for_nil_state
     God.watch { |w| w.name = 'foo'; w.start = 'bar' }
 
     w = God.watches['foo']
-    assert_equal({ 'foo' => { :state => :unmonitored, :group => nil } }, God.status)
+    assert_equal({ 'foo' => { state: :unmonitored, group: nil } }, God.status)
   end
 
   # running_log

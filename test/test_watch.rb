@@ -90,7 +90,7 @@ class TestWatch < Minitest::Test
   # keepalive
 
   def test_keepalive_should_place_metrics_on_up_state
-    @watch.keepalive(:memory_max => 5.megabytes, :cpu_max => 50.percent)
+    @watch.keepalive(memory_max: 5.megabytes, cpu_max: 50.percent)
     assert_equal 2, @watch.metrics[:up].size
   end
 

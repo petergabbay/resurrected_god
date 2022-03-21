@@ -103,9 +103,9 @@ module God
         body = Campfire.format.call(message, time, priority, category, host)
 
         conn = Marshmallow::Connection.new(
-          :subdomain => arg(:subdomain),
-          :token => arg(:token),
-          :ssl => arg(:ssl)
+          subdomain: arg(:subdomain),
+          token: arg(:token),
+          ssl: arg(:ssl)
         )
 
         conn.speak(arg(:room), body)

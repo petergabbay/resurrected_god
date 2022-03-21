@@ -248,11 +248,11 @@ if $load_god
       self.setup
 
       # Log level.
-      log_level_map = { :debug => Logger::DEBUG,
-                        :info => Logger::INFO,
-                        :warn => Logger::WARN,
-                        :error => Logger::ERROR,
-                        :fatal => Logger::FATAL }
+      log_level_map = { debug: Logger::DEBUG,
+                        info: Logger::INFO,
+                        warn: Logger::WARN,
+                        error: Logger::ERROR,
+                        fatal: Logger::FATAL }
       LOG.level = log_level_map[self.log_level]
 
       # Init has been executed.
@@ -518,7 +518,7 @@ if $load_god
     def self.status
       info = {}
       self.watches.map do |name, w|
-        info[name] = { :state => w.state, :group => w.group }
+        info[name] = { state: w.state, group: w.group }
       end
       info
     end

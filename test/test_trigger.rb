@@ -19,14 +19,14 @@ class TestTrigger < Minitest::Test
 
   def test_register_should_add_condition_to_triggers
     c = Condition.new
-    c.watch = stub(:name => 'foo')
+    c.watch = stub(name: 'foo')
     Trigger.register(c)
 
     assert_equal({ 'foo' => [c] }, Trigger.triggers)
   end
 
   def test_register_should_add_condition_to_triggers_twice
-    watch = stub(:name => 'foo')
+    watch = stub(name: 'foo')
     c = Condition.new
     c.watch = watch
     Trigger.register(c)
@@ -42,7 +42,7 @@ class TestTrigger < Minitest::Test
 
   def test_deregister_should_remove_condition_from_triggers
     c = Condition.new
-    c.watch = stub(:name => 'foo')
+    c.watch = stub(name: 'foo')
     Trigger.register(c)
     Trigger.deregister(c)
 
@@ -53,7 +53,7 @@ class TestTrigger < Minitest::Test
 
   def test_broadcast_should_call_process_on_each_condition
     c = Condition.new
-    c.watch = stub(:name => 'foo')
+    c.watch = stub(name: 'foo')
     Trigger.register(c)
 
     c.expects(:process).with(:state_change, [:up, :start])

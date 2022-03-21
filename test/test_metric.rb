@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/helper'
 
 class TestMetric < Minitest::Test
   def setup
-    @metric = Metric.new(stub(:interval => 10), nil)
+    @metric = Metric.new(stub(interval: 10), nil)
   end
 
   # watch
@@ -34,7 +34,7 @@ class TestMetric < Minitest::Test
   end
 
   def test_poll_condition_should_abort_if_no_interval_and_no_watch_interval
-    metric = Metric.new(stub(:name => 'foo', :interval => nil), nil)
+    metric = Metric.new(stub(name: 'foo', interval: nil), nil)
 
     assert_abort do
       metric.condition(:fake_poll_condition)
@@ -53,7 +53,7 @@ class TestMetric < Minitest::Test
   # end
 
   def test_condition_should_abort_if_not_subclass_of_poll_or_event
-    metric = Metric.new(stub(:name => 'foo', :interval => 10), nil)
+    metric = Metric.new(stub(name: 'foo', interval: 10), nil)
 
     assert_abort do
       metric.condition(:fake_condition) { |c| }

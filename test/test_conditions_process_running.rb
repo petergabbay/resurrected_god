@@ -5,7 +5,7 @@ class TestConditionsProcessRunning < Minitest::Test
     [true, false].each do |r|
       c = Conditions::ProcessRunning.new
       c.running = r
-      c.stubs(:watch).returns(stub(:pid => 99999999, :name => 'foo'))
+      c.stubs(:watch).returns(stub(pid: 99999999, name: 'foo'))
       assert_equal !r, c.test
     end
   end
@@ -16,7 +16,7 @@ class TestConditionsProcessRunning < Minitest::Test
       c.running = r
 
       File.stubs(:exist?).returns(true)
-      c.stubs(:watch).returns(stub(:pid => 123))
+      c.stubs(:watch).returns(stub(pid: 123))
       File.stubs(:read).returns('5')
       System::Process.any_instance.stubs(:exists?).returns(false)
 
@@ -30,7 +30,7 @@ class TestConditionsProcessRunning < Minitest::Test
       c.running = r
 
       File.stubs(:exist?).returns(true)
-      c.stubs(:watch).returns(stub(:pid => 123))
+      c.stubs(:watch).returns(stub(pid: 123))
       File.stubs(:read).returns('5')
       System::Process.any_instance.stubs(:exists?).returns(true)
 

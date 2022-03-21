@@ -6,7 +6,7 @@ class TestProwl < Minitest::Test
     prowl.name = "Prowly"
     prowl.apikey = 'put_your_apikey_here'
 
-    Prowly.expects(:notify).returns(mock(:succeeded? => true))
+    Prowly.expects(:notify).returns(mock(succeeded?: true))
 
     prowl.notify("Test", Time.now, "Test", "Test", "")
     assert_equal "sent prowl notification to #{prowl.name}", prowl.info

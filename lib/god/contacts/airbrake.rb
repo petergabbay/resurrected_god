@@ -28,7 +28,7 @@ module God
         message = "God: #{message} at #{host}"
         message << " | #{[category, priority].join(" ")}" unless category.to_s.empty? or priority.to_s.empty?
 
-        if ::Airbrake.notify nil, :error_message => message, :api_key => arg(:apikey)
+        if ::Airbrake.notify nil, error_message: message, api_key: arg(:apikey)
           self.info = "sent airbrake notification to #{self.name}"
         else
           self.info = "failed to send airbrake notification to #{self.name}"

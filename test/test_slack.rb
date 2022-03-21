@@ -8,11 +8,11 @@ class TestSlack < Minitest::Test
     @slack.url = "https://hooks.slack.com/services/ABCABCABC/DEFDEFDEF/ABCDEFABCDEFABCDEFABCDEF"
 
     @sample_data = {
-      :message => "a sample message",
-      :time => "2038-01-01 00:00:00",
-      :priority => "High",
-      :category => "Test",
-      :host => "example.com"
+      message: "a sample message",
+      time: "2038-01-01 00:00:00",
+      priority: "High",
+      category: "Test",
+      host: "example.com"
     }
   end
 

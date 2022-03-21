@@ -89,7 +89,7 @@ God.watch do |w|
   # start if process is not running
   w.transition(:up, :start) do |on|
     on.condition(:process_exits) do |c|
-      c.notify = { :contacts => ['tom'], :priority => 1, :category => 'product' }
+      c.notify = { contacts: ['tom'], priority: 1, category: 'product' }
     end
   end
 

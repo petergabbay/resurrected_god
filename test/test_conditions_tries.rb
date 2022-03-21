@@ -5,7 +5,7 @@ class TestConditionsTries < Minitest::Test
 
   def test_valid_should_return_false_if_times_not_set
     c = Conditions::Tries.new
-    c.watch = stub(:name => 'foo')
+    c.watch = stub(name: 'foo')
     assert !c.valid?
   end
 end

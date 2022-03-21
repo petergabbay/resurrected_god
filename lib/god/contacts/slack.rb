@@ -43,11 +43,11 @@ module God
 
       def notify(message, time, priority, category, host)
         text = text({
-                      :message => message,
-                      :time => time,
-                      :priority => priority,
-                      :category => category,
-                      :host => host
+                      message: message,
+                      time: time,
+                      priority: priority,
+                      category: category,
+                      host: host
                     })
 
         request(text)
@@ -63,9 +63,9 @@ module God
 
         req = Net::HTTP::Post.new(api_url.request_uri)
         req.body = {
-          :link_names => 1,
-          :text => text,
-          :channel => arg(:channel)
+          link_names: 1,
+          text: text,
+          channel: arg(:channel)
         }.tap do |payload|
           payload[:username] = arg(:username) if arg(:username)
           payload[:icon_emoji] = arg(:emoji) if arg(:emoji)

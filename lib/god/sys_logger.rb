@@ -12,11 +12,11 @@ begin
 
   module God
     class SysLogger
-      SYMBOL_EQUIVALENTS = { :fatal => Syslog::LOG_CRIT,
-                             :error => Syslog::LOG_ERR,
-                             :warn => Syslog::LOG_WARNING,
-                             :info => Syslog::LOG_INFO,
-                             :debug => Syslog::LOG_DEBUG }
+      SYMBOL_EQUIVALENTS = { fatal: Syslog::LOG_CRIT,
+                             error: Syslog::LOG_ERR,
+                             warn: Syslog::LOG_WARNING,
+                             info: Syslog::LOG_INFO,
+                             debug: Syslog::LOG_DEBUG }
 
       # Set the log level
       #   +level+ is the Symbol level to set as maximum. One of:

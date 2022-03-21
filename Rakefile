@@ -42,7 +42,7 @@ end
 #
 #############################################################################
 
-task :default => :test
+task default: :test
 
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
@@ -90,7 +90,7 @@ task :site do
   # Generate the dynamic parts of the site.
   puts "Generating dynamic..."
   require 'gollum'
-  wiki = Gollum::Wiki.new('.', :base_path => '/doc')
+  wiki = Gollum::Wiki.new('.', base_path: '/doc')
   html = wiki.page('god', 'HEAD').formatted_data.gsub("\342\200\231", "'")
   template = File.read('./site/index.template.html')
   index = template.sub("{{ content }}", html)

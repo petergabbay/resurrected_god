@@ -1,12 +1,11 @@
 module God
-
   class Contact
     include Configurable
 
     attr_accessor :name, :group, :info
 
     def self.generate(kind)
-      sym = kind.to_s.capitalize.gsub(/_(.)/){$1.upcase}.intern
+      sym = kind.to_s.capitalize.gsub(/_(.)/) { $1.upcase }.intern
       c = God::Contacts.const_get(sym).new
 
       unless c.kind_of?(Contact)
@@ -45,50 +44,51 @@ module God
     # Raises ArgumentError on invalid spec (message contains details)
     def self.normalize(spec)
       case spec
-        when String
-          {:contacts => Array(spec)}
-        when Array
-          unless spec.select { |x| !x.instance_of?(String) }.empty?
-            raise ArgumentError.new("contains non-String elements")
-          end
-          {:contacts => spec}
-        when Hash
-          copy = spec.dup
+      when String
+        { :contacts => Array(spec) }
+      when Array
+        unless spec.select { |x| !x.instance_of?(String) }.empty?
+          raise ArgumentError.new("contains non-String elements")
+        end
 
-          # check :contacts
-          if contacts = copy.delete(:contacts)
-            case contacts
-              when String
-                # valid
-              when Array
-                unless contacts.select { |x| !x.instance_of?(String) }.empty?
-                  raise ArgumentError.new("has a :contacts key containing non-String elements")
-                end
-                # valid
-              else
-                raise ArgumentError.new("must have a :contacts key pointing to a String or Array of Strings")
+        { :contacts => spec }
+      when Hash
+        copy = spec.dup
+
+        # check :contacts
+        if contacts = copy.delete(:contacts)
+          case contacts
+          when String
+          # valid
+          when Array
+            unless contacts.select { |x| !x.instance_of?(String) }.empty?
+              raise ArgumentError.new("has a :contacts key containing non-String elements")
             end
+          # valid
           else
-            raise ArgumentError.new("must have a :contacts key")
+            raise ArgumentError.new("must have a :contacts key pointing to a String or Array of Strings")
           end
-
-          # remove priority and category
-          copy.delete(:priority)
-          copy.delete(:category)
-
-          # check for invalid keys
-          unless copy.empty?
-            raise ArgumentError.new("contains extra elements: #{copy.inspect}")
-          end
-
-          # normalize
-          spec[:contacts] &&= Array(spec[:contacts])
-          spec[:priority] &&= spec[:priority].to_s
-          spec[:category] &&= spec[:category].to_s
-
-          spec
         else
-          raise ArgumentError.new("must be a String (contact name), Array (of contact names), or Hash (contact specification)")
+          raise ArgumentError.new("must have a :contacts key")
+        end
+
+        # remove priority and category
+        copy.delete(:priority)
+        copy.delete(:category)
+
+        # check for invalid keys
+        unless copy.empty?
+          raise ArgumentError.new("contains extra elements: #{copy.inspect}")
+        end
+
+        # normalize
+        spec[:contacts] &&= Array(spec[:contacts])
+        spec[:priority] &&= spec[:priority].to_s
+        spec[:category] &&= spec[:category].to_s
+
+        spec
+      else
+        raise ArgumentError.new("must be a String (contact name), Array (of contact names), or Hash (contact specification)")
       end
     end
 
@@ -110,5 +110,4 @@ module God
       super + " Contact '#{self.name}'"
     end
   end
-
 end

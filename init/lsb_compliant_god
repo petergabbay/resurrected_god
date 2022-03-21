@@ -2,14 +2,14 @@
 
 # see http://refspecs.freestandards.org/LSB_3.1.0/LSB-Core-generic/LSB-Core-generic/iniscrptact.html
 
-PATH="/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin"
-DESC="god daemon"
-NAME="god"
-DAEMON="/usr/bin/#{NAME}"
-CONFIGFILE="/etc/god/god.conf"
-PIDFILE="/var/run/#{NAME}.pid"
-SCRIPTNAME="/etc/init.d/#{NAME}"
-START_FLAGS="--no-syslog -P #{PIDFILE}"
+PATH = "/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin"
+DESC = "god daemon"
+NAME = "god"
+DAEMON = "/usr/bin/#{NAME}"
+CONFIGFILE = "/etc/god/god.conf"
+PIDFILE = "/var/run/#{NAME}.pid"
+SCRIPTNAME = "/etc/init.d/#{NAME}"
+START_FLAGS = "--no-syslog -P #{PIDFILE}"
 
 ENV["PATH"] = PATH
 
@@ -57,21 +57,21 @@ def stop
     exit
   end
 
-	system("god quit")
+  system("god quit")
 end
 
 def restart
-	if running?
-		stop
-		read_pid
-	end
-	start
+  if running?
+    stop
+    read_pid
+  end
+  start
 end
 
 def force_reload
-	if running?
-	  restart
-	end
+  if running?
+    restart
+  end
 end
 
 def clean_pid

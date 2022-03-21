@@ -5,8 +5,8 @@ class TestWatch < Minitest::Test
     God.internal_init
     @watch = Watch.new
     @watch.name = 'foo'
-    @watch.start = lambda { }
-    @watch.stop = lambda { }
+    @watch.start = lambda {}
+    @watch.stop = lambda {}
     @watch.prepare
   end
 
@@ -70,20 +70,20 @@ class TestWatch < Minitest::Test
   def test_transition_should_accept_all_valid_start_states
     assert_nothing_raised do
       Watch::VALID_STATES.each do |state|
-        @watch.transition(state, :bar) { }
+        @watch.transition(state, :bar) {}
       end
     end
   end
 
   def test_transition_should_create_and_record_a_metric_for_the_given_start_state
-    @watch.transition(:init, :start) { }
+    @watch.transition(:init, :start) {}
     assert_equal 1, @watch.metrics[:init].size
   end
 
   # lifecycle
 
   def test_lifecycle_should_create_and_record_a_metric_for_nil_start_state
-    @watch.lifecycle { }
+    @watch.lifecycle {}
     assert_equal 1, @watch.metrics[nil].size
   end
 
@@ -97,14 +97,14 @@ class TestWatch < Minitest::Test
   # start_if
 
   def test_start_if_should_place_a_metric_on_up_state
-    @watch.start_if { }
+    @watch.start_if {}
     assert_equal 1, @watch.metrics[:up].size
   end
 
   # restart_if
 
   def test_restart_if_should_place_a_metric_on_up_state
-    @watch.restart_if { }
+    @watch.restart_if {}
     assert_equal 1, @watch.metrics[:up].size
   end
 
@@ -112,7 +112,7 @@ class TestWatch < Minitest::Test
 
   def test_monitor_should_move_to_init_if_available
     @watch.instance_eval do
-      transition(:init, :up) { }
+      transition(:init, :up) {}
     end
     @watch.expects(:move).with(:init)
     @watch.monitor
@@ -244,7 +244,7 @@ class TestWatch < Minitest::Test
     @watch.driver.stubs(:in_driver_context?).returns(true)
     @watch.driver.expects(:message).never
 
-    @watch.restart = lambda { }
+    @watch.restart = lambda {}
     c = Conditions::FakePollCondition.new
     @watch.expects(:call_action).with(c, :restart)
     @watch.action(:restart, c)
@@ -277,10 +277,10 @@ class TestWatch < Minitest::Test
   # canonical_hash_form
 
   def test_canonical_hash_form_should_convert_symbol_to_hash
-    assert_equal({true => :foo}, @watch.canonical_hash_form(:foo))
+    assert_equal({ true => :foo }, @watch.canonical_hash_form(:foo))
   end
 
   def test_canonical_hash_form_should_convert_hash_to_hash
-    assert_equal({true => :foo}, @watch.canonical_hash_form(true => :foo))
+    assert_equal({ true => :foo }, @watch.canonical_hash_form(true => :foo))
   end
 end

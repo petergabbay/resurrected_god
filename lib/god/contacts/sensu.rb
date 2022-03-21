@@ -16,7 +16,6 @@ end
 
 module God
   module Contacts
-
     class Sensu < Contact
       class << self
         attr_accessor :check_name, :status_code, :handler, :host, :port
@@ -56,4 +55,3 @@ module God
     end
   end
 end
-

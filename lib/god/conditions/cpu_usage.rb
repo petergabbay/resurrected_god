@@ -1,6 +1,5 @@
 module God
   module Conditions
-
     # Condition Symbol :cpu_usage
     # Type: Poll
     #
@@ -75,6 +74,5 @@ module God
         end
       end
     end
-
   end
 end

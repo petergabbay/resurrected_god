@@ -54,4 +54,3 @@ class TestSlack < Minitest::Test
     assert_equal "<!channel> ", text
   end
 end
-

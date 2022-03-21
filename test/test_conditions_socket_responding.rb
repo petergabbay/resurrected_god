@@ -7,7 +7,6 @@ class TestConditionsSocketResponding < Minitest::Test
     c = Conditions::SocketResponding.new
     c.watch = stub(:name => 'foo')
     assert_equal false, c.valid?
-
   end
 
   def test_valid_should_return_true_if_required_options_set_for_default
@@ -101,7 +100,6 @@ class TestConditionsSocketResponding < Minitest::Test
   end
 
   def test_test_unix_should_return_true_if_no_socket_is_listening
-
     c = Conditions::SocketResponding.new
     c.socket = 'unix:/some/path'
     c.prepare
@@ -111,7 +109,6 @@ class TestConditionsSocketResponding < Minitest::Test
   end
 
   def test_test_unix_should_return_true_if_socket_is_listening_2_times
-
     c = Conditions::SocketResponding.new
     c.socket = 'unix:/some/path'
     c.times = [2, 2]

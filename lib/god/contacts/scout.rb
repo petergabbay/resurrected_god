@@ -8,7 +8,6 @@ require 'uri'
 
 module God
   module Contacts
-
     class Scout < Contact
       class << self
         attr_accessor :client_key, :plugin_id
@@ -50,6 +49,5 @@ module God
         applog(nil, :debug, e.backtrace.join("\n"))
       end
     end
-
   end
 end

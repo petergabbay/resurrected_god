@@ -1,7 +1,6 @@
 require 'drb'
 
 module God
-
   # The God::Server oversees the DRb server which dishes out info on this God daemon.
   class Socket
     attr_reader :port
@@ -93,7 +92,7 @@ module God
         end
       end
 
-      if File.exists?(self.socket_file)
+      if File.exist?(self.socket_file)
         if @user
           user_method = @user.is_a?(Integer) ? :getpwuid : :getpwnam
           uid = Etc.send(user_method, @user).uid
@@ -109,5 +108,4 @@ module God
       end
     end
   end
-
 end

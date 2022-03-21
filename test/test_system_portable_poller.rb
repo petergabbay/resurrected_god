@@ -14,4 +14,3 @@ class TestSystemPortablePoller < Minitest::Test
     assert_equal 735, @process.bypass.time_string_to_seconds('12:15:13')
   end
 end
-

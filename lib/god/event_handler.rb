@@ -107,6 +107,5 @@ module God
 
       com.first
     end
-
   end
 end

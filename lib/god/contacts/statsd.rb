@@ -7,7 +7,6 @@ require 'statsd-ruby'
 
 module God
   module Contacts
-
     class Statsd < Contact
       class << self
         attr_accessor :host, :port
@@ -28,9 +27,9 @@ module God
         app = message.gsub /([^\s]*).*/, '\1'
 
         [
-            'cpu out of bounds',
-            'memory out of bounds',
-            'process is flapping'
+          'cpu out of bounds',
+          'memory out of bounds',
+          'process is flapping'
         ].each do |event_type|
           statsd.increment "god.#{event_type.gsub(/\s/, '_')}.#{hostname}.#{app}" if message.include? event_type
         end
@@ -41,6 +40,5 @@ module God
         applog(nil, :debug, e.backtrace.join("\n"))
       end
     end
-
   end
 end

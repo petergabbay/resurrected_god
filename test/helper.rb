@@ -42,6 +42,7 @@ module God
     class FakeEventCondition < EventCondition
       def register
       end
+
       def deregister
       end
     end
@@ -52,6 +53,7 @@ module God
       def before_start
         'foo'
       end
+
       def after_start
         'bar'
       end

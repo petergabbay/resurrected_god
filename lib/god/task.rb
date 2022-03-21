@@ -1,5 +1,4 @@
 module God
-
   class Task
     # Public: Gets/Sets the String name of the task.
     attr_accessor :name
@@ -42,7 +41,7 @@ module God
       self.behaviors = []
 
       # the list of conditions for each action
-      self.metrics = {nil => [], :unmonitored => [], :stop => []}
+      self.metrics = { nil => [], :unmonitored => [], :stop => [] }
 
       # the condition -> metric lookup
       self.directory = {}
@@ -101,7 +100,7 @@ module God
     #
     # Returns the canonical Hash.
     def canonical_hash_form(to)
-      to.instance_of?(Symbol) ? {true => to} : to
+      to.instance_of?(Symbol) ? { true => to } : to
     end
 
     # Public: Define a transition handler which consists of a set of conditions
@@ -119,7 +118,7 @@ module God
       Array(start_states).each do |start_state|
         # Validate start state.
         unless self.valid_states.include?(start_state)
-          abort "Invalid state :#{start_state}. Must be one of the symbols #{self.valid_states.map{|x| ":#{x}"}.join(', ')}"
+          abort "Invalid state :#{start_state}. Must be one of the symbols #{self.valid_states.map { |x| ":#{x}" }.join(', ')}"
         end
 
         # Create a new metric to hold the task, end states, and conditions.
@@ -291,18 +290,18 @@ module God
           command = self.send(a)
 
           case command
-            when String
-              msg = "#{self.name} #{a}: #{command}"
-              applog(self, :info, msg)
+          when String
+            msg = "#{self.name} #{a}: #{command}"
+            applog(self, :info, msg)
 
-              system(command)
-            when Proc
-              msg = "#{self.name} #{a}: lambda"
-              applog(self, :info, msg)
+            system(command)
+          when Proc
+            msg = "#{self.name} #{a}: lambda"
+            applog(self, :info, msg)
 
-              command.call
-            else
-              raise NotImplementedError
+            command.call
+          else
+            raise NotImplementedError
           end
         end
       end
@@ -316,19 +315,19 @@ module God
 
     def attach(condition)
       case condition
-        when PollCondition
-          self.driver.schedule(condition, 0)
-        when EventCondition, TriggerCondition
-          condition.register
+      when PollCondition
+        self.driver.schedule(condition, 0)
+      when EventCondition, TriggerCondition
+        condition.register
       end
     end
 
     def detach(condition)
       case condition
-        when PollCondition
-          condition.reset
-        when EventCondition, TriggerCondition
-          condition.deregister
+      when PollCondition
+        condition.reset
+      when EventCondition, TriggerCondition
+        condition.deregister
       end
     end
 
@@ -386,13 +385,13 @@ module God
 
       # Get the destination.
       dest =
-      if result && condition.transition
-        # Condition override.
-        condition.transition
-      else
-        # Regular.
-        metric.destination && metric.destination[result]
-      end
+        if result && condition.transition
+          # Condition override.
+          condition.transition
+        else
+          # Regular.
+          metric.destination && metric.destination[result]
+        end
 
       # Transition or reschedule.
       if dest
@@ -432,13 +431,13 @@ module God
 
       # Get the destination.
       dest =
-      if condition.transition
-        # Condition override.
-        condition.transition
-      else
-        # Regular.
-        metric.destination && metric.destination[true]
-      end
+        if condition.transition
+          # Condition override.
+          condition.transition
+        else
+          # Regular.
+          metric.destination && metric.destination[true]
+        end
 
       if dest
         self.move(dest)
@@ -465,11 +464,11 @@ module God
     # Returns the Array of String messages.
     def log_line(watch, metric, condition, result)
       status =
-      if self.trigger?(metric, result)
-        "[trigger]"
-      else
-        "[ok]"
-      end
+        if self.trigger?(metric, result)
+          "[trigger]"
+        else
+          "[ok]"
+        end
 
       messages = []
 
@@ -499,7 +498,7 @@ module God
     # Returns the formatted String.
     def dest_desc(metric, condition)
       if condition.transition
-        {true => condition.transition}.inspect
+        { true => condition.transition }.inspect
       else
         if metric.destination
           metric.destination.inspect
@@ -521,12 +520,12 @@ module God
 
       # Resolve contacts.
       resolved_contacts =
-      spec[:contacts].inject([]) do |acc, contact_name_or_group|
-        cons = Array(God.contacts[contact_name_or_group] || God.contact_groups[contact_name_or_group])
-        unmatched << contact_name_or_group if cons.empty?
-        acc += cons
-        acc
-      end
+        spec[:contacts].inject([]) do |acc, contact_name_or_group|
+          cons = Array(God.contacts[contact_name_or_group] || God.contact_groups[contact_name_or_group])
+          unmatched << contact_name_or_group if cons.empty?
+          acc += cons
+          acc
+        end
 
       # Warn about unmatched contacts.
       unless unmatched.empty?

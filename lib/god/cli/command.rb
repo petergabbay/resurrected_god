@@ -1,6 +1,5 @@
 module God
   module CLI
-
     class Command
       def initialize(command, options, args)
         @command = command
@@ -263,6 +262,5 @@ module God
         end
       end
     end # Command
-
   end
 end

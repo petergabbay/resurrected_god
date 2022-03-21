@@ -4,7 +4,6 @@ class BadlyImplementedCondition < PollCondition
 end
 
 class TestCondition < Minitest::Test
-
   # generate
 
   def test_generate_should_return_an_object_corresponding_to_the_given_type

@@ -1,6 +1,5 @@
 module God
   module Conditions
-
     class Complex < PollCondition
       AND = 0x1
       OR  = 0x2
@@ -81,6 +80,5 @@ module God
         res
       end
     end
-
   end
 end

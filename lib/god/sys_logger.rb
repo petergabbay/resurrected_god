@@ -11,7 +11,6 @@ begin
   Syslog.info("Syslog enabled.")
 
   module God
-
     class SysLogger
       SYMBOL_EQUIVALENTS = { :fatal => Syslog::LOG_CRIT,
                              :error => Syslog::LOG_ERR,
@@ -38,7 +37,6 @@ begin
         Syslog.log(SYMBOL_EQUIVALENTS[level], '%s', text)
       end
     end
-
   end
 rescue Object => e
   puts "Syslog could not be enabled: #{e.message}"

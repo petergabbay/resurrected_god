@@ -31,7 +31,6 @@ require 'net/smtp'
 
 module God
   module Contacts
-
     class Email < Contact
       class << self
         attr_accessor :to_email, :to_name, :from_email, :from_name,
@@ -51,17 +50,17 @@ module God
       self.sendmail_args = '-i -t'
 
       self.format = lambda do |name, from_email, from_name, to_email, to_name, message, time, priority, category, host|
-        <<-EOF
-From: #{from_name} <#{from_email}>
-To: #{to_name || name} <#{to_email}>
-Subject: [god] #{message}
-Date: #{time.httpdate}
-Message-Id: <#{rand(1000000000).to_s(36)}.#{$$}.#{from_email}>
+        <<~EOF
+          From: #{from_name} <#{from_email}>
+          To: #{to_name || name} <#{to_email}>
+          Subject: [god] #{message}
+          Date: #{time.httpdate}
+          Message-Id: <#{rand(1000000000).to_s(36)}.#{$$}.#{from_email}>
 
-Message: #{message}
-Host: #{host}
-Priority: #{priority}
-Category: #{category}
+          Message: #{message}
+          Host: #{host}
+          Priority: #{priority}
+          Category: #{category}
         EOF
       end
 
@@ -92,15 +91,15 @@ Category: #{category}
                                  priority, category, host)
 
         case arg(:delivery_method)
-          when :smtp
-            notify_smtp(body)
-          when :sendmail
-            notify_sendmail(body)
+        when :smtp
+          notify_smtp(body)
+        when :sendmail
+          notify_sendmail(body)
         end
 
-        self.info = "sent email to #{arg(:to_email)} via #{arg(:delivery_method).to_s}"
+        self.info = "sent email to #{arg(:to_email)} via #{arg(:delivery_method)}"
       rescue Object => e
-        applog(nil, :info, "failed to send email to #{arg(:to_email)} via #{arg(:delivery_method).to_s}: #{e.message}")
+        applog(nil, :info, "failed to send email to #{arg(:to_email)} via #{arg(:delivery_method)}: #{e.message}")
         applog(nil, :debug, e.backtrace.join("\n"))
       end
 
@@ -119,12 +118,11 @@ Category: #{category}
       end
 
       def notify_sendmail(mail)
-        IO.popen("#{arg(:sendmail_path)} #{arg(:sendmail_args)}","w+") do |sm|
+        IO.popen("#{arg(:sendmail_path)} #{arg(:sendmail_args)}", "w+") do |sm|
           sm.print(mail.gsub(/\r/, ''))
           sm.flush
         end
       end
     end
-
   end
 end

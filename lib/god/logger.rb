@@ -1,7 +1,5 @@
 module God
-
   class Logger < SimpleLogger
-
     attr_accessor :logs
 
     class << self
@@ -21,7 +19,6 @@ module God
       @templog = SimpleLogger.new(@templogio)
       @templog.level = Logger::INFO
     end
-
 
     def level=(lev)
       SysLogger.level = SimpleLogger::CONSTANT_TO_SYMBOL[lev] if Logger.syslog
@@ -105,5 +102,4 @@ module God
       end
     end
   end
-
 end

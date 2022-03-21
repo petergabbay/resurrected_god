@@ -1,6 +1,5 @@
 module God
   module Behaviors
-
     class CleanPidFile < Behavior
       def valid?
         valid = true
@@ -16,6 +15,5 @@ module God
         "no pid file to delete"
       end
     end
-
   end
 end

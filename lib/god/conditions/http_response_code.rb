@@ -3,7 +3,6 @@ require 'net/https'
 
 module God
   module Conditions
-
     # Condition Symbol :http_response_code
     # Type: Poll
     #
@@ -177,8 +176,6 @@ module God
         @history << entry
         '[' + @history.join(", ") + ']'
       end
-
     end
-
   end
 end

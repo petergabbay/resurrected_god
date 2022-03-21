@@ -2,7 +2,6 @@
 require File.dirname(__FILE__) + '/helper'
 
 class TestJabber < Minitest::Test
-
   def setup
     @jabber = God::Contacts::Jabber.new
   end

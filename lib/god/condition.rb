@@ -1,5 +1,4 @@
 module God
-
   class Condition < Behavior
     attr_accessor :transition, :notify, :info, :phase
 
@@ -7,7 +6,7 @@ module God
     # kind (which is given as an underscored symbol).
     #   +kind+ is the underscored symbol representing the class (e.g. :foo_bar for God::Conditions::FooBar)
     def self.generate(kind, watch)
-      sym = kind.to_s.capitalize.gsub(/_(.)/){$1.upcase}.intern
+      sym = kind.to_s.capitalize.gsub(/_(.)/) { $1.upcase }.intern
       c = God::Conditions.const_get(sym).new
 
       unless c.kind_of?(PollCondition) || c.kind_of?(EventCondition) || c.kind_of?(TriggerCondition)
@@ -92,5 +91,4 @@ module God
       Trigger.deregister(self)
     end
   end
-
 end

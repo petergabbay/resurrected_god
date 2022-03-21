@@ -10,7 +10,6 @@ class TestConditionsTries < Minitest::Test
   end
 end
 
-
 class TestConditionsTries < Minitest::Test
   def setup
     @c = Conditions::Tries.new
@@ -40,7 +39,6 @@ class TestConditionsTries < Minitest::Test
     assert !@c.test
   end
 end
-
 
 class TestConditionsTriesWithin < Minitest::Test
   def setup

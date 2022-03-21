@@ -330,7 +330,7 @@ module God
         end
 
         # close any other file descriptors
-        3.upto(256){|fd| IO::new(fd).close rescue nil}
+        3.upto(256) { |fd| IO::new(fd).close rescue nil }
 
         if self.env && self.env.is_a?(Hash)
           self.env.each do |(key, value)|
@@ -372,6 +372,7 @@ module God
     end
 
     private
+
     def file_in_chroot(file)
       return file unless self.chroot
 

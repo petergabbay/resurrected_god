@@ -1,5 +1,4 @@
 module God
-
   class AbstractMethodNotOverriddenError < StandardError
   end
 
@@ -20,5 +19,4 @@ module God
 
   class EventRegistrationFailedError < StandardError
   end
-
 end

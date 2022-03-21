@@ -13,7 +13,6 @@ end
 
 module God
   module Contacts
-
     class Webhook < Contact
       class << self
         attr_accessor :url, :format
@@ -47,28 +46,26 @@ module God
         res = nil
 
         case arg(:format)
-          when :form
-            req = Net::HTTP::Post.new(uri.request_uri)
-            req.set_form_data(data)
-          when :json
-            req = Net::HTTP::Post.new(uri.request_uri)
-            req.body = data.to_json
+        when :form
+          req = Net::HTTP::Post.new(uri.request_uri)
+          req.set_form_data(data)
+        when :json
+          req = Net::HTTP::Post.new(uri.request_uri)
+          req.body = data.to_json
         end
 
         res = http.request(req)
 
         case res
-          when Net::HTTPSuccess
-            self.info = "sent webhook to #{arg(:url)}"
-          else
-            self.info = "failed to send webhook to #{arg(:url)}: #{res.error!}"
+        when Net::HTTPSuccess
+          self.info = "sent webhook to #{arg(:url)}"
+        else
+          self.info = "failed to send webhook to #{arg(:url)}: #{res.error!}"
         end
       rescue Object => e
         applog(nil, :info, "failed to send webhook to #{arg(:url)}: #{e.message}")
         applog(nil, :debug, e.backtrace.join("\n"))
       end
-
     end
-
   end
 end

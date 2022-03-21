@@ -22,7 +22,7 @@ class TestTrigger < Minitest::Test
     c.watch = stub(:name => 'foo')
     Trigger.register(c)
 
-    assert_equal({'foo' => [c]}, Trigger.triggers)
+    assert_equal({ 'foo' => [c] }, Trigger.triggers)
   end
 
   def test_register_should_add_condition_to_triggers_twice
@@ -35,7 +35,7 @@ class TestTrigger < Minitest::Test
     c2.watch = watch
     Trigger.register(c2)
 
-    assert_equal({'foo' => [c, c2]}, Trigger.triggers)
+    assert_equal({ 'foo' => [c, c2] }, Trigger.triggers)
   end
 
   # deregister

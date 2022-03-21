@@ -10,7 +10,6 @@ end
 module God
   module Contacts
     class Airbrake < Contact
-
       class << self
         attr_accessor :apikey
       end
@@ -26,7 +25,7 @@ module God
       def notify(message, time, priority, category, host)
         ::Airbrake.configure {}
 
-        message = "God: #{message.to_s} at #{host}"
+        message = "God: #{message} at #{host}"
         message << " | #{[category, priority].join(" ")}" unless category.to_s.empty? or priority.to_s.empty?
 
         if ::Airbrake.notify nil, :error_message => message, :api_key => arg(:apikey)
@@ -38,7 +37,6 @@ module God
         applog(nil, :info, "failed to send airbrake notification: #{e.message}")
         applog(nil, :debug, e.backtrace.join("\n"))
       end
-
     end
   end
 end

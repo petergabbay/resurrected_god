@@ -20,6 +20,7 @@ module Marshmallow
     def initialize(options)
       raise "Required option :subdomain not set." unless options[:subdomain]
       raise "Required option :token not set." unless options[:token]
+
       @options = options
     end
 
@@ -40,12 +41,12 @@ module Marshmallow
 
       res = http.request(req)
       case res
-        when Net::HTTPSuccess
-          rooms = JSON.parse(res.body)
-          room = rooms['rooms'].select { |x| x['name'] == room }
-          rooms.empty? ? nil : room.first['id']
-        else
-          raise res.error!
+      when Net::HTTPSuccess
+        rooms = JSON.parse(res.body)
+        room = rooms['rooms'].select { |x| x['name'] == room }
+        rooms.empty? ? nil : room.first['id']
+      else
+        raise res.error!
       end
     end
 
@@ -65,10 +66,10 @@ module Marshmallow
 
       res = http.request(req)
       case res
-        when Net::HTTPSuccess
-          true
-        else
-          raise res.error!
+      when Net::HTTPSuccess
+        true
+      else
+        raise res.error!
       end
     end
   end
@@ -76,7 +77,6 @@ end
 
 module God
   module Contacts
-
     class Campfire < Contact
       class << self
         attr_accessor :subdomain, :token, :room, :ssl
@@ -116,6 +116,5 @@ module God
         applog(nil, :debug, e.backtrace.join("\n"))
       end
     end
-
   end
 end

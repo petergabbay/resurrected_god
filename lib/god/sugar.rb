@@ -49,7 +49,7 @@ class Numeric
 
   # Units of gigabytes (1,048,576 kilobytes).
   def gigabytes
-    self * (1024 ** 2)
+    self * (1024**2)
   end
 
   # Units of gigabytes (1,048,576 kilobytes).

@@ -61,6 +61,5 @@ module God
         end
       end
     end
-
   end
 end

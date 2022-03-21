@@ -32,8 +32,8 @@ class TestSugar < Minitest::Test
   end
 
   def test_gigabytes
-    assert_equal 1024 ** 2, 1.gigabytes
-    assert_equal 1024 ** 2, 1.gigabyte
+    assert_equal 1024**2, 1.gigabytes
+    assert_equal 1024**2, 1.gigabyte
   end
 
   def test_percent

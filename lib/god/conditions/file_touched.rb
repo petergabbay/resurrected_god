@@ -1,6 +1,5 @@
 module God
   module Conditions
-  
     # Condition Symbol :file_touched
     # Type: Poll
     #
@@ -33,7 +32,7 @@ module God
       end
 
       def test
-        if File.exists?(self.path)
+        if File.exist?(self.path)
           (Time.now - File.mtime(self.path)) <= self.interval
         else
           false

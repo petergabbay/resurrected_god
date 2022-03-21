@@ -14,7 +14,6 @@ end
 
 module God
   module Contacts
-
     class Jabber < Contact
       class << self
         attr_accessor :host, :port, :from_jid, :password, :to_jid, :subject
@@ -69,7 +68,6 @@ module God
         end
         applog(nil, :debug, e.backtrace.join("\n"))
       end
-
     end
   end
 end

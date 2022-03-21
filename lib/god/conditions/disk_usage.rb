@@ -1,6 +1,5 @@
 module God
   module Conditions
-
     class DiskUsage < PollCondition
       attr_accessor :above, :mount_point
 

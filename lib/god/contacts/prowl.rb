@@ -10,7 +10,6 @@ end
 module God
   module Contacts
     class Prowl < Contact
-
       class << self
         attr_accessor :apikey
       end
@@ -44,12 +43,12 @@ module God
 
       def map_priority(priority)
         case priority
-           when 1 then Prowly::Notification::Priority::EMERGENCY
-           when 2 then Prowly::Notification::Priority::HIGH
-           when 3 then Prowly::Notification::Priority::NORMAL
-           when 4 then Prowly::Notification::Priority::MODERATE
-           when 5 then Prowly::Notification::Priority::VERY_LOW
-           else Prowly::Notification::Priority::NORMAL
+        when 1 then Prowly::Notification::Priority::EMERGENCY
+        when 2 then Prowly::Notification::Priority::HIGH
+        when 3 then Prowly::Notification::Priority::NORMAL
+        when 4 then Prowly::Notification::Priority::MODERATE
+        when 5 then Prowly::Notification::Priority::VERY_LOW
+        else Prowly::Notification::Priority::NORMAL
         end
       end
     end

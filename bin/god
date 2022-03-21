@@ -12,7 +12,7 @@ begin
   # Save ARGV in case someone wants to use it later
   ORIGINAL_ARGV = ARGV.dup
 
-  options = {:daemonize => true, :port => 17165, :syslog => true, :events => true}
+  options = { :daemonize => true, :port => 17165, :syslog => true, :events => true }
 
   opts = OptionParser.new do |opts|
     opts.banner = <<-EOF
@@ -42,7 +42,7 @@ begin
       check                              run self diagnostic
 
     Options:
-  EOF
+    EOF
 
     opts.on("-cCONFIG", "--config-file CONFIG", "Configuration file") do |x|
       options[:config] = x

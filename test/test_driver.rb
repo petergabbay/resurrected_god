@@ -2,11 +2,9 @@ require File.dirname(__FILE__) + '/helper'
 
 class TestDriver < Minitest::Test
   def setup
-
   end
 
   def test_push_pop_wait
-
     eq = God::DriverEventQueue.new
     cond = eq.instance_variable_get(:@resource)
     cond.expects(:wait).times(1)

@@ -1,16 +1,13 @@
 module God
-
   module Configurable
     # Override this method in your Configurable (optional)
     #
     # Called once after the Configurable has been sent to the block and attributes have been
     # set. Do any post-processing on attributes here
     def prepare
-
     end
 
     def reset
-
     end
 
     # Override this method in your Configurable (optional)
@@ -53,5 +50,4 @@ module God
       Configurable.complain(text, c)
     end
   end
-
 end

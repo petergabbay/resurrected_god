@@ -1,5 +1,4 @@
 module God
-
   class Timeline < Array
     # Instantiate a new Timeline
     #   +max_size+ is the maximum size to which the timeline should grow
@@ -21,5 +20,4 @@ module God
 
     alias_method :<<, :push
   end
-
 end

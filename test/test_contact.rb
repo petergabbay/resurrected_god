@@ -23,37 +23,37 @@ class TestContact < Minitest::Test
 
   def test_normalize_should_accept_a_string
     input = 'tom'
-    output = {:contacts => ['tom']}
+    output = { :contacts => ['tom'] }
     assert_equal(output, Contact.normalize(input))
   end
 
   def test_normalize_should_accept_an_array_of_strings
     input = ['tom', 'kevin']
-    output = {:contacts => ['tom', 'kevin']}
+    output = { :contacts => ['tom', 'kevin'] }
     assert_equal(output, Contact.normalize(input))
   end
 
   def test_normalize_should_accept_a_hash_with_contacts_string
-    input = {:contacts => 'tom'}
-    output = {:contacts => ['tom']}
+    input = { :contacts => 'tom' }
+    output = { :contacts => ['tom'] }
     assert_equal(output, Contact.normalize(input))
   end
 
   def test_normalize_should_accept_a_hash_with_contacts_array_of_strings
-    input = {:contacts => ['tom', 'kevin']}
-    output = {:contacts => ['tom', 'kevin']}
+    input = { :contacts => ['tom', 'kevin'] }
+    output = { :contacts => ['tom', 'kevin'] }
     assert_equal(output, Contact.normalize(input))
   end
 
   def test_normalize_should_stringify_priority
-    input = {:contacts => 'tom', :priority => 1}
-    output = {:contacts => ['tom'], :priority => '1'}
+    input = { :contacts => 'tom', :priority => 1 }
+    output = { :contacts => ['tom'], :priority => '1' }
     assert_equal(output, Contact.normalize(input))
   end
 
   def test_normalize_should_stringify_category
-    input = {:contacts => 'tom', :category => :product}
-    output = {:contacts => ['tom'], :category => 'product'}
+    input = { :contacts => 'tom', :category => :product }
+    output = { :contacts => ['tom'], :category => 'product' }
     assert_equal(output, Contact.normalize(input))
   end
 
@@ -65,7 +65,7 @@ class TestContact < Minitest::Test
   end
 
   def test_normalize_should_raise_on_non_string_array_contacts_key
-    input = {:contacts => 1}
+    input = { :contacts => 1 }
     assert_raises ArgumentError do
       Contact.normalize(input)
     end
@@ -79,7 +79,7 @@ class TestContact < Minitest::Test
   end
 
   def test_normalize_should_raise_on_non_string_containing_array_contacts_key
-    input = {:contacts => [1]}
+    input = { :contacts => [1] }
     assert_raises ArgumentError do
       Contact.normalize(input)
     end
@@ -93,7 +93,7 @@ class TestContact < Minitest::Test
   end
 
   def test_normalize_should_raise_on_extra_keys
-    input = {:contacts => ['tom'], :priority => 1, :category => 'product', :extra => 'foo'}
+    input = { :contacts => ['tom'], :priority => 1, :category => 'product', :extra => 'foo' }
     assert_raises ArgumentError do
       Contact.normalize(input)
     end

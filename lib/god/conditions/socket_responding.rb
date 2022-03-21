@@ -88,7 +88,7 @@ module God
       def socket=(s)
         components = s.split(':')
         if components.size == 3
-          @family,@addr,@port = components
+          @family, @addr, @port = components
           @port = @port.to_i
         elsif components[0] =~ /^tcp$/
           @family = components[0]
@@ -129,7 +129,7 @@ module God
           status = false
         end
         @timeline.push(status)
-        history = "[" + @timeline.map {|t| t ? '*' : ''}.join(',') + "]"
+        history = "[" + @timeline.map { |t| t ? '*' : '' }.join(',') + "]"
         if @timeline.select { |x| x }.size >= self.times.first
           self.info = "socket out of bounds #{history}"
           return true

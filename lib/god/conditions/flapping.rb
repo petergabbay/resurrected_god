@@ -1,6 +1,5 @@
 module God
   module Conditions
-
     # Condition Symbol :flapping
     # Type: Trigger
     #
@@ -123,6 +122,5 @@ module God
         end
       end
     end
-
   end
 end

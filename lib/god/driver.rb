@@ -112,6 +112,7 @@ module God
       @monitor.synchronize do
         if @events.empty?
           raise ThreadError, "queue empty" if @shutdown
+
           @resource.wait
         else
           delay = @events.first.at - Time.now

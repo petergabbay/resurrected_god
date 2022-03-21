@@ -1,6 +1,5 @@
 module God
   module Conditions
-
     class FileMtime < PollCondition
       attr_accessor :path, :max_age
 
@@ -21,8 +20,5 @@ module God
         (Time.now - File.mtime(self.path)) > self.max_age
       end
     end
-
   end
 end
-
-

@@ -67,7 +67,7 @@ class TestTask < Minitest::Test
   end
 
   def test_action_should_call_lambda_commands
-    @task.foo = lambda { }
+    @task.foo = lambda {}
     @task.driver.stubs(:in_driver_context?).returns(true)
     @task.foo.expects(:call)
     @task.action(:foo, nil)
@@ -131,7 +131,7 @@ class TestTask < Minitest::Test
     c.watch = @task
     c.interval = 10
 
-    m = Metric.new(@task, {true => :up})
+    m = Metric.new(@task, { true => :up })
     @task.directory[c] = m
 
     c.expects(:test).returns(false)
@@ -144,7 +144,7 @@ class TestTask < Minitest::Test
     c.watch = @task
     c.interval = 10
 
-    m = Metric.new(@task, {true => :up})
+    m = Metric.new(@task, { true => :up })
     @task.directory[c] = m
 
     c.expects(:test).returns(true)
@@ -159,7 +159,7 @@ class TestTask < Minitest::Test
     c.transition = :start
     c.prepare
 
-    m = Metric.new(@task, {true => :up})
+    m = Metric.new(@task, { true => :up })
     @task.directory[c] = m
 
     @task.expects(:move).with(:start)
@@ -172,7 +172,7 @@ class TestTask < Minitest::Test
     c.interval = 10
     c.notify = 'tom'
 
-    m = Metric.new(@task, {true => :up})
+    m = Metric.new(@task, { true => :up })
     @task.directory[c] = m
 
     c.expects(:test).returns(true)
@@ -186,7 +186,7 @@ class TestTask < Minitest::Test
     c.interval = 10
     c.notify = 'tom'
 
-    m = Metric.new(@task, {true => :up})
+    m = Metric.new(@task, { true => :up })
     @task.directory[c] = m
 
     c.expects(:test).returns(false)
@@ -199,7 +199,7 @@ class TestTask < Minitest::Test
     c.watch = @task
     c.interval = 10
 
-    m = Metric.new(@task, {true => :up})
+    m = Metric.new(@task, { true => :up })
     @task.directory[c] = m
 
     c.expects(:test).raises(StandardError)
@@ -214,7 +214,7 @@ class TestTask < Minitest::Test
     c = Conditions::FakeEventCondition.new
     c.watch = @task
 
-    m = Metric.new(@task, {true => :up})
+    m = Metric.new(@task, { true => :up })
     @task.directory[c] = m
 
     @task.expects(:move).with(:up)
@@ -226,7 +226,7 @@ class TestTask < Minitest::Test
     c.watch = @task
     c.notify = 'tom'
 
-    m = Metric.new(@task, {true => :up})
+    m = Metric.new(@task, { true => :up })
     @task.directory[c] = m
 
     @task.expects(:notify)
@@ -237,7 +237,7 @@ class TestTask < Minitest::Test
     c = Conditions::FakeEventCondition.new
     c.watch = @task
 
-    m = Metric.new(@task, {true => :up})
+    m = Metric.new(@task, { true => :up })
     @task.directory[c] = m
 
     @task.expects(:notify).never

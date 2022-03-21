@@ -16,8 +16,8 @@ class TestGod < MiniTest::Test
       end
     end
     God.reset
-    #Some of the tests in this file intentionally set pid_file_directory to an invalid value
-    #This can cause a later test failure since God will call abort if pid_file_directory is not writable    
+    # Some of the tests in this file intentionally set pid_file_directory to an invalid value
+    # This can cause a later test failure since God will call abort if pid_file_directory is not writable
     God.pid_file_directory = '~/.god/pids'
   end
 
@@ -31,7 +31,7 @@ class TestGod < MiniTest::Test
   # internal_init
 
   def test_init_should_initialize_watches_to_empty_array
-    God.internal_init { }
+    God.internal_init {}
     assert_equal Hash.new, God.watches
   end
 
@@ -104,7 +104,7 @@ class TestGod < MiniTest::Test
       w.group = 'test'
     end
 
-    assert_equal({'test' => [a]}, God.groups)
+    assert_equal({ 'test' => [a] }, God.groups)
   end
 
   def test_watches_should_get_stored_by_group
@@ -125,7 +125,7 @@ class TestGod < MiniTest::Test
       w.group = 'test'
     end
 
-    assert_equal({'test' => [a, b]}, God.groups)
+    assert_equal({ 'test' => [a, b] }, God.groups)
   end
 
   def test_watch_should_allow_multiple_watches
@@ -220,7 +220,7 @@ class TestGod < MiniTest::Test
   def test_contact_should_create_and_store_contact
     contact = nil
     God.contact(:fake_contact) { |c| c.name = 'tom'; contact = c }
-    assert_equal({"tom" => contact}, God.contacts)
+    assert_equal({ "tom" => contact }, God.contacts)
   end
 
   def test_contact_should_add_to_group
@@ -398,7 +398,6 @@ class TestGod < MiniTest::Test
     God.control('', 'start')
   end
 
-
   # stop_all
 
   # terminate
@@ -424,7 +423,7 @@ class TestGod < MiniTest::Test
 
     w = God.watches['foo']
     w.state = :up
-    assert_equal({'foo' => {:state => :up, :group => nil}}, God.status)
+    assert_equal({ 'foo' => { :state => :up, :group => nil } }, God.status)
   end
 
   def test_status_should_show_state_with_group
@@ -432,14 +431,14 @@ class TestGod < MiniTest::Test
 
     w = God.watches['foo']
     w.state = :up
-    assert_equal({'foo' => {:state => :up, :group => 'g'}}, God.status)
+    assert_equal({ 'foo' => { :state => :up, :group => 'g' } }, God.status)
   end
 
   def test_status_should_show_unmonitored_for_nil_state
     God.watch { |w| w.name = 'foo'; w.start = 'bar' }
 
     w = God.watches['foo']
-    assert_equal({'foo' => {:state => :unmonitored, :group => nil}}, God.status)
+    assert_equal({ 'foo' => { :state => :unmonitored, :group => nil } }, God.status)
   end
 
   # running_log
@@ -654,15 +653,14 @@ class TestGod < MiniTest::Test
   # pattern_match
 
   def test_pattern_match
-    list = %w{ mongrel-3000 mongrel-3001 fuzed22 fuzed fuzed2 apache mysql}
+    list = %w{mongrel-3000 mongrel-3001 fuzed22 fuzed fuzed2 apache mysql}
 
-    assert_equal %w{ mongrel-3000 }, God.pattern_match('m3000', list)
-    assert_equal %w{ mongrel-3001 }, God.pattern_match('m31', list)
-    assert_equal %w{ fuzed fuzed2 fuzed22}, God.pattern_match('fu', list)
-    assert_equal %w{ mysql }, God.pattern_match('sql', list)
+    assert_equal %w{mongrel-3000}, God.pattern_match('m3000', list)
+    assert_equal %w{mongrel-3001}, God.pattern_match('m31', list)
+    assert_equal %w{fuzed fuzed2 fuzed22}, God.pattern_match('fu', list)
+    assert_equal %w{mysql}, God.pattern_match('sql', list)
   end
 end
-
 
 # class TestGodOther < Minitest::Test
 #   def setup

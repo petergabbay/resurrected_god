@@ -1,6 +1,5 @@
 module God
   module Conditions
-
     class Tries < PollCondition
       attr_accessor :times, :within
 
@@ -39,6 +38,5 @@ module God
         end
       end
     end
-
   end
 end

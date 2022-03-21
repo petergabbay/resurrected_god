@@ -1,5 +1,4 @@
 module God
-
   class Behavior
     include Configurable
 
@@ -9,7 +8,7 @@ module God
     # kind (which is given as an underscored symbol).
     #   +kind+ is the underscored symbol representing the class (e.g. foo_bar for God::Behaviors::FooBar)
     def self.generate(kind, watch)
-      sym = kind.to_s.capitalize.gsub(/_(.)/){$1.upcase}.intern
+      sym = kind.to_s.capitalize.gsub(/_(.)/) { $1.upcase }.intern
       b = God::Behaviors.const_get(sym).new
       b.watch = watch
       b
@@ -48,5 +47,4 @@ module God
       "Behavior " + super + " on Watch '#{self.watch.name}'"
     end
   end
-
 end

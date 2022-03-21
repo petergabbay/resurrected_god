@@ -138,9 +138,10 @@ class TestGodSystem < MiniTest::Test
         God.watches["many_watches_#{i}"].action(:start)
       end
       while true do
-        all_running = God.watches.select{ |name, w| name =~ /many_watches_/ }.all?{ |name, w| w.alive? }
+        all_running = God.watches.select { |name, w| name =~ /many_watches_/ }.all? { |name, w| w.alive? }
         size = God.watches.size
         break if all_running && size >= 20
+
         sleep 2
       end
       God.stop_all
@@ -162,9 +163,10 @@ class TestGodSystem < MiniTest::Test
         God.watches["tons_of_watches_#{i}"].action(:start)
       end
       while true do
-        all_running = God.watches.select{ |name, w| name =~ /tons_of_watches_/ }.all?{ |name, w| w.alive? }
+        all_running = God.watches.select { |name, w| name =~ /tons_of_watches_/ }.all? { |name, w| w.alive? }
         size = God.watches.size
         break if all_running && size >= 100
+
         sleep 2
       end
       God.stop_all
@@ -185,13 +187,14 @@ class TestGodSystem < MiniTest::Test
         God.watches["tons_of_watches_#{i}"].action(:start)
       end
       while true do
-        all_running = God.watches.select{ |name, w| name =~ /tons_of_watches_/ }.all?{ |name, w| w.alive? }
+        all_running = God.watches.select { |name, w| name =~ /tons_of_watches_/ }.all? { |name, w| w.alive? }
         size = God.watches.size
         break if all_running && size >= 100
+
         sleep 2
       end
       begin
-        God::CLI::Command.new('terminate', {port: 17165}, [])
+        God::CLI::Command.new('terminate', { port: 17165 }, [])
       rescue SystemExit
       ensure
         assert_equal false, God.watches.any? { |name, w| w.alive? }

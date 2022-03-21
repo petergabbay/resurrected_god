@@ -1,5 +1,4 @@
 module God
-
   class SimpleLogger
     DEBUG = 2
     INFO = 4
@@ -7,11 +6,11 @@ module God
     ERROR = 16
     FATAL = 32
 
-    SEV_LABEL = {DEBUG => 'DEBUG',
-                 INFO => 'INFO',
-                 WARN => 'WARN',
-                 ERROR => 'ERROR',
-                 FATAL => 'FATAL'}
+    SEV_LABEL = { DEBUG => 'DEBUG',
+                  INFO => 'INFO',
+                  WARN => 'WARN',
+                  ERROR => 'ERROR',
+                  FATAL => 'FATAL' }
 
     CONSTANT_TO_SYMBOL = { DEBUG => :debug,
                            INFO => :info,
@@ -55,5 +54,4 @@ module God
       self.output(DEBUG, msg)
     end
   end
-
 end

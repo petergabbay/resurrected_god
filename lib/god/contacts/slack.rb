@@ -16,7 +16,6 @@ end
 
 module God
   module Contacts
-
     class Slack < Contact
       class << self
         attr_accessor :url, :channel, :notify_channel, :format, :username, :emoji
@@ -44,12 +43,12 @@ module God
 
       def notify(message, time, priority, category, host)
         text = text({
-          :message => message,
-          :time => time,
-          :priority => priority,
-          :category => category,
-          :host => host
-        })
+                      :message => message,
+                      :time => time,
+                      :priority => priority,
+                      :category => category,
+                      :host => host
+                    })
 
         request(text)
       end
@@ -75,17 +74,15 @@ module God
         res = http.request(req)
 
         case res
-          when Net::HTTPSuccess
-            self.info = "successfully notified slack on channel #{arg(:channel)}"
-          else
-            self.info = "failed to send webhook to #{arg(:url)}: #{res.error!}"
+        when Net::HTTPSuccess
+          self.info = "successfully notified slack on channel #{arg(:channel)}"
+        else
+          self.info = "failed to send webhook to #{arg(:url)}: #{res.error!}"
         end
       rescue Object => e
         applog(nil, :info, "failed to send webhook to #{arg(:url)}: #{e.message}")
         applog(nil, :debug, e.backtrace.join("\n"))
       end
-
     end
-
   end
 end

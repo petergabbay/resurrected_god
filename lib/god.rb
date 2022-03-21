@@ -11,8 +11,6 @@ if $load_god
   begin
     require 'fastthread'
   rescue LoadError
-  ensure
-    require 'thread'
   end
 
   # stdlib
@@ -489,6 +487,7 @@ if $load_god
 
       terminate_timeout.times do
         return true unless self.watches.map { |name, w| w.alive? }.any?
+
         sleep 1
       end
 

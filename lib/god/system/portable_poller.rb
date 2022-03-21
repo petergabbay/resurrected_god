@@ -4,6 +4,7 @@ module God
       def initialize(pid)
         @pid = pid
       end
+
       # Memory usage in kilobytes (resident set size)
       def memory
         ps_int('rss')

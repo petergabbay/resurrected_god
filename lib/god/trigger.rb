@@ -1,7 +1,5 @@
 module God
-
   class Trigger
-
     class << self
       attr_accessor :triggers # {task.name => condition}
     end
@@ -37,7 +35,5 @@ module God
     def self.reset
       self.triggers.clear
     end
-
   end
-
 end

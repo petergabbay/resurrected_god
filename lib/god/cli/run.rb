@@ -1,6 +1,5 @@
 module God
   module CLI
-
     class Run
       def initialize(options)
         @options = options
@@ -107,7 +106,6 @@ module God
               puts "***********************************************************************"
               puts
             end
-
           rescue => e
             puts e.message
             puts e.backtrace.join("\n")
@@ -163,8 +161,6 @@ module God
           false
         end
       end
-
     end # Run
-
   end
 end

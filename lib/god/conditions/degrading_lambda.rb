@@ -1,6 +1,5 @@
 module God
   module Conditions
-
     # This condition degrades its interval by a factor of two for 3 tries before failing
     class DegradingLambda < PollCondition
       attr_accessor :lambda
@@ -37,16 +36,15 @@ module God
 
       private
 
-        def pass?
-          begin
-            Timeout::timeout(@interval) {
-              self.lambda.call()
-            }
-          rescue Timeout::Error
-            false
-          end
+      def pass?
+        begin
+          Timeout::timeout(@interval) {
+            self.lambda.call()
+          }
+        rescue Timeout::Error
+          false
         end
+      end
     end
-
   end
 end

@@ -1,6 +1,5 @@
 module God
   module CLI
-
     class Version
       def self.version
         require 'god'
@@ -18,6 +17,5 @@ module God
         exit
       end
     end
-
   end
 end

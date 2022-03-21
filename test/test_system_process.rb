@@ -27,4 +27,3 @@ class TestSystemProcess < Minitest::Test
     assert_kind_of Float, @process.percent_cpu
   end
 end
-

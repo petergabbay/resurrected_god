@@ -18,16 +18,16 @@ module God
       def test
         puts "Calling test. Interval at #{interval}"
         @original_interval ||= interval
-        unless pass?
+        if pass?
+          @tries = 0
+          self.interval = @original_interval
+        else
           if @tries == 2
             self.info = "lambda condition was satisfied"
             return true
           end
           self.interval = interval / 2.0
           @tries += 1
-        else
-          @tries = 0
-          self.interval = @original_interval
         end
 
         self.info = "lambda condition was not satisfied"

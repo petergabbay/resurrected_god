@@ -6,7 +6,7 @@ module God
     # kind (which is given as an underscored symbol).
     #   +kind+ is the underscored symbol representing the class (e.g. :foo_bar for God::Conditions::FooBar)
     def self.generate(kind, watch)
-      sym = kind.to_s.capitalize.gsub(/_(.)/) { $1.upcase }.intern
+      sym = kind.to_s.capitalize.gsub(/_(.)/) { Regexp.last_match(1).upcase }.intern
       c = God::Conditions.const_get(sym).new
 
       unless c.is_a?(PollCondition) || c.is_a?(EventCondition) || c.is_a?(TriggerCondition)

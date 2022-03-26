@@ -46,7 +46,7 @@ module God
           message: message,
           priority: priority,
           host: host,
-          time: time,
+          time: time
         }
         parcel = { 'name' => arg(:check_name), 'status' => arg(:status_code).nil? ? status_code : arg(:status_code), 'output' => data.to_json, 'handler' => arg(:handler).empty? ? handler : arg(:handler), 'executed' => Time.now.to_i }
         sensu_client_socket parcel.to_json

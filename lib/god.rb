@@ -473,9 +473,9 @@ if $load_god
         raise InvalidCommandError
       end
 
-      jobs.each { |j| j.join }
+      jobs.each(&:join)
 
-      items.map { |x| x.name }
+      items.map(&:name)
     end
 
     # Unmonitor and stop all tasks.
@@ -538,8 +538,8 @@ if $load_god
       items = watches_by_name(name)
       jobs = []
       items.each { |w| jobs << Thread.new { w.signal(signal) } }
-      jobs.each { |j| j.join }
-      items.map { |x| x.name }
+      jobs.each(&:join)
+      items.map(&:name)
     end
 
     # Log lines for the given task since the specified time.
@@ -594,7 +594,7 @@ if $load_god
             w.monitor
           end
         end
-        loaded_watches = pending_watches.map { |w| w.name }
+        loaded_watches = pending_watches.map(&:name)
         pending_watches.clear
         pending_watch_states.clear
 
@@ -630,7 +630,7 @@ if $load_god
         end
       end
 
-      jobs.each { |t| t.join }
+      jobs.each(&:join)
 
       [loaded_watches, errors, unloaded_watches]
     end
@@ -761,7 +761,7 @@ if $load_god
 
       list.select do |item|
         item =~ Regexp.new(regex)
-      end.sort_by { |x| x.size }
+      end.sort_by(&:size)
     end
   end
 

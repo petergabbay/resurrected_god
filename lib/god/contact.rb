@@ -5,7 +5,7 @@ module God
     attr_accessor :name, :group, :info
 
     def self.generate(kind)
-      sym = kind.to_s.capitalize.gsub(/_(.)/) { $1.upcase }.intern
+      sym = kind.to_s.capitalize.gsub(/_(.)/) { Regexp.last_match(1).upcase }.intern
       c = God::Contacts.const_get(sym).new
 
       unless c.is_a?(Contact)

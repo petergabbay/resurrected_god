@@ -205,9 +205,9 @@ module God
 
         # Cleanup from current state.
         driver.clear_events
-        metrics[from_state].each { |m| m.disable }
+        metrics[from_state].each(&:disable)
         if to_state == :unmonitored
-          metrics[nil].each { |m| m.disable }
+          metrics[nil].each(&:disable)
         end
 
         # Perform action.
@@ -219,11 +219,11 @@ module God
         end
 
         # Move to new state.
-        metrics[to_state].each { |m| m.enable }
+        metrics[to_state].each(&:enable)
 
         # If no from state, enable lifecycle metric.
         if from_state == :unmonitored
-          metrics[nil].each { |m| m.enable }
+          metrics[nil].each(&:enable)
         end
 
         # Set state.

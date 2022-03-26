@@ -16,12 +16,12 @@ include God
 begin
   require 'mocha/setup'
 rescue LoadError
-  unless gems ||= false
+  if gems ||= false
+    abort "=> You need the Mocha gem to run these tests."
+  else
     require 'rubygems'
     gems = true
     retry
-  else
-    abort "=> You need the Mocha gem to run these tests."
   end
 end
 

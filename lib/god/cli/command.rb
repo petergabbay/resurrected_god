@@ -148,13 +148,13 @@ module God
         # output response
         t.kill
         $stdout.puts
-        unless watches.empty?
+        if watches.empty?
+          puts 'No matching task or group'
+        else
           puts 'The following watches were affected:'
           watches.each do |w|
             puts '  ' + w
           end
-        else
-          puts 'No matching task or group'
         end
       end
 
@@ -276,13 +276,13 @@ module God
         # output response
         t.kill
         $stdout.puts
-        unless watches.empty?
+        if watches.empty?
+          puts 'No matching task or group'
+        else
           puts 'The following watches were affected:'
           watches.each do |w|
             puts '  ' + w
           end
-        else
-          puts 'No matching task or group'
         end
       end
     end

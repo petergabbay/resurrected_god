@@ -87,8 +87,8 @@ module God
       end
 
       def prepare
-        self.code_is = Array(code_is).map { |x| x.to_i } if code_is
-        self.code_is_not = Array(code_is_not).map { |x| x.to_i } if code_is_not
+        self.code_is = Array(code_is).map(&:to_i) if code_is
+        self.code_is_not = Array(code_is_not).map(&:to_i) if code_is_not
 
         if times.is_a?(Integer)
           self.times = [times, times]

@@ -19,7 +19,7 @@ module God
       end
 
       def prepare
-        @oper_stack.each { |oper| oper.prepare }
+        @oper_stack.each(&:prepare)
       end
 
       def new_oper(kind, op)
@@ -62,14 +62,14 @@ module God
                 # nil @this here by initially setting res to true or false,
                 # depending on whether the first operator used is AND or OR
                 # respectively.
-                0 < @op_stack[0] & AND
+                @op_stack[0] & AND > 0
               else
                 @this.test
               end
 
         @op_stack.each do |op|
           cond = @oper_stack.shift
-          eval "res " + ((0 < op & AND) ? "&&" : "||") + "= " + ((0 < op & NOT) ? "!" : "") + "cond.test"
+          eval "res " + (op & AND > 0 ? "&&" : "||") + "= " + (op & NOT > 0 ? "!" : "") + "cond.test"
           @oper_stack.push cond
         end
 

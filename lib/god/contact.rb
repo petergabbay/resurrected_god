@@ -28,7 +28,7 @@ module God
     end
 
     def arg(name)
-      self.instance_variable_get("@#{name}") || self.class.instance_variable_get("@#{name}")
+      instance_variable_get("@#{name}") || self.class.instance_variable_get("@#{name}")
     end
 
     # Normalize the given notify specification into canonical form.
@@ -107,7 +107,7 @@ module God
     #
     # Contact FooBar
     def friendly_name
-      super + " Contact '#{self.name}'"
+      super + " Contact '#{name}'"
     end
   end
 end

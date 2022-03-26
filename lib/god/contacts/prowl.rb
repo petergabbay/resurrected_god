@@ -16,7 +16,7 @@ module God
 
       def valid?
         valid = true
-        valid &= complain("Attribute 'apikey' must be specified", self) if self.apikey.nil?
+        valid &= complain("Attribute 'apikey' must be specified", self) if apikey.nil?
         valid
       end
 
@@ -32,12 +32,12 @@ module God
         end
 
         self.info = if result.succeeded?
-                      "sent prowl notification to #{self.name}"
+                      "sent prowl notification to #{name}"
                     else
-                      "failed to send prowl notification to #{self.name}: #{result.message}"
+                      "failed to send prowl notification to #{name}: #{result.message}"
                     end
       rescue Object => e
-        applog(nil, :info, "failed to send prowl notification to #{self.name}: #{e.message}")
+        applog(nil, :info, "failed to send prowl notification to #{name}: #{e.message}")
         applog(nil, :debug, e.backtrace.join("\n"))
       end
 

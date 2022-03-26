@@ -12,12 +12,12 @@ module God
 
       def valid?
         valid = true
-        valid &= complain("Attribute 'failures' must be specified", self) unless self.failures
-        valid &= complain("Attribute 'seconds' must be specified", self) unless self.seconds
-        valid &= complain("Attribute 'notifier' must be specified", self) unless self.notifier
+        valid &= complain("Attribute 'failures' must be specified", self) unless failures
+        valid &= complain("Attribute 'seconds' must be specified", self) unless seconds
+        valid &= complain("Attribute 'notifier' must be specified", self) unless notifier
 
         # Must take one arg or variable args
-        unless self.notifier.respond_to?(:notify) && [1, -1].include?(self.notifier.method(:notify).arity)
+        unless notifier.respond_to?(:notify) && [1, -1].include?(notifier.method(:notify).arity)
           valid &= complain("The 'notifier' must have a method 'notify' which takes 1 or variable args", self)
         end
 
@@ -39,9 +39,9 @@ module God
       private
 
       def check_for_flapping(now)
-        @startup_times.select! { |time| time >= now - self.seconds }
-        if @startup_times.length >= self.failures
-          self.notifier.notify("#{self.watch.name} has called start/restart #{@startup_times.length} times in #{self.seconds} seconds")
+        @startup_times.select! { |time| time >= now - seconds }
+        if @startup_times.length >= failures
+          notifier.notify("#{watch.name} has called start/restart #{@startup_times.length} times in #{seconds} seconds")
         end
       end
     end

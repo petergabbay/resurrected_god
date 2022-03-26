@@ -20,8 +20,8 @@ module God
     end
 
     def alive?
-      if self.pid
-        System::Process.new(self.pid).exists?
+      if pid
+        System::Process.new(pid).exists?
       else
         false
       end
@@ -30,21 +30,21 @@ module God
     def file_writable?(file)
       pid = fork do
         begin
-          if self.uid
-            user_method = self.uid.is_a?(Integer) ? :getpwuid : :getpwnam
-            uid_num = Etc.send(user_method, self.uid).uid
-            gid_num = Etc.send(user_method, self.uid).gid
+          if uid
+            user_method = uid.is_a?(Integer) ? :getpwuid : :getpwnam
+            uid_num = Etc.send(user_method, uid).uid
+            gid_num = Etc.send(user_method, uid).gid
           end
-          if self.gid
-            group_method = self.gid.is_a?(Integer) ? :getgrgid : :getgrnam
-            gid_num = Etc.send(group_method, self.gid).gid
+          if gid
+            group_method = gid.is_a?(Integer) ? :getgrgid : :getgrnam
+            gid_num = Etc.send(group_method, gid).gid
           end
 
-          ::Dir.chroot(self.chroot) if self.chroot
+          ::Dir.chroot(chroot) if chroot
           ::Process.groups = [gid_num] if gid_num
-          ::Process.initgroups(self.uid, gid_num) if self.uid && gid_num
+          ::Process.initgroups(uid, gid_num) if uid && gid_num
           ::Process::Sys.setgid(gid_num) if gid_num
-          ::Process::Sys.setuid(uid_num) if self.uid
+          ::Process::Sys.setuid(uid_num) if uid
         rescue ArgumentError, Errno::EPERM, Errno::ENOENT
           exit(1)
         end
@@ -58,88 +58,88 @@ module God
 
     def valid?
       # determine if we're tracking pid or not
-      self.pid_file
+      pid_file
 
       valid = true
 
       # a start command must be specified
-      if self.start.nil?
+      if start.nil?
         valid = false
         applog(self, :error, "No start command was specified")
       end
 
       # uid must exist if specified
-      if self.uid
+      if uid
         begin
-          Etc.getpwnam(self.uid)
+          Etc.getpwnam(uid)
         rescue ArgumentError
           valid = false
-          applog(self, :error, "UID for '#{self.uid}' does not exist")
+          applog(self, :error, "UID for '#{uid}' does not exist")
         end
       end
 
       # gid must exist if specified
-      if self.gid
+      if gid
         begin
-          Etc.getgrnam(self.gid)
+          Etc.getgrnam(gid)
         rescue ArgumentError
           valid = false
-          applog(self, :error, "GID for '#{self.gid}' does not exist")
+          applog(self, :error, "GID for '#{gid}' does not exist")
         end
       end
 
       # dir must exist and be a directory if specified
-      if self.dir
-        if !File.exist?(self.dir)
+      if dir
+        if !File.exist?(dir)
           valid = false
-          applog(self, :error, "Specified directory '#{self.dir}' does not exist")
-        elsif !File.directory?(self.dir)
+          applog(self, :error, "Specified directory '#{dir}' does not exist")
+        elsif !File.directory?(dir)
           valid = false
-          applog(self, :error, "Specified directory '#{self.dir}' is not a directory")
+          applog(self, :error, "Specified directory '#{dir}' is not a directory")
         end
       end
 
       # pid dir must exist if specified
-      if !@tracking_pid && !File.exist?(File.dirname(self.pid_file))
+      if !@tracking_pid && !File.exist?(File.dirname(pid_file))
         valid = false
-        applog(self, :error, "PID file directory '#{File.dirname(self.pid_file)}' does not exist")
+        applog(self, :error, "PID file directory '#{File.dirname(pid_file)}' does not exist")
       end
 
       # pid dir must be writable if specified
-      if !@tracking_pid && File.exist?(File.dirname(self.pid_file)) && !file_writable?(File.dirname(self.pid_file))
+      if !@tracking_pid && File.exist?(File.dirname(pid_file)) && !file_writable?(File.dirname(pid_file))
         valid = false
-        applog(self, :error, "PID file directory '#{File.dirname(self.pid_file)}' is not writable by #{self.uid || Etc.getlogin}")
+        applog(self, :error, "PID file directory '#{File.dirname(pid_file)}' is not writable by #{uid || Etc.getlogin}")
       end
 
       # log dir must exist
-      unless File.exist?(File.dirname(self.log))
+      unless File.exist?(File.dirname(log))
         valid = false
-        applog(self, :error, "Log directory '#{File.dirname(self.log)}' does not exist")
+        applog(self, :error, "Log directory '#{File.dirname(log)}' does not exist")
       end
 
       # log file or dir must be writable
-      if File.exist?(self.log)
-        unless file_writable?(self.log)
+      if File.exist?(log)
+        unless file_writable?(log)
           valid = false
-          applog(self, :error, "Log file '#{self.log}' exists but is not writable by #{self.uid || Etc.getlogin}")
+          applog(self, :error, "Log file '#{log}' exists but is not writable by #{uid || Etc.getlogin}")
         end
       else
-        unless file_writable?(File.dirname(self.log))
+        unless file_writable?(File.dirname(log))
           valid = false
-          applog(self, :error, "Log directory '#{File.dirname(self.log)}' is not writable by #{self.uid || Etc.getlogin}")
+          applog(self, :error, "Log directory '#{File.dirname(log)}' is not writable by #{uid || Etc.getlogin}")
         end
       end
 
       # chroot directory must exist and have /dev/null in it
-      if self.chroot
-        unless File.directory?(self.chroot)
+      if chroot
+        unless File.directory?(chroot)
           valid = false
-          applog(self, :error, "CHROOT directory '#{self.chroot}' does not exist")
+          applog(self, :error, "CHROOT directory '#{chroot}' does not exist")
         end
 
-        unless File.exist?(File.join(self.chroot, '/dev/null'))
+        unless File.exist?(File.join(chroot, '/dev/null'))
           valid = false
-          applog(self, :error, "CHROOT directory '#{self.chroot}' does not contain '/dev/null'")
+          applog(self, :error, "CHROOT directory '#{chroot}' does not contain '/dev/null'")
         end
       end
 
@@ -169,7 +169,7 @@ module God
     #
     # Returns Integer(pid) or nil
     def pid
-      contents = File.read(self.pid_file).strip rescue ''
+      contents = File.read(pid_file).strip rescue ''
       real_pid = contents =~ /^\d+$/ ? contents.to_i : nil
 
       if real_pid
@@ -185,8 +185,8 @@ module God
     # Returns nothing
     def signal(sig)
       sig = sig.to_i if sig.to_i != 0
-      applog(self, :info, "#{self.name} sending signal '#{sig}' to pid #{self.pid}")
-      ::Process.kill(sig, self.pid) rescue nil
+      applog(self, :info, "#{name} sending signal '#{sig}' to pid #{pid}")
+      ::Process.kill(sig, pid) rescue nil
     end
 
     def start!
@@ -202,7 +202,7 @@ module God
     end
 
     def default_pid_file
-      File.join(God.pid_file_directory, "#{self.name}.pid")
+      File.join(God.pid_file_directory, "#{name}.pid")
     end
 
     def call_action(action)
@@ -229,7 +229,7 @@ module God
                 return
               end
             else
-              applog(self, :warn, "#{self.name} pid not found in #{self.pid_file}") unless pid_not_found
+              applog(self, :warn, "#{self.name} pid not found in #{pid_file}") unless pid_not_found
               pid_not_found = true
             end
 
@@ -301,25 +301,25 @@ module God
     # Returns nothing
     def spawn(command)
       fork do
-        File.umask self.umask if self.umask
-        uid_num = Etc.getpwnam(self.uid).uid if self.uid
-        gid_num = Etc.getgrnam(self.gid).gid if self.gid
-        gid_num = Etc.getpwnam(self.uid).gid if self.gid.nil? && self.uid
+        File.umask umask if umask
+        uid_num = Etc.getpwnam(uid).uid if uid
+        gid_num = Etc.getgrnam(gid).gid if gid
+        gid_num = Etc.getpwnam(uid).gid if gid.nil? && uid
 
-        ::Dir.chroot(self.chroot) if self.chroot
+        ::Dir.chroot(chroot) if chroot
         ::Process.setsid
         ::Process.groups = [gid_num] if gid_num
-        ::Process.initgroups(self.uid, gid_num) if self.uid && gid_num
+        ::Process.initgroups(uid, gid_num) if uid && gid_num
         ::Process::Sys.setgid(gid_num) if gid_num
-        ::Process::Sys.setuid(uid_num) if self.uid
+        ::Process::Sys.setuid(uid_num) if uid
         self.dir ||= '/'
         Dir.chdir self.dir
         $0 = command
         $stdin.reopen "/dev/null"
-        if self.log_cmd
-          $stdout.reopen IO.popen(self.log_cmd, "a")
+        if log_cmd
+          $stdout.reopen IO.popen(log_cmd, "a")
         else
-          $stdout.reopen file_in_chroot(self.log), "a"
+          $stdout.reopen file_in_chroot(log), "a"
         end
         if err_log_cmd
           $stderr.reopen IO.popen(err_log_cmd, "a")
@@ -332,8 +332,8 @@ module God
         # close any other file descriptors
         3.upto(256) { |fd| IO.new(fd).close rescue nil }
 
-        if self.env.is_a?(Hash)
-          self.env.each do |(key, value)|
+        if env.is_a?(Hash)
+          env.each do |(key, value)|
             ENV[key] = value.to_s
           end
         end
@@ -347,17 +347,17 @@ module God
     #
     # Returns nothing
     def ensure_stop
-      applog(self, :warn, "#{self.name} ensuring stop...")
+      applog(self, :warn, "#{name} ensuring stop...")
 
-      unless self.pid
-        applog(self, :warn, "#{self.name} stop called but pid is uknown")
+      unless pid
+        applog(self, :warn, "#{name} stop called but pid is uknown")
         return
       end
 
       # Poll to see if it's dead
       @stop_timeout.times do
         begin
-          ::Process.kill(0, self.pid)
+          ::Process.kill(0, pid)
         rescue Errno::ESRCH
           # It died. Good.
           return
@@ -367,16 +367,16 @@ module God
       end
 
       # last resort
-      ::Process.kill('KILL', self.pid) rescue nil
-      applog(self, :warn, "#{self.name} still alive after #{@stop_timeout}s; sent SIGKILL")
+      ::Process.kill('KILL', pid) rescue nil
+      applog(self, :warn, "#{name} still alive after #{@stop_timeout}s; sent SIGKILL")
     end
 
     private
 
     def file_in_chroot(file)
-      return file unless self.chroot
+      return file unless chroot
 
-      file.gsub(/^#{Regexp.escape(File.expand_path(self.chroot))}/, '')
+      file.gsub(/^#{Regexp.escape(File.expand_path(chroot))}/, '')
     end
   end
 end

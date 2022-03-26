@@ -10,30 +10,30 @@ module God
 
     def self.register(condition)
       @mutex.synchronize do
-        self.triggers[condition.watch.name] ||= []
-        self.triggers[condition.watch.name] << condition
+        triggers[condition.watch.name] ||= []
+        triggers[condition.watch.name] << condition
       end
     end
 
     def self.deregister(condition)
       @mutex.synchronize do
-        self.triggers[condition.watch.name].delete(condition)
-        self.triggers.delete(condition.watch.name) if self.triggers[condition.watch.name].empty?
+        triggers[condition.watch.name].delete(condition)
+        triggers.delete(condition.watch.name) if triggers[condition.watch.name].empty?
       end
     end
 
     def self.broadcast(task, message, payload)
-      return unless self.triggers[task.name]
+      return unless triggers[task.name]
 
       @mutex.synchronize do
-        self.triggers[task.name].each do |t|
+        triggers[task.name].each do |t|
           t.process(message, payload)
         end
       end
     end
 
     def self.reset
-      self.triggers.clear
+      triggers.clear
     end
   end
 end

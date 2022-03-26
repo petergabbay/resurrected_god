@@ -16,7 +16,7 @@ module God
 
       def valid?
         valid = true
-        valid &= complain("Attribute 'apikey' must be specified", self) if self.apikey.nil?
+        valid &= complain("Attribute 'apikey' must be specified", self) if apikey.nil?
         valid
       end
 
@@ -29,9 +29,9 @@ module God
         message << " | #{[category, priority].join(" ")}" unless category.to_s.empty? || priority.to_s.empty?
 
         self.info = if ::Airbrake.notify nil, error_message: message, api_key: arg(:apikey)
-                      "sent airbrake notification to #{self.name}"
+                      "sent airbrake notification to #{name}"
                     else
-                      "failed to send airbrake notification to #{self.name}"
+                      "failed to send airbrake notification to #{name}"
                     end
       rescue Object => e
         applog(nil, :info, "failed to send airbrake notification: #{e.message}")

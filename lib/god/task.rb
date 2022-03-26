@@ -54,8 +54,8 @@ module God
     #
     # Returns nothing.
     def prepare
-      self.valid_states.each do |state|
-        self.metrics[state] ||= []
+      valid_states.each do |state|
+        metrics[state] ||= []
       end
     end
 
@@ -66,19 +66,19 @@ module God
       valid = true
 
       # A name must be specified.
-      if self.name.nil?
+      if name.nil?
         valid = false
         applog(self, :error, "No name String was specified.")
       end
 
       # Valid states must be specified.
-      if self.valid_states.nil?
+      if valid_states.nil?
         valid = false
         applog(self, :error, "No valid_states Array or Symbols was specified.")
       end
 
       # An initial state must be specified.
-      if self.initial_state.nil?
+      if initial_state.nil?
         valid = false
         applog(self, :error, "No initial_state Symbol was specified.")
       end
@@ -117,8 +117,8 @@ module God
 
       Array(start_states).each do |start_state|
         # Validate start state.
-        unless self.valid_states.include?(start_state)
-          abort "Invalid state :#{start_state}. Must be one of the symbols #{self.valid_states.map { |x| ":#{x}" }.join(', ')}"
+        unless valid_states.include?(start_state)
+          abort "Invalid state :#{start_state}. Must be one of the symbols #{valid_states.map { |x| ":#{x}" }.join(', ')}"
         end
 
         # Create a new metric to hold the task, end states, and conditions.
@@ -136,12 +136,12 @@ module God
 
         # Populate the condition -> metric directory.
         m.conditions.each do |c|
-          self.directory[c] = m
+          directory[c] = m
         end
 
         # Record the metric.
-        self.metrics[start_state] ||= []
-        self.metrics[start_state] << m
+        metrics[start_state] ||= []
+        metrics[start_state] << m
       end
     end
 
@@ -158,11 +158,11 @@ module God
 
       # Populate the condition -> metric directory.
       m.conditions.each do |c|
-        self.directory[c] = m
+        directory[c] = m
       end
 
       # Record the metric.
-      self.metrics[nil] << m
+      metrics[nil] << m
     end
 
     ###########################################################################
@@ -175,14 +175,14 @@ module God
     #
     # Returns nothing.
     def monitor
-      self.move(self.initial_state)
+      move(initial_state)
     end
 
     # Disable monitoring.
     #
     # Returns nothing.
     def unmonitor
-      self.move(:unmonitored)
+      move(:unmonitored)
     end
 
     # Move to the given state.
@@ -191,39 +191,39 @@ module God
     #
     # Returns this Task.
     def move(to_state)
-      if !self.driver.in_driver_context?
+      if !driver.in_driver_context?
         # Called from outside Driver. Send an async message to Driver.
-        self.driver.message(:move, [to_state])
+        driver.message(:move, [to_state])
       else
         # Called from within Driver. Record original info.
         orig_to_state = to_state
-        from_state = self.state
+        from_state = state
 
         # Log.
-        msg = "#{self.name} move '#{from_state}' to '#{to_state}'"
+        msg = "#{name} move '#{from_state}' to '#{to_state}'"
         applog(self, :info, msg)
 
         # Cleanup from current state.
-        self.driver.clear_events
-        self.metrics[from_state].each { |m| m.disable }
+        driver.clear_events
+        metrics[from_state].each { |m| m.disable }
         if to_state == :unmonitored
-          self.metrics[nil].each { |m| m.disable }
+          metrics[nil].each { |m| m.disable }
         end
 
         # Perform action.
-        self.action(to_state)
+        action(to_state)
 
         # Enable simple mode.
-        if [:start, :restart].include?(to_state) && self.metrics[to_state].empty?
+        if [:start, :restart].include?(to_state) && metrics[to_state].empty?
           to_state = :up
         end
 
         # Move to new state.
-        self.metrics[to_state].each { |m| m.enable }
+        metrics[to_state].each { |m| m.enable }
 
         # If no from state, enable lifecycle metric.
         if from_state == :unmonitored
-          self.metrics[nil].each { |m| m.enable }
+          metrics[nil].each { |m| m.enable }
         end
 
         # Set state.
@@ -233,7 +233,7 @@ module God
         Trigger.broadcast(self, :state_change, [from_state, orig_to_state])
 
         # Log.
-        msg = "#{self.name} moved '#{from_state}' to '#{to_state}'"
+        msg = "#{name} moved '#{from_state}' to '#{to_state}'"
         applog(self, :info, msg)
       end
 
@@ -246,7 +246,7 @@ module God
     #
     # Returns nothing.
     def trigger(condition)
-      self.driver.message(:handle_event, [condition])
+      driver.message(:handle_event, [condition])
     end
 
     def signal(sig)
@@ -266,12 +266,12 @@ module God
 
       base = sym.to_s.chop.intern
 
-      unless self.valid_states.include?(base)
+      unless valid_states.include?(base)
         super
       end
 
       self.class.send(:attr_accessor, base)
-      self.send(sym, *args)
+      send(sym, *args)
     end
 
     # Perform the given action.
@@ -281,21 +281,21 @@ module God
     #
     # Returns this Task.
     def action(a, c = nil)
-      if !self.driver.in_driver_context?
+      if !driver.in_driver_context?
         # Called from outside Driver. Send an async message to Driver.
-        self.driver.message(:action, [a, c])
-      elsif self.respond_to?(a)
+        driver.message(:action, [a, c])
+      elsif respond_to?(a)
         # Called from within Driver.
-        command = self.send(a)
+        command = send(a)
 
         case command
         when String
-          msg = "#{self.name} #{a}: #{command}"
+          msg = "#{name} #{a}: #{command}"
           applog(self, :info, msg)
 
           system(command)
         when Proc
-          msg = "#{self.name} #{a}: lambda"
+          msg = "#{name} #{a}: lambda"
           applog(self, :info, msg)
 
           command.call
@@ -314,7 +314,7 @@ module God
     def attach(condition)
       case condition
       when PollCondition
-        self.driver.schedule(condition, 0)
+        driver.schedule(condition, 0)
       when EventCondition, TriggerCondition
         condition.register
       end
@@ -357,7 +357,7 @@ module God
     # Returns nothing.
     def handle_poll(condition)
       # Lookup metric.
-      metric = self.directory[condition]
+      metric = directory[condition]
 
       # Run the test.
       begin
@@ -371,11 +371,11 @@ module God
       end
 
       # Log.
-      messages = self.log_line(self, metric, condition, result)
+      messages = log_line(self, metric, condition, result)
 
       # Notify.
       if result && condition.notify
-        self.notify(condition, messages.last)
+        notify(condition, messages.last)
       end
 
       # After-condition.
@@ -395,17 +395,17 @@ module God
       if dest
         # Transition.
         begin
-          self.move(dest)
+          move(dest)
         rescue EventRegistrationFailedError
-          msg = self.name + ' Event registration failed, moving back to previous state'
+          msg = name + ' Event registration failed, moving back to previous state'
           applog(self, :info, msg)
 
-          dest = self.state
+          dest = state
           retry
         end
       else
         # Reschedule.
-        self.driver.schedule(condition)
+        driver.schedule(condition)
       end
     end
 
@@ -417,21 +417,21 @@ module God
     # Returns nothing.
     def handle_event(condition)
       # Lookup metric.
-      metric = self.directory[condition]
+      metric = directory[condition]
 
       # Log.
-      messages = self.log_line(self, metric, condition, true)
+      messages = log_line(self, metric, condition, true)
 
       # Notify.
       if condition.notify
-        self.notify(condition, messages.last)
+        notify(condition, messages.last)
       end
 
       # Get the destination.
       dest = condition.transition || (metric.destination && metric.destination[true])
 
       if dest
-        self.move(dest)
+        move(dest)
       end
     end
 
@@ -455,7 +455,7 @@ module God
     # Returns the Array of String messages.
     def log_line(watch, metric, condition, result)
       status =
-        if self.trigger?(metric, result)
+        if trigger?(metric, result)
           "[trigger]"
         else
           "[ok]"
@@ -475,7 +475,7 @@ module God
       end
 
       # Log.
-      debug_message = watch.name + ' ' + condition.base_name + " [#{result}] " + self.dest_desc(metric, condition)
+      debug_message = watch.name + ' ' + condition.base_name + " [#{result}] " + dest_desc(metric, condition)
       applog(watch, :debug, debug_message)
 
       messages

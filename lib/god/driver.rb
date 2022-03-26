@@ -23,7 +23,7 @@ module God
     #
     # Returns true if the event is due, false if not.
     def due?
-      Time.now >= self.at
+      Time.now >= at
     end
 
     # Compare this event to another.
@@ -33,7 +33,7 @@ module God
     # Returns -1 if this event is before the other, 0 if the two events are
     #   due at the same time, 1 if the other event is later.
     def <=>(other)
-      self.at <=> other.at
+      at <=> other.at
     end
   end
 

@@ -29,29 +29,29 @@ module God
     def output(level, msg)
       return if level < self.level
 
-      time = Time.now.strftime(self.datetime_format)
+      time = Time.now.strftime(datetime_format)
       label = SEV_LABEL[level]
       @io.print("#{label[0..0]} [#{time}] #{label.rjust(5)}: #{msg}\n")
     end
 
     def fatal(msg)
-      self.output(FATAL, msg)
+      output(FATAL, msg)
     end
 
     def error(msg)
-      self.output(ERROR, msg)
+      output(ERROR, msg)
     end
 
     def warn(msg)
-      self.output(WARN, msg)
+      output(WARN, msg)
     end
 
     def info(msg)
-      self.output(INFO, msg)
+      output(INFO, msg)
     end
 
     def debug(msg)
-      self.output(DEBUG, msg)
+      output(DEBUG, msg)
     end
   end
 end

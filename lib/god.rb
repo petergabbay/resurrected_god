@@ -133,11 +133,11 @@ if $load_god
     def safe_attr_accessor(*args)
       args.each do |arg|
         define_method((arg.to_s + "=").intern) do |other|
-          if !self.running && self.inited
+          if !running && inited
             abort "God.#{arg} must be set before any Tasks are defined"
           end
 
-          if self.running && self.inited
+          if running && inited
             applog(nil, :warn, "God.#{arg} can't be set while god is running")
             return
           end
@@ -227,7 +227,7 @@ if $load_god
     # Returns nothing.
     def self.internal_init
       # Only do this once.
-      return if self.inited
+      return if inited
 
       # Variable init.
       self.watches = {}
@@ -245,7 +245,7 @@ if $load_god
       self.terminate_timeout ||= TERMINATE_TIMEOUT_DEFAULT
 
       # Additional setup.
-      self.setup
+      setup
 
       # Log level.
       log_level_map = { debug: Logger::DEBUG,
@@ -268,7 +268,7 @@ if $load_god
     #
     # Returns nothing.
     def self.watch(&block)
-      self.task(Watch, &block)
+      task(Watch, &block)
     end
 
     # Instantiate a new, empty Task object and yield it to the mandatory block.
@@ -278,7 +278,7 @@ if $load_god
     # Returns nothing.
     def self.task(klass = Task)
       # Ensure internal init has run.
-      self.internal_init
+      internal_init
 
       t = klass.new
       yield(t)
@@ -288,14 +288,14 @@ if $load_god
 
       # If running, completely remove the watch (if necessary) to prepare for
       # the reload
-      existing_watch = self.watches[t.name]
-      if self.running && existing_watch
-        self.pending_watch_states[existing_watch.name] = existing_watch.state
-        self.unwatch(existing_watch)
+      existing_watch = watches[t.name]
+      if running && existing_watch
+        pending_watch_states[existing_watch.name] = existing_watch.state
+        unwatch(existing_watch)
       end
 
       # Ensure the new watch has a unique name.
-      if self.watches[t.name] || self.groups[t.name]
+      if watches[t.name] || groups[t.name]
         abort "Task name '#{t.name}' already used for a Task or Group"
       end
 
@@ -303,29 +303,29 @@ if $load_god
       t.valid? || abort("Task '#{t.name}' is not valid (see above)")
 
       # Add to list of watches.
-      self.watches[t.name] = t
+      watches[t.name] = t
 
       # Add to pending watches.
-      self.pending_watches << t
+      pending_watches << t
 
       # Add to group if specified.
       if t.group
         # Ensure group name hasn't been used for a watch already.
-        if self.watches[t.group]
+        if watches[t.group]
           abort "Group name '#{t.group}' already used for a Task"
         end
 
-        self.groups[t.group] ||= []
-        self.groups[t.group] << t
+        groups[t.group] ||= []
+        groups[t.group] << t
       end
 
       # Register watch.
       t.register!
 
       # Log.
-      if self.running && existing_watch
+      if running && existing_watch
         applog(t, :info, "#{t.name} Reloaded config")
-      elsif self.running
+      elsif running
         applog(t, :info, "#{t.name} Loaded config")
       end
     end
@@ -343,11 +343,11 @@ if $load_god
       watch.unregister!
 
       # Remove from watches.
-      self.watches.delete(watch.name)
+      watches.delete(watch.name)
 
       # Remove from groups.
       if watch.group
-        self.groups[watch.group].delete(watch)
+        groups[watch.group].delete(watch)
       end
 
       applog(watch, :info, "#{watch.name} unwatched")
@@ -362,7 +362,7 @@ if $load_god
     # Returns nothing.
     def self.contact(kind)
       # Ensure internal init has run.
-      self.internal_init
+      internal_init
 
       # Verify contact has been loaded.
       if CONTACT_LOAD_SUCCESS[kind] == false
@@ -388,13 +388,13 @@ if $load_god
       c.prepare
 
       # Remove existing contacts of same name.
-      existing_contact = self.contacts[c.name]
-      if self.running && existing_contact
-        self.uncontact(existing_contact)
+      existing_contact = contacts[c.name]
+      if running && existing_contact
+        uncontact(existing_contact)
       end
 
       # Warn and noop if the contact has been defined before.
-      if self.contacts[c.name] || self.contact_groups[c.name]
+      if contacts[c.name] || contact_groups[c.name]
         applog(nil, :warn, "Contact name '#{c.name}' already used for a Contact or Contact Group")
         return
       end
@@ -406,17 +406,17 @@ if $load_god
       end
 
       # Add to list of contacts.
-      self.contacts[c.name] = c
+      contacts[c.name] = c
 
       # Add to contact group if specified.
       if c.group
         # Ensure group name hasn't been used for a contact already.
-        if self.contacts[c.group]
+        if contacts[c.group]
           abort "Contact Group name '#{c.group}' already used for a Contact"
         end
 
-        self.contact_groups[c.group] ||= []
-        self.contact_groups[c.group] << c
+        contact_groups[c.group] ||= []
+        contact_groups[c.group] << c
       end
     end
 
@@ -426,16 +426,16 @@ if $load_god
     #
     # Returns nothing.
     def self.uncontact(contact)
-      self.contacts.delete(contact.name)
+      contacts.delete(contact.name)
       if contact.group
-        self.contact_groups[contact.group].delete(contact)
+        contact_groups[contact.group].delete(contact)
       end
     end
 
     def self.watches_by_name(name)
       case name
-      when "", nil then self.watches.values.dup
-      else Array(self.watches[name] || self.groups[name]).dup
+      when "", nil then watches.values.dup
+      else Array(watches[name] || groups[name]).dup
       end
     end
 
@@ -448,7 +448,7 @@ if $load_god
     # Returns an Array of String task names affected by the command.
     def self.control(name, command)
       # Get the list of items.
-      items = self.watches_by_name(name)
+      items = watches_by_name(name)
 
       jobs = []
 
@@ -468,7 +468,7 @@ if $load_god
       when "unmonitor"
         items.each { |w| jobs << Thread.new { w.unmonitor if w.state != :unmonitored } }
       when "remove"
-        items.each { |w| self.unwatch(w) }
+        items.each { |w| unwatch(w) }
       else
         raise InvalidCommandError
       end
@@ -483,7 +483,7 @@ if $load_god
     # Returns true on success, false if all tasks could not be stopped within 10
     # seconds
     def self.stop_all
-      self.watches.sort.each do |_name, w|
+      watches.sort.each do |_name, w|
         Thread.new do
           w.action(:stop)
           w.unmonitor if w.state != :unmonitored
@@ -491,7 +491,7 @@ if $load_god
       end
 
       terminate_timeout.times do
-        return true unless self.watches.map { |_name, w| w.alive? }.any?
+        return true unless watches.map { |_name, w| w.alive? }.any?
 
         sleep 1
       end
@@ -506,8 +506,8 @@ if $load_god
     #
     # Never returns because the process will no longer exist!
     def self.terminate
-      FileUtils.rm_f(self.pid) if self.pid
-      self.server&.stop
+      FileUtils.rm_f(pid) if pid
+      server&.stop
       exit!(0)
     end
 
@@ -522,7 +522,7 @@ if $load_god
     #   Symbol status.
     def self.status
       info = {}
-      self.watches.map do |name, w|
+      watches.map do |name, w|
         info[name] = { state: w.state, group: w.group }
       end
       info
@@ -550,7 +550,7 @@ if $load_god
     # Raises God::NoSuchWatchError if no tasks matched.
     # Returns the String of newline separated log lines.
     def self.running_log(watch_name, since)
-      matches = pattern_match(watch_name, self.watches.keys)
+      matches = pattern_match(watch_name, watches.keys)
 
       unless matches.first
         raise NoSuchWatchError
@@ -587,29 +587,29 @@ if $load_god
 
         Gem.clear_paths
         eval(code, root_binding, filename)
-        self.pending_watches.each do |w|
-          if (previous_state = self.pending_watch_states[w.name])
+        pending_watches.each do |w|
+          if (previous_state = pending_watch_states[w.name])
             w.monitor unless previous_state == :unmonitored
           elsif w.autostart?
             w.monitor
           end
         end
-        loaded_watches = self.pending_watches.map { |w| w.name }
-        self.pending_watches.clear
-        self.pending_watch_states.clear
+        loaded_watches = pending_watches.map { |w| w.name }
+        pending_watches.clear
+        pending_watch_states.clear
 
-        self.watches.each do |name, watch|
+        watches.each do |name, watch|
           next if loaded_watches.include?(name)
 
           case action
           when 'stop'
             jobs << Thread.new(watch) do |w|
               w.action(:stop)
-              self.unwatch(w)
+              unwatch(w)
             end
             unloaded_watches << name
           when 'remove'
-            jobs << Thread.new(watch) { |w| self.unwatch(w) }
+            jobs << Thread.new(watch) { |w| unwatch(w) }
             unloaded_watches << name
           when 'leave', '', nil
             # Do nothing
@@ -650,18 +650,18 @@ if $load_god
     #
     # Returns nothing.
     def self.setup
-      if self.pid_file_directory
+      if pid_file_directory
         # Pid file dir was specified, ensure it is created and writable.
-        unless File.exist?(self.pid_file_directory)
+        unless File.exist?(pid_file_directory)
           begin
-            FileUtils.mkdir_p(self.pid_file_directory)
+            FileUtils.mkdir_p(pid_file_directory)
           rescue Errno::EACCES => e
             abort "Failed to create pid file directory: #{e.message}"
           end
         end
 
-        unless File.writable?(self.pid_file_directory)
-          abort "The pid file directory (#{self.pid_file_directory}) is not writable by #{Etc.getlogin}"
+        unless File.writable?(pid_file_directory)
+          abort "The pid file directory (#{pid_file_directory}) is not writable by #{Etc.getlogin}"
         end
       else
         # No pid file dir specified, try defaults.
@@ -677,7 +677,7 @@ if $load_god
           end
         end
 
-        unless self.pid_file_directory
+        unless pid_file_directory
           dirs = PID_FILE_DIRECTORY_DEFAULTS.map { |x| File.expand_path(x) }
           abort "No pid file directory exists, could be created, or is writable at any of #{dirs.join(', ')}"
         end
@@ -689,23 +689,23 @@ if $load_god
         LOG.info("Syslog disabled.")
       end
 
-      applog(nil, :info, "Using pid file directory: #{self.pid_file_directory}")
+      applog(nil, :info, "Using pid file directory: #{pid_file_directory}")
     end
 
     # Initialize and startup the machinery that makes god work.
     #
     # Returns nothing.
     def self.start
-      self.internal_init
+      internal_init
 
       # Instantiate server.
-      self.server = Socket.new(self.port, self.socket_user, self.socket_group, self.socket_perms)
+      self.server = Socket.new(self.port, socket_user, socket_group, socket_perms)
 
       # Start monitoring any watches set to autostart.
-      self.watches.each_value { |w| w.monitor if w.autostart? }
+      watches.each_value { |w| w.monitor if w.autostart? }
 
       # Clear pending watches.
-      self.pending_watches.clear
+      pending_watches.clear
 
       # Mark as running.
       self.running = true
@@ -723,7 +723,7 @@ if $load_god
     #
     # Returns nothing.
     def self.join
-      self.main&.join
+      main&.join
     end
 
     # Returns the version String.
@@ -735,8 +735,8 @@ if $load_god
     #
     # Returns nothing.
     def self.at_exit
-      self.start
-      self.join
+      start
+      join
     end
 
     # private

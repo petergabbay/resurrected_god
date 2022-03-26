@@ -10,8 +10,8 @@ class TestGodSystem < MiniTest::Test
     # necessary cuz actual god terminate will do exit(0) will stops tests
     God.class_eval do
       def self.terminate
-        FileUtils.rm_f(self.pid) if self.pid
-        self.server&.stop
+        FileUtils.rm_f(pid) if pid
+        server&.stop
       end
     end
     begin

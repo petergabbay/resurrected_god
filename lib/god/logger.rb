@@ -33,7 +33,7 @@ module God
     # Returns nothing
     def log(watch, level, text)
       # initialize watch log if necessary
-      self.logs[watch.name] ||= Timeline.new(God::LOG_BUFFER_SIZE_DEFAULT) if watch
+      logs[watch.name] ||= Timeline.new(God::LOG_BUFFER_SIZE_DEFAULT) if watch
 
       # push onto capture and timeline for the given watch
       if @capture || (watch && (Time.now - @spool < 2))
@@ -47,13 +47,13 @@ module God
           if @capture
             @capture.puts(message)
           else
-            self.logs[watch.name] << [Time.now, message]
+            logs[watch.name] << [Time.now, message]
           end
         end
       end
 
       # send to regular logger
-      self.send(level, text)
+      send(level, text)
 
       # send to syslog
       SysLogger.log(level, text) if Logger.syslog
@@ -66,12 +66,12 @@ module God
     # Returns String
     def watch_log_since(watch_name, since)
       # initialize watch log if necessary
-      self.logs[watch_name] ||= Timeline.new(God::LOG_BUFFER_SIZE_DEFAULT)
+      logs[watch_name] ||= Timeline.new(God::LOG_BUFFER_SIZE_DEFAULT)
 
       # get and join lines since given time
       @mutex.synchronize do
         @spool = Time.now
-        self.logs[watch_name].select do |x|
+        logs[watch_name].select do |x|
           x.first > since
         end.map do |x|
           x[1]

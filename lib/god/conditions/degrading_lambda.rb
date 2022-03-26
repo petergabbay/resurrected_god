@@ -16,14 +16,14 @@ module God
       end
 
       def test
-        puts "Calling test. Interval at #{self.interval}"
-        @original_interval ||= self.interval
+        puts "Calling test. Interval at #{interval}"
+        @original_interval ||= interval
         unless pass?
           if @tries == 2
             self.info = "lambda condition was satisfied"
             return true
           end
-          self.interval = self.interval / 2.0
+          self.interval = interval / 2.0
           @tries += 1
         else
           @tries = 0

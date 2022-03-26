@@ -39,11 +39,11 @@ module God
       end
 
       def prepare
-        if self.times.is_a?(Integer)
-          self.times = [self.times, self.times]
+        if times.is_a?(Integer)
+          self.times = [times, times]
         end
 
-        @timeline = Timeline.new(self.times[1])
+        @timeline = Timeline.new(times[1])
       end
 
       def reset
@@ -51,24 +51,24 @@ module God
       end
 
       def pid
-        self.pid_file ? File.read(self.pid_file).strip.to_i : self.watch.pid
+        pid_file ? File.read(pid_file).strip.to_i : watch.pid
       end
 
       def valid?
         valid = true
-        valid &= complain("Attribute 'pid_file' must be specified", self) if self.pid_file.nil? && self.watch.pid_file.nil?
-        valid &= complain("Attribute 'above' must be specified", self) if self.above.nil?
+        valid &= complain("Attribute 'pid_file' must be specified", self) if pid_file.nil? && watch.pid_file.nil?
+        valid &= complain("Attribute 'above' must be specified", self) if above.nil?
         valid
       end
 
       def test
-        process = System::Process.new(self.pid)
+        process = System::Process.new(pid)
         @timeline.push(process.memory)
         self.info = []
 
-        history = "[" + @timeline.map { |x| "#{x > self.above ? '*' : ''}#{x}kb" }.join(", ") + "]"
+        history = "[" + @timeline.map { |x| "#{x > above ? '*' : ''}#{x}kb" }.join(", ") + "]"
 
-        if @timeline.select { |x| x > self.above }.size >= self.times.first
+        if @timeline.select { |x| x > above }.size >= times.first
           self.info = "memory out of bounds #{history}"
           true
         else

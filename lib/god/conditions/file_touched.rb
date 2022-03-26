@@ -27,13 +27,13 @@ module God
 
       def valid?
         valid = true
-        valid &= complain("Attribute 'path' must be specified", self) if self.path.nil?
+        valid &= complain("Attribute 'path' must be specified", self) if path.nil?
         valid
       end
 
       def test
-        if File.exist?(self.path)
-          (Time.now - File.mtime(self.path)) <= self.interval
+        if File.exist?(path)
+          (Time.now - File.mtime(path)) <= interval
         else
           false
         end

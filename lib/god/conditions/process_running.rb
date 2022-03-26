@@ -29,13 +29,13 @@ module God
       attr_accessor :pid_file
 
       def pid
-        self.pid_file ? File.read(self.pid_file).strip.to_i : self.watch.pid
+        pid_file ? File.read(pid_file).strip.to_i : watch.pid
       end
 
       def valid?
         valid = true
-        valid &= complain("Attribute 'pid_file' must be specified", self) if self.pid_file.nil? && self.watch.pid_file.nil?
-        valid &= complain("Attribute 'running' must be specified", self) if self.running.nil?
+        valid &= complain("Attribute 'pid_file' must be specified", self) if pid_file.nil? && watch.pid_file.nil?
+        valid &= complain("Attribute 'running' must be specified", self) if running.nil?
         valid
       end
 
@@ -45,15 +45,15 @@ module God
         pid = self.pid
         active = pid && System::Process.new(pid).exists?
 
-        if self.running && active
-          self.info.concat(["process is running"])
+        if running && active
+          info.concat(["process is running"])
           true
-        elsif !self.running && !active
-          self.info.concat(["process is not running"])
+        elsif !running && !active
+          info.concat(["process is not running"])
           true
         else
-          if self.running
-            self.info.concat(["process is not running"])
+          if running
+            info.concat(["process is not running"])
           end
           false
         end

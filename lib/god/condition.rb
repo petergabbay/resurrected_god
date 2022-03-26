@@ -39,7 +39,7 @@ module God
     #
     # Condition FooBar on Watch 'baz'
     def friendly_name
-      "Condition #{self.class.name.split('::').last} on Watch '#{self.watch.name}'"
+      "Condition #{self.class.name.split('::').last} on Watch '#{watch.name}'"
     end
   end
 
@@ -80,7 +80,7 @@ module God
     end
 
     def trigger
-      self.watch.trigger(self)
+      watch.trigger(self)
     end
 
     def register

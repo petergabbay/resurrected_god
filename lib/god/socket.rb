@@ -18,7 +18,7 @@ module God
     #
     # Returns String (drb address)
     def self.socket(port)
-      "drbunix://#{self.socket_file(port)}"
+      "drbunix://#{socket_file(port)}"
     end
 
     # The location of the socket for this Server
@@ -62,7 +62,7 @@ module God
     # Returns nothing
     def stop
       DRb.stop_service
-      FileUtils.rm_f(self.socket_file)
+      FileUtils.rm_f(socket_file)
     end
 
     private
@@ -73,26 +73,26 @@ module God
     # Returns nothing
     def start
       begin
-        @drb ||= DRb.start_service(self.socket, self)
+        @drb ||= DRb.start_service(socket, self)
         applog(nil, :info, "Started on #{DRb.uri}")
       rescue Errno::EADDRINUSE
         applog(nil, :info, "Socket already in use")
-        server = DRbObject.new(nil, self.socket)
+        server = DRbObject.new(nil, socket)
 
         begin
           Timeout.timeout(5) do
             server.ping
           end
-          abort "Socket #{self.socket} already in use by another instance of god"
+          abort "Socket #{socket} already in use by another instance of god"
         rescue StandardError, Timeout::Error
           applog(nil, :info, "Socket is stale, reopening")
-          File.delete(self.socket_file) rescue nil
-          @drb ||= DRb.start_service(self.socket, self)
+          File.delete(socket_file) rescue nil
+          @drb ||= DRb.start_service(socket, self)
           applog(nil, :info, "Started on #{DRb.uri}")
         end
       end
 
-      if File.exist?(self.socket_file)
+      if File.exist?(socket_file)
         if @user
           user_method = @user.is_a?(Integer) ? :getpwuid : :getpwnam
           uid = Etc.send(user_method, @user).uid

@@ -84,7 +84,7 @@ module God
       # out its own error messages by now.
       abort unless b.valid?
 
-      self.behaviors << b
+      behaviors << b
     end
 
     ###########################################################################
@@ -137,25 +137,25 @@ module God
     #                           checks). Default: [3, 5].
     def keepalive(options = {})
       if God::EventHandler.loaded?
-        self.transition(:init, { true => :up, false => :start }) do |on|
+        transition(:init, { true => :up, false => :start }) do |on|
           on.condition(:process_running) do |c|
             c.interval = options[:interval] || DEFAULT_KEEPALIVE_INTERVAL
             c.running = true
           end
         end
 
-        self.transition([:start, :restart], :up) do |on|
+        transition([:start, :restart], :up) do |on|
           on.condition(:process_running) do |c|
             c.interval = options[:interval] || DEFAULT_KEEPALIVE_INTERVAL
             c.running = true
           end
         end
 
-        self.transition(:up, :start) do |on|
+        transition(:up, :start) do |on|
           on.condition(:process_exits)
         end
       else
-        self.start_if do |start|
+        start_if do |start|
           start.condition(:process_running) do |c|
             c.interval = options[:interval] || DEFAULT_KEEPALIVE_INTERVAL
             c.running = false
@@ -163,7 +163,7 @@ module God
         end
       end
 
-      self.restart_if do |restart|
+      restart_if do |restart|
         if options[:memory_max]
           restart.condition(:memory_usage) do |c|
             c.interval = options[:interval] || DEFAULT_KEEPALIVE_INTERVAL
@@ -194,7 +194,7 @@ module God
     #
     # Returns nothing.
     def start_if(&block)
-      self.transition(:up, :start, &block)
+      transition(:up, :start, &block)
     end
 
     # Public: Restart the process if any of the given conditions are triggered.
@@ -203,7 +203,7 @@ module God
     #
     # Returns nothing.
     def restart_if(&block)
-      self.transition(:up, :restart, &block)
+      transition(:up, :restart, &block)
     end
 
     # Public: Stop the process if any of the given conditions are triggered.
@@ -212,7 +212,7 @@ module God
     #
     # Returns nothing.
     def stop_if(&block)
-      self.transition(:up, :stop, &block)
+      transition(:up, :stop, &block)
     end
 
     ###########################################################################
@@ -225,10 +225,10 @@ module God
     #
     # Returns nothing.
     def monitor
-      if !self.metrics[:init].empty?
-        self.move(:init)
+      if !metrics[:init].empty?
+        move(:init)
       else
-        self.move(:up)
+        move(:up)
       end
     end
 
@@ -245,26 +245,26 @@ module God
     #
     # Returns this Watch.
     def action(a, c = nil)
-      if !self.driver.in_driver_context?
+      if !driver.in_driver_context?
         # Called from outside Driver. Send an async message to Driver.
-        self.driver.message(:action, [a, c])
+        driver.message(:action, [a, c])
       else
         # Called from within Driver.
         case a
         when :start
           call_action(c, :start)
-          sleep(self.start_grace + self.grace)
+          sleep(start_grace + grace)
         when :restart
-          if self.restart
+          if restart
             call_action(c, :restart)
           else
             action(:stop, c)
             action(:start, c)
           end
-          sleep(self.restart_grace + self.grace)
+          sleep(restart_grace + grace)
         when :stop
           call_action(c, :stop)
-          sleep(self.stop_grace + self.grace)
+          sleep(stop_grace + grace)
         end
       end
 
@@ -279,19 +279,19 @@ module God
     # Returns nothing.
     def call_action(condition, action)
       # Before.
-      before_items = self.behaviors
+      before_items = behaviors
       before_items += [condition] if condition
       before_items.each do |b|
         info = b.send("before_#{action}")
         if info
-          msg = "#{self.name} before_#{action}: #{info} (#{b.base_name})"
+          msg = "#{name} before_#{action}: #{info} (#{b.base_name})"
           applog(self, :info, msg)
         end
       end
 
       # Log.
-      if self.send(action)
-        msg = "#{self.name} #{action}: #{self.send(action)}"
+      if send(action)
+        msg = "#{name} #{action}: #{send(action)}"
         applog(self, :info, msg)
       end
 
@@ -299,12 +299,12 @@ module God
       @process.call_action(action)
 
       # After.
-      after_items = self.behaviors
+      after_items = behaviors
       after_items += [condition] if condition
       after_items.each do |b|
         info = b.send("after_#{action}")
         if info
-          msg = "#{self.name} after_#{action}: #{info} (#{b.base_name})"
+          msg = "#{name} after_#{action}: #{info} (#{b.base_name})"
           applog(self, :info, msg)
         end
       end

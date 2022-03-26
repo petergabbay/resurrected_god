@@ -42,7 +42,7 @@ module God
 
         # start attached pid watcher if necessary
         if @options[:attach]
-          self.attach
+          attach
         end
 
         if @options[:port]

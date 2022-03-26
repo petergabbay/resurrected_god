@@ -11,13 +11,13 @@ module God
 
       def valid?
         valid = true
-        valid &= complain("Attribute 'path' must be specified", self) if self.path.nil?
-        valid &= complain("Attribute 'max_age' must be specified", self) if self.max_age.nil?
+        valid &= complain("Attribute 'path' must be specified", self) if path.nil?
+        valid &= complain("Attribute 'max_age' must be specified", self) if max_age.nil?
         valid
       end
 
       def test
-        (Time.now - File.mtime(self.path)) > self.max_age
+        (Time.now - File.mtime(path)) > max_age
       end
     end
   end

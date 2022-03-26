@@ -72,12 +72,12 @@ module God
       end
 
       def prepare
-        if self.times.is_a?(Integer)
-          self.times = [self.times, self.times]
+        if times.is_a?(Integer)
+          self.times = [times, times]
         end
 
-        @timeline = Timeline.new(self.times[1])
-        @history = Timeline.new(self.times[1])
+        @timeline = Timeline.new(times[1])
+        @history = Timeline.new(times[1])
       end
 
       def reset
@@ -101,36 +101,36 @@ module God
 
       def valid?
         valid = true
-        if self.family == 'tcp' && @port == 0
+        if family == 'tcp' && @port == 0
           valid &= complain("Attribute 'port' must be specified for tcp sockets", self)
         end
-        if self.family == 'unix' && self.path.nil?
+        if family == 'unix' && path.nil?
           valid &= complain("Attribute 'path' must be specified for unix sockets", self)
         end
-        valid = false unless %w[tcp unix].member?(self.family)
+        valid = false unless %w[tcp unix].member?(family)
         valid
       end
 
       def test
         self.info = []
-        if self.family == 'tcp'
+        if family == 'tcp'
           begin
-            s = TCPSocket.new(self.addr, self.port)
+            s = TCPSocket.new(addr, port)
           rescue SystemCallError
           end
-          status = self.responding == !s.nil?
-        elsif self.family == 'unix'
+          status = responding == !s.nil?
+        elsif family == 'unix'
           begin
-            s = UNIXSocket.new(self.path)
+            s = UNIXSocket.new(path)
           rescue SystemCallError
           end
-          status = self.responding == !s.nil?
+          status = responding == !s.nil?
         else
           status = false
         end
         @timeline.push(status)
         history = "[" + @timeline.map { |t| t ? '*' : '' }.join(',') + "]"
-        if @timeline.select { |x| x }.size >= self.times.first
+        if @timeline.select { |x| x }.size >= times.first
           self.info = "socket out of bounds #{history}"
           true
         else

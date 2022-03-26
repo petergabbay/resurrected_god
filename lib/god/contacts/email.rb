@@ -84,7 +84,7 @@ module God
       end
 
       def notify(message, time, priority, category, host)
-        body = Email.format.call(self.name, arg(:from_email), arg(:from_name),
+        body = Email.format.call(name, arg(:from_email), arg(:from_name),
                                  arg(:to_email), arg(:to_name), message, time,
                                  priority, category, host)
 

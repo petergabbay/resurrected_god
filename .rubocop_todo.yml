@@ -283,11 +283,6 @@ Style/PerlBackrefs:
     - 'lib/god/condition.rb'
     - 'lib/god/contact.rb'
 
-# Offense count: 469
-# This cop supports safe auto-correction (--auto-correct).
-Style/RedundantSelf:
-  Enabled: false
-
 # Offense count: 14
 # This cop supports safe auto-correction (--auto-correct).
 Style/RescueModifier:

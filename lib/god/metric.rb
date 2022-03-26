@@ -32,7 +32,7 @@ module God
     def condition(kind)
       # Create the condition.
       begin
-        c = Condition.generate(kind, self.watch)
+        c = Condition.generate(kind, watch)
       rescue NoSuchConditionError => e
         abort e.message
       end
@@ -51,17 +51,17 @@ module God
       # Inherit interval from watch if no poll condition specific interval was
       # set.
       if c.is_a?(PollCondition) && !c.interval
-        if self.watch.interval
-          c.interval = self.watch.interval
+        if watch.interval
+          c.interval = watch.interval
         else
           abort "No interval set for Condition '#{c.class.name}' in Watch " \
-                "'#{self.watch.name}', and no default Watch interval from " \
+                "'#{watch.name}', and no default Watch interval from " \
                 "which to inherit."
         end
       end
 
       # Add the condition to the list.
-      self.conditions << c
+      conditions << c
     end
 
     # Enable all of this Metric's conditions. Poll conditions will be
@@ -69,8 +69,8 @@ module God
     #
     # Returns nothing.
     def enable
-      self.conditions.each do |c|
-        self.watch.attach(c)
+      conditions.each do |c|
+        watch.attach(c)
       end
     end
 
@@ -79,8 +79,8 @@ module God
     #
     # Returns nothing.
     def disable
-      self.conditions.each do |c|
-        self.watch.detach(c)
+      conditions.each do |c|
+        watch.detach(c)
       end
     end
   end

@@ -23,14 +23,14 @@ module God
       end
 
       def new_oper(kind, op)
-        oper = Condition.generate(kind, self.watch)
+        oper = Condition.generate(kind, watch)
         @oper_stack.push(oper)
         @op_stack.push(op)
         oper
       end
 
       def this(kind)
-        @this = Condition.generate(kind, self.watch)
+        @this = Condition.generate(kind, watch)
         yield @this if block_given?
       end
 

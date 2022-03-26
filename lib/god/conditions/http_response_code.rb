@@ -87,15 +87,15 @@ module God
       end
 
       def prepare
-        self.code_is = Array(self.code_is).map { |x| x.to_i } if self.code_is
-        self.code_is_not = Array(self.code_is_not).map { |x| x.to_i } if self.code_is_not
+        self.code_is = Array(code_is).map { |x| x.to_i } if code_is
+        self.code_is_not = Array(code_is_not).map { |x| x.to_i } if code_is_not
 
-        if self.times.is_a?(Integer)
-          self.times = [self.times, self.times]
+        if times.is_a?(Integer)
+          self.times = [times, times]
         end
 
-        @timeline = Timeline.new(self.times[1])
-        @history = Timeline.new(self.times[1])
+        @timeline = Timeline.new(times[1])
+        @history = Timeline.new(times[1])
       end
 
       def reset
@@ -105,57 +105,57 @@ module God
 
       def valid?
         valid = true
-        valid &= complain("Attribute 'host' must be specified", self) if self.host.nil?
+        valid &= complain("Attribute 'host' must be specified", self) if host.nil?
         valid &= complain("One (and only one) of attributes 'code_is' and 'code_is_not' must be specified", self) if
-          (self.code_is.nil? && self.code_is_not.nil?) || (self.code_is && self.code_is_not)
+          (code_is.nil? && code_is_not.nil?) || (code_is && code_is_not)
         valid
       end
 
       def test
         response = nil
 
-        connection = Net::HTTP.new(self.host, self.port)
-        connection.use_ssl = self.port == 443 ? true : self.ssl
+        connection = Net::HTTP.new(host, port)
+        connection.use_ssl = port == 443 ? true : ssl
         connection.verify_mode = OpenSSL::SSL::VERIFY_NONE if connection.use_ssl?
 
-        if connection.use_ssl? && self.ca_file
-          pem = File.read(self.ca_file)
-          connection.ca_file = self.ca_file
+        if connection.use_ssl? && ca_file
+          pem = File.read(ca_file)
+          connection.ca_file = ca_file
           connection.verify_mode = OpenSSL::SSL::VERIFY_PEER
         end
 
         connection.start do |http|
-          http.read_timeout = self.timeout
-          response = http.get(self.path, self.headers)
+          http.read_timeout = timeout
+          response = http.get(path, headers)
         end
 
         actual_response_code = response.code.to_i
-        if self.code_is&.include?(actual_response_code)
+        if code_is&.include?(actual_response_code)
           pass(actual_response_code)
-        elsif self.code_is_not && !self.code_is_not.include?(actual_response_code)
+        elsif code_is_not && !code_is_not.include?(actual_response_code)
           pass(actual_response_code)
         else
           fail(actual_response_code)
         end
       rescue Errno::ECONNREFUSED
-        self.code_is ? fail('Refused') : pass('Refused')
+        code_is ? fail('Refused') : pass('Refused')
       rescue Errno::ECONNRESET
-        self.code_is ? fail('Reset') : pass('Reset')
+        code_is ? fail('Reset') : pass('Reset')
       rescue EOFError
-        self.code_is ? fail('EOF') : pass('EOF')
+        code_is ? fail('EOF') : pass('EOF')
       rescue Timeout::Error
-        self.code_is ? fail('Timeout') : pass('Timeout')
+        code_is ? fail('Timeout') : pass('Timeout')
       rescue Errno::ETIMEDOUT
-        self.code_is ? fail('Timedout') : pass('Timedout')
+        code_is ? fail('Timedout') : pass('Timedout')
       rescue Exception => e
-        self.code_is ? fail(e.class.name) : pass(e.class.name)
+        code_is ? fail(e.class.name) : pass(e.class.name)
       end
 
       private
 
       def pass(code)
         @timeline << true
-        if @timeline.select { |x| x }.size >= self.times.first
+        if @timeline.select { |x| x }.size >= times.first
           self.info = "http response abnormal #{history(code, true)}"
           true
         else

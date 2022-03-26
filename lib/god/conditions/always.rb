@@ -24,7 +24,7 @@ module God
 
       def valid?
         valid = true
-        valid &= complain("Attribute 'what' must be specified", self) if self.what.nil?
+        valid &= complain("Attribute 'what' must be specified", self) if what.nil?
         valid
       end
 

@@ -65,7 +65,7 @@ module God
       end
 
       # do a real test to make sure events are working properly
-      @@loaded = self.operational?
+      @@loaded = operational?
     end
 
     def self.stop
@@ -82,7 +82,7 @@ module God
           loop { sleep(1) }
         end
 
-        self.register(pid, :proc_exit) do
+        register(pid, :proc_exit) do
           com[0] = true
         end
 
@@ -91,7 +91,7 @@ module God
 
         sleep(0.1)
 
-        self.deregister(pid, :proc_exit) rescue nil
+        deregister(pid, :proc_exit) rescue nil
       rescue => e
         puts e.message
         puts e.backtrace.join("\n")

@@ -58,7 +58,7 @@ module God
         client.send(message)
         client.close
 
-        self.info = "sent jabber message to #{self.to_jid}"
+        self.info = "sent jabber message to #{to_jid}"
       rescue Object => e
         if e.respond_to?(:message)
           applog(nil, :info, "failed to send jabber message to #{arg(:to_jid)}: #{e.message}")

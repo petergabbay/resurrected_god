@@ -4,7 +4,7 @@ module God
       attr_accessor :times, :within
 
       def prepare
-        @timeline = Timeline.new(self.times)
+        @timeline = Timeline.new(times)
       end
 
       def reset
@@ -13,20 +13,20 @@ module God
 
       def valid?
         valid = true
-        valid &= complain("Attribute 'times' must be specified", self) if self.times.nil?
+        valid &= complain("Attribute 'times' must be specified", self) if times.nil?
         valid
       end
 
       def test
         @timeline << Time.now
 
-        concensus = (@timeline.size == self.times)
-        duration = self.within.nil? || (@timeline.last - @timeline.first) < self.within
+        concensus = (@timeline.size == times)
+        duration = within.nil? || (@timeline.last - @timeline.first) < within
 
         history = if within
-                    "[#{@timeline.size}/#{self.times} within #{(@timeline.last - @timeline.first).to_i}s]"
+                    "[#{@timeline.size}/#{times} within #{(@timeline.last - @timeline.first).to_i}s]"
                   else
-                    "[#{@timeline.size}/#{self.times}]"
+                    "[#{@timeline.size}/#{times}]"
                   end
 
         if concensus && duration

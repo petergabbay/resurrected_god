@@ -76,7 +76,7 @@ module God
     self.host = nil
     self.port = nil
     self.pid_file_directory = nil
-    self.registry.reset
+    registry.reset
   end
 end
 

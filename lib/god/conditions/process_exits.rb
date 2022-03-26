@@ -44,7 +44,7 @@ module God
           msg = "#{self.watch.name} registered 'proc_exit' event for pid #{pid}"
           applog(self.watch, :info, msg)
         rescue StandardError
-          raise EventRegistrationFailedError.new
+          raise EventRegistrationFailedError
         end
       end
 

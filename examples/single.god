@@ -1,4 +1,4 @@
-RAILS_ROOT = "/Users/tom/dev/gravatar2"
+RAILS_ROOT = "/Users/tom/dev/gravatar2".freeze
 
 God.watch do |w|
   w.name = "local-3000"

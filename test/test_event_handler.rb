@@ -28,7 +28,7 @@ class TestEventHandler < Minitest::Test
       puts "Hi"
     }
 
-    mock_handler = mock()
+    mock_handler = mock
     mock_handler.expects(:register_process).with(pid, [event])
     @h.handler = mock_handler
 
@@ -38,16 +38,16 @@ class TestEventHandler < Minitest::Test
 
   def test_register_multiple_events_per_process
     pid = 4445
-    exit_block = lambda { puts "Hi" }
+    exit_block = -> { puts "Hi" }
     @h.actions = { pid => { proc_exit: exit_block } }
 
-    mock_handler = mock()
+    mock_handler = mock
     mock_handler.expects(:register_process).with do |a, b|
       a == pid && b.to_set == [:proc_exit, :proc_fork].to_set
     end
     @h.handler = mock_handler
 
-    fork_block = lambda { puts "Forking" }
+    fork_block = -> { puts "Forking" }
     @h.register(pid, :proc_fork, &fork_block)
     assert_equal @h.actions, { pid => { proc_exit: exit_block,
                                         proc_fork: fork_block } }
@@ -55,7 +55,7 @@ class TestEventHandler < Minitest::Test
 
   # JIRA PLATFORM-75
   def test_call_should_check_for_pid_and_action_before_executing
-    exit_block = mock()
+    exit_block = mock
     exit_block.expects(:call).times 1
     @h.actions = { 4445 => { proc_exit: exit_block } }
     @h.call(4446, :proc_exit) # shouldn't call, bad pid

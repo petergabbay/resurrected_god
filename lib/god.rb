@@ -165,7 +165,7 @@ if $load_god
     DRB_PORT_DEFAULT = 17165
 
     # The default Array of String IPs that will allow DRb communication access.
-    DRB_ALLOW_DEFAULT = ['127.0.0.1']
+    DRB_ALLOW_DEFAULT = ['127.0.0.1'].freeze
 
     # The default Symbol log level.
     LOG_LEVEL_DEFAULT = :info
@@ -178,7 +178,7 @@ if $load_god
     STOP_TIMEOUT_DEFAULT = 10
 
     # The default String signal to send for the stop command.
-    STOP_SIGNAL_DEFAULT = 'TERM'
+    STOP_SIGNAL_DEFAULT = 'TERM'.freeze
 
     class << self
       # user configurable
@@ -470,7 +470,7 @@ if $load_god
       when "remove"
         items.each { |w| self.unwatch(w) }
       else
-        raise InvalidCommandError.new
+        raise InvalidCommandError
       end
 
       jobs.each { |j| j.join }
@@ -496,7 +496,7 @@ if $load_god
         sleep 1
       end
 
-      return false
+      false
     end
 
     # Force the termination of god.
@@ -507,7 +507,7 @@ if $load_god
     # Never returns because the process will no longer exist!
     def self.terminate
       FileUtils.rm_f(self.pid) if self.pid
-      self.server.stop if self.server
+      self.server&.stop
       exit!(0)
     end
 
@@ -553,7 +553,7 @@ if $load_god
       matches = pattern_match(watch_name, self.watches.keys)
 
       unless matches.first
-        raise NoSuchWatchError.new
+        raise NoSuchWatchError
       end
 
       LOG.watch_log_since(matches.first, since)
@@ -588,10 +588,10 @@ if $load_god
         Gem.clear_paths
         eval(code, root_binding, filename)
         self.pending_watches.each do |w|
-          if previous_state = self.pending_watch_states[w.name]
+          if (previous_state = self.pending_watch_states[w.name])
             w.monitor unless previous_state == :unmonitored
-          else
-            w.monitor if w.autostart?
+          elsif w.autostart?
+            w.monitor
           end
         end
         loaded_watches = self.pending_watches.map { |w| w.name }
@@ -702,7 +702,7 @@ if $load_god
       self.server = Socket.new(self.port, self.socket_user, self.socket_group, self.socket_perms)
 
       # Start monitoring any watches set to autostart.
-      self.watches.values.each { |w| w.monitor if w.autostart? }
+      self.watches.each_value { |w| w.monitor if w.autostart? }
 
       # Clear pending watches.
       self.pending_watches.clear
@@ -723,7 +723,7 @@ if $load_god
     #
     # Returns nothing.
     def self.join
-      self.main.join if self.main
+      self.main&.join
     end
 
     # Returns the version String.

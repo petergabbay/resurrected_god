@@ -54,11 +54,11 @@ module God
         end
 
         # set log level, defaults to WARN
-        if @options[:log_level]
-          God.log_level = @options[:log_level]
-        else
-          God.log_level = @options[:daemonize] ? :warn : :info
-        end
+        God.log_level = if @options[:log_level]
+                          @options[:log_level]
+                        else
+                          @options[:daemonize] ? :warn : :info
+                        end
 
         if @options[:config]
           if !@options[:config].include?('*') && !File.exist?(@options[:config])
@@ -86,31 +86,29 @@ module God
         Signal.trap('USR1') { setup_logging }
 
         pid = fork do
-          begin
-            require 'god'
+          require 'god'
 
-            # set pid if requested
-            if @options[:pid] # and as deamon
-              God.pid = @options[:pid]
-            end
-
-            default_run
-
-            unless God::EventHandler.loaded?
-              puts
-              puts "***********************************************************************"
-              puts "*"
-              puts "* Event conditions are not available for your installation of god."
-              puts "* You may still use and write custom conditions using the poll system"
-              puts "*"
-              puts "***********************************************************************"
-              puts
-            end
-          rescue => e
-            puts e.message
-            puts e.backtrace.join("\n")
-            abort "There was a fatal system error while starting god (see above)"
+          # set pid if requested
+          if @options[:pid] # and as deamon
+            God.pid = @options[:pid]
           end
+
+          default_run
+
+          unless God::EventHandler.loaded?
+            puts
+            puts "***********************************************************************"
+            puts "*"
+            puts "* Event conditions are not available for your installation of god."
+            puts "* You may still use and write custom conditions using the poll system"
+            puts "*"
+            puts "***********************************************************************"
+            puts
+          end
+        rescue => e
+          puts e.message
+          puts e.backtrace.join("\n")
+          abort "There was a fatal system error while starting god (see above)"
         end
 
         if @options[:pid]
@@ -130,10 +128,10 @@ module God
           puts "Sending output to log file: #{log_file}" unless @options[:daemonize]
 
           # reset file descriptors
-          STDIN.reopen "/dev/null"
-          STDOUT.reopen(log_file, "a")
-          STDERR.reopen STDOUT
-          STDOUT.sync = true
+          $stdin.reopen "/dev/null"
+          $stdout.reopen(log_file, "a")
+          $stderr.reopen $stdout
+          $stdout.sync = true
         end
       end
 

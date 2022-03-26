@@ -10,7 +10,7 @@ module God
       end
 
       def test
-        if self.lambda.call()
+        if self.lambda.call
           self.info = "lambda condition was satisfied"
           true
         else

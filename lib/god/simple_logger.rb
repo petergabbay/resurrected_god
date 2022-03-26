@@ -10,13 +10,13 @@ module God
                   INFO => 'INFO',
                   WARN => 'WARN',
                   ERROR => 'ERROR',
-                  FATAL => 'FATAL' }
+                  FATAL => 'FATAL' }.freeze
 
     CONSTANT_TO_SYMBOL = { DEBUG => :debug,
                            INFO => :info,
                            WARN => :warn,
                            ERROR => :error,
-                           FATAL => :fatal }
+                           FATAL => :fatal }.freeze
 
     attr_accessor :datetime_format, :level
 

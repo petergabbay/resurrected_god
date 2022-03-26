@@ -45,10 +45,10 @@ module God
         pid = self.pid
         active = pid && System::Process.new(pid).exists?
 
-        if (self.running && active)
+        if self.running && active
           self.info.concat(["process is running"])
           true
-        elsif (!self.running && !active)
+        elsif !self.running && !active
           self.info.concat(["process is not running"])
           true
         else

@@ -3,8 +3,8 @@ require 'daemons'
 
 Daemons.run_proc('daemon-polls', { dir_mode: :system }) do
   loop do
-    STDOUT.puts('server')
-    STDOUT.flush
+    $stdout.puts('server')
+    $stdout.flush
     sleep 1
   end
 end

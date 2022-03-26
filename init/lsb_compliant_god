@@ -2,24 +2,21 @@
 
 # see http://refspecs.freestandards.org/LSB_3.1.0/LSB-Core-generic/LSB-Core-generic/iniscrptact.html
 
-PATH = "/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin"
-DESC = "god daemon"
-NAME = "god"
-DAEMON = "/usr/bin/#{NAME}"
-CONFIGFILE = "/etc/god/god.conf"
-PIDFILE = "/var/run/#{NAME}.pid"
-SCRIPTNAME = "/etc/init.d/#{NAME}"
-START_FLAGS = "--no-syslog -P #{PIDFILE}"
+PATH = "/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin".freeze
+NAME = "god".freeze
+DAEMON = "/usr/bin/#{NAME}".freeze
+CONFIGFILE = "/etc/god/god.conf".freeze
+PIDFILE = "/var/run/#{NAME}.pid".freeze
+SCRIPTNAME = "/etc/init.d/#{NAME}".freeze
+START_FLAGS = "--no-syslog -P #{PIDFILE}".freeze
 
 ENV["PATH"] = PATH
 
 def read_pid
-  begin
-    @pid = File.read(PIDFILE).to_i
-    @pid = nil if @pid == 0
-  rescue
-    @pid = nil
-  end
+  @pid = File.read(PIDFILE).to_i
+  @pid = nil if @pid == 0
+rescue
+  @pid = nil
 end
 
 def kill(code)
@@ -52,7 +49,7 @@ def start
 end
 
 def stop
-  if not running?
+  unless running?
     puts "not running"
     exit
   end
@@ -85,10 +82,10 @@ when 'start'
 when 'stop'
   stop
 when 'restart'
-  if not running?
-    start
-  else
+  if running?
     restart
+  else
+    start
   end
 when 'force-reload'
   force_reload

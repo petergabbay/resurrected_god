@@ -48,7 +48,7 @@ module God
       self.sendmail_args = '-i -t'
 
       self.format = lambda do |name, from_email, from_name, to_email, to_name, message, time, priority, category, host|
-        <<~EOF
+        <<~FORMAT
           From: #{from_name} <#{from_email}>
           To: #{to_name || name} <#{to_email}>
           Subject: [god] #{message}
@@ -59,7 +59,7 @@ module God
           Host: #{host}
           Priority: #{priority}
           Category: #{category}
-        EOF
+        FORMAT
       end
 
       attr_accessor :to_email, :to_name, :from_email, :from_name,

@@ -9,11 +9,9 @@ class TestGod < MiniTest::Test
   end
 
   def teardown
-    God.main && God.main.kill
-    if God.watches
-      God.watches.each do |_k, w|
-        w.driver.thread.kill
-      end
+    God.main&.kill
+    God.watches&.each do |_k, w|
+      w.driver.thread.kill
     end
     God.reset
     # Some of the tests in this file intentionally set pid_file_directory to an invalid value
@@ -550,12 +548,12 @@ class TestGod < MiniTest::Test
   # running_load
 
   def test_running_load_should_eval_code
-    code = <<-EOF
+    code = <<-CODE
       God.watch do |w|
         w.name = 'foo'
         w.start = 'go'
       end
-    EOF
+    CODE
 
     God.running_load(code, '/foo/bar.god')
 
@@ -563,37 +561,37 @@ class TestGod < MiniTest::Test
   end
 
   def test_running_load_should_monitor_new_watches
-    code = <<-EOF
+    code = <<-CODE
       God.watch do |w|
         w.name = 'foo'
         w.start = 'go'
       end
-    EOF
+    CODE
 
     Watch.any_instance.expects(:monitor)
     God.running_load(code, '/foo/bar.god')
   end
 
   def test_running_load_should_not_monitor_new_watches_with_autostart_false
-    code = <<-EOF
+    code = <<-CODE
       God.watch do |w|
         w.name = 'foo'
         w.start = 'go'
         w.autostart = false
       end
-    EOF
+    CODE
 
     Watch.any_instance.expects(:monitor).never
     God.running_load(code, '/foo/bar.god')
   end
 
   def test_running_load_should_return_array_of_affected_watches
-    code = <<-EOF
+    code = <<-CODE
       God.watch do |w|
         w.name = 'foo'
         w.start = 'go'
       end
-    EOF
+    CODE
 
     w = nil
     w, e = *God.running_load(code, '/foo/bar.god')
@@ -602,90 +600,90 @@ class TestGod < MiniTest::Test
   end
 
   def test_running_load_should_clear_pending_watches
-    code = <<-EOF
+    code = <<-CODE
       God.watch do |w|
         w.name = 'foo'
         w.start = 'go'
       end
-    EOF
+    CODE
 
     God.running_load(code, '/foo/bar.god')
     assert_equal 0, God.pending_watches.size
   end
 
   def test_running_load_with_stop
-    code_one = <<-EOF
+    code_one = <<-CODE
       God.watch do |w|
         w.name = 'foo'
         w.start = 'go'
       end
-    EOF
+    CODE
 
-    code_two = <<-EOF
+    code_two = <<-CODE
       God.watch do |w|
         w.name = 'bar'
         w.start = 'go'
       end
-    EOF
+    CODE
 
-    a, e, r = *God.running_load(code_one, '/foo/one.god', 'stop')
+    a, _e, r = *God.running_load(code_one, '/foo/one.god', 'stop')
 
     assert_equal 1, a.size
     assert_equal 0, r.size
 
-    a, e, r = *God.running_load(code_two, '/foo/two.god', 'stop')
+    a, _e, r = *God.running_load(code_two, '/foo/two.god', 'stop')
 
     assert_equal 1, a.size
     assert_equal 1, r.size
   end
 
   def test_running_load_with_remove
-    code_one = <<-EOF
+    code_one = <<-CODE
       God.watch do |w|
         w.name = 'foo'
         w.start = 'go'
       end
-    EOF
+    CODE
 
-    code_two = <<-EOF
+    code_two = <<-CODE
       God.watch do |w|
         w.name = 'bar'
         w.start = 'go'
       end
-    EOF
+    CODE
 
-    a, e, r = *God.running_load(code_one, '/foo/one.god', 'remove')
+    a, _e, r = *God.running_load(code_one, '/foo/one.god', 'remove')
 
     assert_equal 1, a.size
     assert_equal 0, r.size
 
-    a, e, r = *God.running_load(code_two, '/foo/two.god', 'remove')
+    a, _e, r = *God.running_load(code_two, '/foo/two.god', 'remove')
 
     assert_equal 1, a.size
     assert_equal 1, r.size
   end
 
   def test_running_load_with_leave
-    code_one = <<-EOF
+    code_one = <<-CODE
       God.watch do |w|
         w.name = 'foo'
         w.start = 'go'
       end
-    EOF
+    CODE
 
-    code_two = <<-EOF
+    code_two = <<-CODE
       God.watch do |w|
         w.name = 'bar'
         w.start = 'go'
       end
-    EOF
+    CODE
 
-    a, e, r = *God.running_load(code_one, '/foo/one.god', 'leave')
+    a, _e, r = *God.running_load(code_one, '/foo/one.god', 'leave')
 
     assert_equal 1, a.size
     assert_equal 0, r.size
 
-    a, e, r = *God.running_load(code_two, '/foo/two.god', 'leave')
+    a, _e, r = *God.running_load(code_two, '/foo/two.god', 'leave')
 
     assert_equal 1, a.size
     assert_equal 0, r.size
@@ -746,12 +744,12 @@ class TestGod < MiniTest::Test
   # pattern_match
 
   def test_pattern_match
-    list = %w{mongrel-3000 mongrel-3001 fuzed22 fuzed fuzed2 apache mysql}
+    list = %w[mongrel-3000 mongrel-3001 fuzed22 fuzed fuzed2 apache mysql]
 
-    assert_equal %w{mongrel-3000}, God.pattern_match('m3000', list)
-    assert_equal %w{mongrel-3001}, God.pattern_match('m31', list)
-    assert_equal %w{fuzed fuzed2 fuzed22}, God.pattern_match('fu', list)
-    assert_equal %w{mysql}, God.pattern_match('sql', list)
+    assert_equal %w[mongrel-3000], God.pattern_match('m3000', list)
+    assert_equal %w[mongrel-3001], God.pattern_match('m31', list)
+    assert_equal %w[fuzed fuzed2 fuzed22], God.pattern_match('fu', list)
+    assert_equal %w[mysql], God.pattern_match('sql', list)
   end
 end
 

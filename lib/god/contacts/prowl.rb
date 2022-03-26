@@ -31,11 +31,11 @@ module God
           n.description = message.to_s + " at " + time.to_s
         end
 
-        if result.succeeded?
-          self.info = "sent prowl notification to #{self.name}"
-        else
-          self.info = "failed to send prowl notification to #{self.name}: #{result.message}"
-        end
+        self.info = if result.succeeded?
+                      "sent prowl notification to #{self.name}"
+                    else
+                      "failed to send prowl notification to #{self.name}: #{result.message}"
+                    end
       rescue Object => e
         applog(nil, :info, "failed to send prowl notification to #{self.name}: #{e.message}")
         applog(nil, :debug, e.backtrace.join("\n"))

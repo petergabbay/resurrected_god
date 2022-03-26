@@ -11,7 +11,7 @@ class TestGodSystem < MiniTest::Test
     God.class_eval do
       def self.terminate
         FileUtils.rm_f(self.pid) if self.pid
-        self.server.stop if self.server
+        self.server&.stop
       end
     end
     begin
@@ -45,7 +45,7 @@ class TestGodSystem < MiniTest::Test
         w.name = 'add_watch'
         w.start = File.join(GOD_ROOT, *%w[test configs complex simple_server.rb])
       end
-      assert God.watches['add_watch'] != nil
+      refute_nil God.watches['add_watch']
     end
   end
 
@@ -124,7 +124,7 @@ class TestGodSystem < MiniTest::Test
         end
         God.watches["many_watches_#{i}"].action(:start)
       end
-      while true do
+      loop do
         all_running = God.watches.select { |name, _w| name =~ /many_watches_/ }.all? { |_name, w| w.alive? }
         size = God.watches.size
         break if all_running && size >= 20
@@ -149,7 +149,7 @@ class TestGodSystem < MiniTest::Test
         end
         God.watches["tons_of_watches_#{i}"].action(:start)
       end
-      while true do
+      loop do
         all_running = God.watches.select { |name, _w| name =~ /tons_of_watches_/ }.all? { |_name, w| w.alive? }
         size = God.watches.size
         break if all_running && size >= 100
@@ -173,7 +173,7 @@ class TestGodSystem < MiniTest::Test
         end
         God.watches["tons_of_watches_#{i}"].action(:start)
       end
-      while true do
+      loop do
         all_running = God.watches.select { |name, _w| name =~ /tons_of_watches_/ }.all? { |_name, w| w.alive? }
         size = God.watches.size
         break if all_running && size >= 100

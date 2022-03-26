@@ -37,13 +37,11 @@ module God
       private
 
       def pass?
-        begin
-          Timeout.timeout(@interval) do
-            self.lambda.call()
-          end
-        rescue Timeout::Error
-          false
+        Timeout.timeout(@interval) do
+          self.lambda.call
         end
+      rescue Timeout::Error
+        false
       end
     end
   end

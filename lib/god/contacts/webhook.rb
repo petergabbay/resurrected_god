@@ -56,12 +56,12 @@ module God
 
         res = http.request(req)
 
-        case res
-        when Net::HTTPSuccess
-          self.info = "sent webhook to #{arg(:url)}"
-        else
-          self.info = "failed to send webhook to #{arg(:url)}: #{res.error!}"
-        end
+        self.info = case res
+                    when Net::HTTPSuccess
+                      "sent webhook to #{arg(:url)}"
+                    else
+                      "failed to send webhook to #{arg(:url)}: #{res.error!}"
+                    end
       rescue Object => e
         applog(nil, :info, "failed to send webhook to #{arg(:url)}: #{e.message}")
         applog(nil, :debug, e.backtrace.join("\n"))

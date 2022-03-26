@@ -130,7 +130,7 @@ module God
         end
 
         actual_response_code = response.code.to_i
-        if self.code_is && self.code_is.include?(actual_response_code)
+        if self.code_is&.include?(actual_response_code)
           pass(actual_response_code)
         elsif self.code_is_not && !self.code_is_not.include?(actual_response_code)
           pass(actual_response_code)
@@ -147,8 +147,8 @@ module God
         self.code_is ? fail('Timeout') : pass('Timeout')
       rescue Errno::ETIMEDOUT
         self.code_is ? fail('Timedout') : pass('Timedout')
-      rescue Exception => failure
-        self.code_is ? fail(failure.class.name) : pass(failure.class.name)
+      rescue Exception => e
+        self.code_is ? fail(e.class.name) : pass(e.class.name)
       end
 
       private

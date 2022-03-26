@@ -173,16 +173,14 @@ module God
 
       @thread = Thread.new do
         loop do
-          begin
-            @events.pop.handle_event
-          rescue ThreadError => e
-            # queue is empty
-            break
-          rescue Object => e
-            message = format("Unhandled exception in driver loop - (%s): %s\n%s",
-                             e.class, e.message, e.backtrace.join("\n"))
-            applog(nil, :fatal, message)
-          end
+          @events.pop.handle_event
+        rescue ThreadError
+          # queue is empty
+          break
+        rescue Object => e
+          message = format("Unhandled exception in driver loop - (%s): %s\n%s",
+                           e.class, e.message, e.backtrace.join("\n"))
+          applog(nil, :fatal, message)
         end
       end
     end

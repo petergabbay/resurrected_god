@@ -67,7 +67,7 @@ class TestTask < Minitest::Test
   end
 
   def test_action_should_call_lambda_commands
-    @task.foo = lambda {}
+    @task.foo = -> {}
     @task.driver.stubs(:in_driver_context?).returns(true)
     @task.foo.expects(:call)
     @task.action(:foo, nil)

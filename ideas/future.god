@@ -4,7 +4,7 @@
 # Run with:
 # god -c /path/to/events.god
 
-RAILS_ROOT = "/Users/tom/dev/helloworld"
+RAILS_ROOT = "/Users/tom/dev/helloworld".freeze
 
 God::Contacts::Email.delivery_method = :smtp
 God::Contacts::Email.server_settings = {}

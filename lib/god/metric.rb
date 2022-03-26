@@ -54,8 +54,8 @@ module God
         if self.watch.interval
           c.interval = self.watch.interval
         else
-          abort "No interval set for Condition '#{c.class.name}' in Watch " +
-                "'#{self.watch.name}', and no default Watch interval from " +
+          abort "No interval set for Condition '#{c.class.name}' in Watch " \
+                "'#{self.watch.name}', and no default Watch interval from " \
                 "which to inherit."
         end
       end

@@ -55,30 +55,28 @@ module God
       end
 
       def process(event, payload)
-        begin
-          if event == :state_change
-            event_from_state, event_to_state = *payload
+        if event == :state_change
+          event_from_state, event_to_state = *payload
 
-            from_state_match = !self.from_state || self.from_state && Array(self.from_state).include?(event_from_state)
-            to_state_match = !self.to_state || self.to_state && Array(self.to_state).include?(event_to_state)
+          from_state_match = !self.from_state || self.from_state && Array(self.from_state).include?(event_from_state)
+          to_state_match = !self.to_state || self.to_state && Array(self.to_state).include?(event_to_state)
 
-            if from_state_match && to_state_match
-              @timeline << Time.now
+          if from_state_match && to_state_match
+            @timeline << Time.now
 
-              concensus = (@timeline.size == self.times)
-              duration = (@timeline.last - @timeline.first) < self.within
+            concensus = (@timeline.size == self.times)
+            duration = (@timeline.last - @timeline.first) < self.within
 
-              if concensus && duration
-                @timeline.clear
-                trigger
-                retry_mechanism
-              end
+            if concensus && duration
+              @timeline.clear
+              trigger
+              retry_mechanism
             end
           end
-        rescue => e
-          puts e.message
-          puts e.backtrace.join("\n")
         end
+      rescue => e
+        puts e.message
+        puts e.backtrace.join("\n")
       end
 
       private

@@ -23,10 +23,10 @@ module God
       end
 
       def dispatch
-        if %w{load status signal log quit terminate}.include?(@command)
+        if %w[load status signal log quit terminate].include?(@command)
           setup
           send("#{@command}_command")
-        elsif %w{start stop restart monitor unmonitor remove}.include?(@command)
+        elsif %w[start stop restart monitor unmonitor remove].include?(@command)
           setup
           lifecycle_command
         elsif @command == 'check'
@@ -91,7 +91,14 @@ module God
             # specified task (0 -> up, 1 -> unmonitored, 2 -> other)
             state = single[:state]
             puts "#{item}: #{state}"
-            exitcode = state == :up ? 0 : (state == :unmonitored ? 1 : 2)
+            exitcode = case state
+                       when :up
+                         0
+                       when :unmonitored
+                         1
+                       else
+                         2
+                       end
           elsif groups[item]
             # specified group (0 -> up, N -> other)
             puts "#{item}:"
@@ -130,8 +137,8 @@ module God
         t = Thread.new do
           loop do
             sleep(1)
-            STDOUT.print('.')
-            STDOUT.flush
+            $stdout.print('.')
+            $stdout.flush
             sleep(1)
           end
         end
@@ -140,7 +147,7 @@ module God
 
         # output response
         t.kill
-        STDOUT.puts
+        $stdout.puts
         unless watches.empty?
           puts 'The following watches were affected:'
           watches.each do |w|
@@ -152,53 +159,48 @@ module God
       end
 
       def log_command
-        begin
-          Signal.trap('INT') { exit }
-          name = @args[1]
+        Signal.trap('INT') { exit }
+        name = @args[1]
 
-          unless name
-            puts "You must specify a Task or Group name"
-            exit!
-          end
-
-          puts "Please wait..."
-          t = Time.at(0)
-          loop do
-            print @server.running_log(name, t)
-            t = Time.now
-            sleep 0.25
-          end
-        rescue God::NoSuchWatchError
-          puts "No such watch"
-        rescue DRb::DRbConnError
-          puts "The server went away"
+        unless name
+          puts "You must specify a Task or Group name"
+          exit!
         end
+
+        puts "Please wait..."
+        t = Time.at(0)
+        loop do
+          print @server.running_log(name, t)
+          t = Time.now
+          sleep 0.25
+        end
+      rescue God::NoSuchWatchError
+        puts "No such watch"
+      rescue DRb::DRbConnError
+        puts "The server went away"
       end
 
       def quit_command
-        begin
-          @server.terminate
-          abort 'Could not stop god'
-        rescue DRb::DRbConnError
-          puts 'Stopped god'
-        end
+        @server.terminate
+        abort 'Could not stop god'
+      rescue DRb::DRbConnError
+        puts 'Stopped god'
       end
 
       def terminate_command
         t = Thread.new do
           loop do
-            STDOUT.print('.')
-            STDOUT.flush
+            $stdout.print('.')
+            $stdout.flush
             sleep(1)
           end
         end
-        if @server.stop_all
-          t.kill
-          STDOUT.puts
+        stopped = @server.stop_all
+        t.kill
+        $stdout.puts
+        if stopped
           puts 'Stopped all watches'
         else
-          t.kill
-          STDOUT.puts
           puts "Could not stop all watches within #{@server.terminate_timeout} seconds"
         end
 
@@ -212,41 +214,39 @@ module God
 
       def check_command
         Thread.new do
-          begin
-            event_system = God::EventHandler.event_system
-            puts "using event system: #{event_system}"
+          event_system = God::EventHandler.event_system
+          puts "using event system: #{event_system}"
 
-            if God::EventHandler.loaded?
-              puts "starting event handler"
-              God::EventHandler.start
-            else
-              puts "[fail] event system did not load"
-              exit(1)
-            end
-
-            puts 'forking off new process'
-
-            pid = fork do
-              loop { sleep(1) }
-            end
-
-            puts "forked process with pid = #{pid}"
-
-            God::EventHandler.register(pid, :proc_exit) do
-              puts "[ok] process exit event received"
-              exit!(0)
-            end
-
-            sleep(1)
-
-            puts "killing process"
-
-            ::Process.kill('KILL', pid)
-            ::Process.waitpid(pid)
-          rescue => e
-            puts e.message
-            puts e.backtrace.join("\n")
+          if God::EventHandler.loaded?
+            puts "starting event handler"
+            God::EventHandler.start
+          else
+            puts "[fail] event system did not load"
+            exit(1)
           end
+
+          puts 'forking off new process'
+
+          pid = fork do
+            loop { sleep(1) }
+          end
+
+          puts "forked process with pid = #{pid}"
+
+          God::EventHandler.register(pid, :proc_exit) do
+            puts "[ok] process exit event received"
+            exit!(0)
+          end
+
+          sleep(1)
+
+          puts "killing process"
+
+          ::Process.kill('KILL', pid)
+          ::Process.waitpid(pid)
+        rescue => e
+          puts e.message
+          puts e.backtrace.join("\n")
         end
 
         sleep(2)
@@ -264,8 +264,8 @@ module God
         t = Thread.new do
           loop do
             sleep(1)
-            STDOUT.print('.')
-            STDOUT.flush
+            $stdout.print('.')
+            $stdout.flush
             sleep(1)
           end
         end
@@ -275,7 +275,7 @@ module God
 
         # output response
         t.kill
-        STDOUT.puts
+        $stdout.puts
         unless watches.empty?
           puts 'The following watches were affected:'
           watches.each do |w|

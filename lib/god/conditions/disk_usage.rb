@@ -21,9 +21,9 @@ module God
         usage = `df -P | grep -i " #{self.mount_point}$" | awk '{print $5}' | sed 's/%//'`
         if usage.to_i > self.above
           self.info = "disk space out of bounds"
-          return true
+          true
         else
-          return false
+          false
         end
       end
     end

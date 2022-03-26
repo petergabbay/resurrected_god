@@ -6,7 +6,7 @@
 
 RAILS_ROOT = ENV['GOD_TEST_RAILS_ROOT']
 
-%w{3002}.each do |port|
+%w[3002].each do |port|
   God.watch do |w|
     w.name = "local-#{port}"
     w.interval = 5.seconds

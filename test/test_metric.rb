@@ -8,7 +8,7 @@ class TestMetric < Minitest::Test
   # watch
 
   def test_watch
-    w = stub()
+    w = stub
     m = Metric.new(w, nil)
     assert_equal w, m.watch
   end
@@ -16,7 +16,7 @@ class TestMetric < Minitest::Test
   # destination
 
   def test_destination
-    d = stub()
+    d = stub
     m = Metric.new(nil, d)
     assert_equal d, m.destination
   end

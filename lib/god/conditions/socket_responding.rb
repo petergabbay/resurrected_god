@@ -107,7 +107,7 @@ module God
         if self.family == 'unix' && self.path.nil?
           valid &= complain("Attribute 'path' must be specified for unix sockets", self)
         end
-        valid = false unless %w{tcp unix}.member?(self.family)
+        valid = false unless %w[tcp unix].member?(self.family)
         valid
       end
 
@@ -132,9 +132,9 @@ module God
         history = "[" + @timeline.map { |t| t ? '*' : '' }.join(',') + "]"
         if @timeline.select { |x| x }.size >= self.times.first
           self.info = "socket out of bounds #{history}"
-          return true
+          true
         else
-          return false
+          false
         end
       end
     end

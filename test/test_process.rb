@@ -235,7 +235,7 @@ class TestProcessDaemon < Minitest::Test
   end
 
   def test_call_action_with_lambda_should_call
-    cmd = lambda { puts "Hi" }
+    cmd = -> { puts "Hi" }
     cmd.expects(:call)
     @p.start = cmd
     @p.call_action(:start)

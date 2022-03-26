@@ -1,6 +1,6 @@
 module God
   class Process
-    WRITES_PID = [:start, :restart]
+    WRITES_PID = [:start, :restart].freeze
 
     attr_accessor :name, :uid, :gid, :log, :log_cmd, :err_log, :err_log_cmd,
                   :start, :stop, :restart, :unix_socket, :chroot, :env, :dir,
@@ -52,8 +52,8 @@ module God
         File.writable?(file_in_chroot(file)) ? exit!(0) : exit!(1)
       end
 
-      wpid, status = ::Process.waitpid2(pid)
-      status.exitstatus == 0 ? true : false
+      _wpid, status = ::Process.waitpid2(pid)
+      status.exitstatus == 0
     end
 
     def valid?
@@ -112,7 +112,7 @@ module God
       end
 
       # log dir must exist
-      if !File.exist?(File.dirname(self.log))
+      unless File.exist?(File.dirname(self.log))
         valid = false
         applog(self, :error, "Log directory '#{File.dirname(self.log)}' does not exist")
       end
@@ -132,12 +132,12 @@ module God
 
       # chroot directory must exist and have /dev/null in it
       if self.chroot
-        if !File.directory?(self.chroot)
+        unless File.directory?(self.chroot)
           valid = false
           applog(self, :error, "CHROOT directory '#{self.chroot}' does not exist")
         end
 
-        if !File.exist?(File.join(self.chroot, '/dev/null'))
+        unless File.exist?(File.join(self.chroot, '/dev/null'))
           valid = false
           applog(self, :error, "CHROOT directory '#{self.chroot}' does not contain '/dev/null'")
         end
@@ -150,11 +150,11 @@ module God
     # No really, trust me. Use the instance variable.
     def pid_file=(value)
       # if value is nil, do the right thing
-      if value
-        @tracking_pid = false
-      else
-        @tracking_pid = true
-      end
+      @tracking_pid = if value
+                        false
+                      else
+                        true
+                      end
 
       @pid_file = value
     end
@@ -250,7 +250,7 @@ module God
           r, w = IO.pipe
           begin
             opid = fork do
-              STDOUT.reopen(w)
+              $stdout.reopen(w)
               r.close
               pid = self.spawn(command)
               puts pid.to_s # send pid back to forker
@@ -315,24 +315,24 @@ module God
         self.dir ||= '/'
         Dir.chdir self.dir
         $0 = command
-        STDIN.reopen "/dev/null"
+        $stdin.reopen "/dev/null"
         if self.log_cmd
-          STDOUT.reopen IO.popen(self.log_cmd, "a")
+          $stdout.reopen IO.popen(self.log_cmd, "a")
         else
-          STDOUT.reopen file_in_chroot(self.log), "a"
+          $stdout.reopen file_in_chroot(self.log), "a"
         end
         if err_log_cmd
-          STDERR.reopen IO.popen(err_log_cmd, "a")
+          $stderr.reopen IO.popen(err_log_cmd, "a")
         elsif err_log && (log_cmd || err_log != log)
-          STDERR.reopen file_in_chroot(err_log), "a"
+          $stderr.reopen file_in_chroot(err_log), "a"
         else
-          STDERR.reopen STDOUT
+          $stderr.reopen $stdout
         end
 
         # close any other file descriptors
         3.upto(256) { |fd| IO.new(fd).close rescue nil }
 
-        if self.env && self.env.is_a?(Hash)
+        if self.env.is_a?(Hash)
           self.env.each do |(key, value)|
             ENV[key] = value.to_s
           end

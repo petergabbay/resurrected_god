@@ -3,8 +3,8 @@
 data = ''
 
 loop do
-  STDOUT.puts('server')
-  STDOUT.flush
+  $stdout.puts('server')
+  $stdout.flush
 
   100000.times { data << 'x' }
 

@@ -3,9 +3,9 @@
 # This is the actual config file used to keep the mongrels of
 # gravatar.com running.
 
-RAILS_ROOT = "/Users/tom/dev/gravatar2"
+RAILS_ROOT = "/Users/tom/dev/gravatar2".freeze
 
-%w{8200 8201 8202}.each do |port|
+%w[8200 8201 8202].each do |port|
   God.watch do |w|
     w.name = "gravatar2-mongrel-#{port}"
     w.interval = 30.seconds # default

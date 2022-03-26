@@ -13,7 +13,7 @@ module God
       b.watch = watch
       b
     rescue NameError
-      raise NoSuchBehaviorError.new("No Behavior found with the class name God::Behaviors::#{sym}")
+      raise NoSuchBehaviorError, "No Behavior found with the class name God::Behaviors::#{sym}"
     end
 
     def valid?

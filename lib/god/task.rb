@@ -260,7 +260,7 @@ module God
     ###########################################################################
 
     def method_missing(sym, *args)
-      unless (sym.to_s =~ /=$/)
+      unless sym.to_s =~ /=$/
         super
       end
 
@@ -284,25 +284,23 @@ module God
       if !self.driver.in_driver_context?
         # Called from outside Driver. Send an async message to Driver.
         self.driver.message(:action, [a, c])
-      else
+      elsif self.respond_to?(a)
         # Called from within Driver.
-        if self.respond_to?(a)
-          command = self.send(a)
+        command = self.send(a)
 
-          case command
-          when String
-            msg = "#{self.name} #{a}: #{command}"
-            applog(self, :info, msg)
+        case command
+        when String
+          msg = "#{self.name} #{a}: #{command}"
+          applog(self, :info, msg)
 
-            system(command)
-          when Proc
-            msg = "#{self.name} #{a}: lambda"
-            applog(self, :info, msg)
+          system(command)
+        when Proc
+          msg = "#{self.name} #{a}: lambda"
+          applog(self, :info, msg)
 
-            command.call
-          else
-            raise NotImplementedError
-          end
+          command.call
+        else
+          raise NotImplementedError
         end
       end
     end
@@ -430,14 +428,7 @@ module God
       end
 
       # Get the destination.
-      dest =
-        if condition.transition
-          # Condition override.
-          condition.transition
-        else
-          # Regular.
-          metric.destination && metric.destination[true]
-        end
+      dest = condition.transition || (metric.destination && metric.destination[true])
 
       if dest
         self.move(dest)
@@ -499,12 +490,10 @@ module God
     def dest_desc(metric, condition)
       if condition.transition
         { true => condition.transition }.inspect
+      elsif metric.destination
+        metric.destination.inspect
       else
-        if metric.destination
-          metric.destination.inspect
-        else
-          'none'
-        end
+        'none'
       end
     end
 
@@ -538,7 +527,7 @@ module God
         host = `hostname`.chomp rescue 'none'
         begin
           c.notify(message, Time.now, spec[:priority], spec[:category], host)
-          msg = "#{condition.watch.name} #{c.info ? c.info : "notification sent for contact: #{c.name}"} (#{c.base_name})"
+          msg = "#{condition.watch.name} #{c.info || "notification sent for contact: #{c.name}"} (#{c.base_name})"
           applog(condition.watch, :info, msg)
         rescue Exception => e
           applog(condition.watch, :error, "#{e.message} #{e.backtrace}")

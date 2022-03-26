@@ -68,9 +68,9 @@ module God
 
         if @timeline.select { |x| x > self.above }.size >= self.times.first
           self.info = "cpu out of bounds #{history}"
-          return true
+          true
         else
-          return false
+          false
         end
       end
     end

@@ -6,7 +6,7 @@ module God
   # workflows. It has four states: init, up, start, and restart.
   class Watch < Task
     # The Array of Symbol valid task states.
-    VALID_STATES = [:init, :up, :start, :restart]
+    VALID_STATES = [:init, :up, :start, :restart].freeze
 
     # The Sybmol initial state.
     INITIAL_STATE = :init
@@ -98,11 +98,11 @@ module God
 
     # Default Integer or Array of Integers specification of how many times the
     # memory condition must fail before triggering.
-    DEFAULT_KEEPALIVE_MEMORY_TIMES = [3, 5]
+    DEFAULT_KEEPALIVE_MEMORY_TIMES = [3, 5].freeze
 
     # Default Integer or Array of Integers specification of how many times the
     # CPU condition must fail before triggering.
-    DEFAULT_KEEPALIVE_CPU_TIMES = [3, 5]
+    DEFAULT_KEEPALIVE_CPU_TIMES = [3, 5].freeze
 
     # Public: A set of conditions for easily getting started with simple watch
     # scenarios. Keepalive is intended for use by beginners or on processes
@@ -193,10 +193,8 @@ module God
     # Yields the Metric upon which conditions can be added.
     #
     # Returns nothing.
-    def start_if
-      self.transition(:up, :start) do |on|
-        yield(on)
-      end
+    def start_if(&block)
+      self.transition(:up, :start, &block)
     end
 
     # Public: Restart the process if any of the given conditions are triggered.
@@ -204,10 +202,8 @@ module God
     # Yields the Metric upon which conditions can be added.
     #
     # Returns nothing.
-    def restart_if
-      self.transition(:up, :restart) do |on|
-        yield(on)
-      end
+    def restart_if(&block)
+      self.transition(:up, :restart, &block)
     end
 
     # Public: Stop the process if any of the given conditions are triggered.
@@ -215,10 +211,8 @@ module God
     # Yields the Metric upon which conditions can be added.
     #
     # Returns nothing.
-    def stop_if
-      self.transition(:up, :stop) do |on|
-        yield(on)
-      end
+    def stop_if(&block)
+      self.transition(:up, :stop, &block)
     end
 
     ###########################################################################

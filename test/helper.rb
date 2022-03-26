@@ -81,13 +81,14 @@ module God
 end
 
 def silence_warnings
-  old_verbose, $VERBOSE = $VERBOSE, nil
+  old_verbose = $VERBOSE
+  $VERBOSE = nil
   yield
 ensure
   $VERBOSE = old_verbose
 end
 
-LOG.instance_variable_set(:@io, StringIO.new())
+LOG.instance_variable_set(:@io, StringIO.new)
 
 def output_logs
   io = LOG.instance_variable_get(:@io)
@@ -97,21 +98,10 @@ ensure
   LOG.instance_variable_set(:@io, io)
 end
 
-# module Kernel
-#   def abort(text)
-#     raise SystemExit, text
-#   end
-#   def exit(code)
-#     raise SystemExit, "Exit code: #{code}"
-#   end
-# end
-
 module Minitest
   module Assertions
-    def assert_abort
-      assert_raises SystemExit do
-        yield
-      end
+    def assert_abort(&block)
+      assert_raises SystemExit, &block
     end
 
     def assert_nothing_raised

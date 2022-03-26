@@ -4,8 +4,8 @@ trap :USR1 do
 end
 
 loop do
-  STDOUT.puts('server')
-  STDOUT.flush
+  $stdout.puts('server')
+  $stdout.flush
 
   sleep 10
 end

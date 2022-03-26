@@ -23,18 +23,18 @@ module God
         concensus = (@timeline.size == self.times)
         duration = self.within.nil? || (@timeline.last - @timeline.first) < self.within
 
-        if within
-          history = "[#{@timeline.size}/#{self.times} within #{(@timeline.last - @timeline.first).to_i}s]"
-        else
-          history = "[#{@timeline.size}/#{self.times}]"
-        end
+        history = if within
+                    "[#{@timeline.size}/#{self.times} within #{(@timeline.last - @timeline.first).to_i}s]"
+                  else
+                    "[#{@timeline.size}/#{self.times}]"
+                  end
 
         if concensus && duration
           self.info = "tries exceeded #{history}"
-          return true
+          true
         else
           self.info = "tries within bounds #{history}"
-          return false
+          false
         end
       end
     end

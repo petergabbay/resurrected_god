@@ -5,10 +5,10 @@ module God
       @@hertz = 100
       @@total_mem = nil
 
-      MeminfoPath = '/proc/meminfo'
-      UptimePath = '/proc/uptime'
+      MeminfoPath = '/proc/meminfo'.freeze
+      UptimePath = '/proc/uptime'.freeze
 
-      RequiredPaths = [MeminfoPath, UptimePath]
+      RequiredPaths = [MeminfoPath, UptimePath].freeze
 
       # FreeBSD has /proc by default, but nothing mounted there!
       # So we should check for the actual required paths!
@@ -60,11 +60,9 @@ module God
       # Some systems (CentOS?) have a /proc, but they can hang when trying to
       # read from them. Try to use this sparingly as it is expensive.
       def self.readable?(path)
-        begin
-          Timeout.timeout(1) { File.read(path) }
-        rescue Timeout::Error
-          false
-        end
+        Timeout.timeout(1) { File.read(path) }
+      rescue Timeout::Error
+        false
       end
 
       # in seconds

@@ -28,11 +28,11 @@ module God
         message = "God: #{message} at #{host}"
         message << " | #{[category, priority].join(" ")}" unless category.to_s.empty? || priority.to_s.empty?
 
-        if ::Airbrake.notify nil, error_message: message, api_key: arg(:apikey)
-          self.info = "sent airbrake notification to #{self.name}"
-        else
-          self.info = "failed to send airbrake notification to #{self.name}"
-        end
+        self.info = if ::Airbrake.notify nil, error_message: message, api_key: arg(:apikey)
+                      "sent airbrake notification to #{self.name}"
+                    else
+                      "failed to send airbrake notification to #{self.name}"
+                    end
       rescue Object => e
         applog(nil, :info, "failed to send airbrake notification: #{e.message}")
         applog(nil, :debug, e.backtrace.join("\n"))

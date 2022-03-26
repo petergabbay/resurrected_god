@@ -5,8 +5,8 @@ class TestWatch < Minitest::Test
     God.internal_init
     @watch = Watch.new
     @watch.name = 'foo'
-    @watch.start = lambda {}
-    @watch.stop = lambda {}
+    @watch.start = -> {}
+    @watch.stop = -> {}
     @watch.prepare
   end
 
@@ -244,7 +244,7 @@ class TestWatch < Minitest::Test
     @watch.driver.stubs(:in_driver_context?).returns(true)
     @watch.driver.expects(:message).never
 
-    @watch.restart = lambda {}
+    @watch.restart = -> {}
     c = Conditions::FakePollCondition.new
     @watch.expects(:call_action).with(c, :restart)
     @watch.action(:restart, c)

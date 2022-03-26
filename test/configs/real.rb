@@ -2,7 +2,7 @@ if $0 == __FILE__
   require File.join(File.dirname(__FILE__), *%w[.. .. lib god])
 end
 
-RAILS_ROOT = "/Users/tom/dev/git/helloworld"
+RAILS_ROOT = "/Users/tom/dev/git/helloworld".freeze
 
 God.watch do |w|
   w.name = "local-3000"

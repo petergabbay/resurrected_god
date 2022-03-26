@@ -14,7 +14,7 @@ module God
 
       c
     rescue NameError
-      raise NoSuchContactError.new("No Contact found with the class name God::Contacts::#{sym}")
+      raise NoSuchContactError, "No Contact found with the class name God::Contacts::#{sym}"
     end
 
     def self.valid?(contact)
@@ -47,8 +47,8 @@ module God
       when String
         { contacts: Array(spec) }
       when Array
-        unless spec.select { |x| !x.instance_of?(String) }.empty?
-          raise ArgumentError.new("contains non-String elements")
+        unless spec.all? { |x| x.instance_of?(String) }
+          raise ArgumentError, "contains non-String elements"
         end
 
         { contacts: spec }
@@ -61,15 +61,15 @@ module God
           when String
           # valid
           when Array
-            unless contacts.select { |x| !x.instance_of?(String) }.empty?
-              raise ArgumentError.new("has a :contacts key containing non-String elements")
+            unless contacts.all? { |x| x.instance_of?(String) }
+              raise ArgumentError, "has a :contacts key containing non-String elements"
             end
           # valid
           else
-            raise ArgumentError.new("must have a :contacts key pointing to a String or Array of Strings")
+            raise ArgumentError, "must have a :contacts key pointing to a String or Array of Strings"
           end
         else
-          raise ArgumentError.new("must have a :contacts key")
+          raise ArgumentError, "must have a :contacts key"
         end
 
         # remove priority and category
@@ -78,7 +78,7 @@ module God
 
         # check for invalid keys
         unless copy.empty?
-          raise ArgumentError.new("contains extra elements: #{copy.inspect}")
+          raise ArgumentError, "contains extra elements: #{copy.inspect}"
         end
 
         # normalize
@@ -88,7 +88,7 @@ module God
 
         spec
       else
-        raise ArgumentError.new("must be a String (contact name), Array (of contact names), or Hash (contact specification)")
+        raise ArgumentError, "must be a String (contact name), Array (of contact names), or Hash (contact specification)"
       end
     end
 
@@ -100,7 +100,7 @@ module God
     #   +category+ is the arbitrary category String
     #   +host+ is the hostname of the server
     def notify(message, time, priority, category, host)
-      raise AbstractMethodNotOverriddenError.new("Contact#notify must be overridden in subclasses")
+      raise AbstractMethodNotOverriddenError, "Contact#notify must be overridden in subclasses"
     end
 
     # Construct the friendly name of this Contact, looks like:

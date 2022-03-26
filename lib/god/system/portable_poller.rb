@@ -29,15 +29,6 @@ module God
       def ps_float(keyword)
         `ps -o #{keyword}= -p #{@pid}`.to_f
       end
-
-      def ps_string(keyword)
-        `ps -o #{keyword}= -p #{@pid}`.strip
-      end
-
-      def time_string_to_seconds(text)
-        _, minutes, seconds, useconds = *text.match(/(\d+):(\d{2}).(\d{2})/)
-        (minutes.to_i * 60) + seconds.to_i
-      end
     end
   end
 end

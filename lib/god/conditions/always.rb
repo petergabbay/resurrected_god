@@ -19,6 +19,7 @@ module God
       attr_accessor :what
 
       def initialize
+        super
         self.info = "always"
       end
 

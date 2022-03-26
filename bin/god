@@ -115,7 +115,7 @@ begin
     require 'god'
     God::EventHandler.load
     God::CLI::Version.version_extended
-  elsif !options[:config] && command = ARGV[0]
+  elsif !options[:config] && (command = ARGV[0])
     require 'god'
     God::EventHandler.load
     God::CLI::Command.new(command, options, ARGV)

@@ -55,8 +55,6 @@ module God
         0
       end
 
-      private
-
       # Some systems (CentOS?) have a /proc, but they can hang when trying to
       # read from them. Try to use this sparingly as it is expensive.
       def self.readable?(path)
@@ -64,6 +62,8 @@ module God
       rescue Timeout::Error
         false
       end
+
+      private
 
       # in seconds
       def uptime

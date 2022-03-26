@@ -38,6 +38,7 @@ module God
                     :retry_within
 
       def initialize
+        super
         self.info = "process is flapping"
       end
 

@@ -56,7 +56,7 @@ module God
         copy = spec.dup
 
         # check :contacts
-        if contacts = copy.delete(:contacts)
+        if (contacts = copy.delete(:contacts))
           case contacts
           when String
           # valid

@@ -20,6 +20,7 @@ module God
       attr_accessor :pid_file
 
       def initialize
+        super
         self.info = "process exited"
       end
 

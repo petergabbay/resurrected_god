@@ -6,32 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 5
-# Configuration parameters: IgnoredMethods.
-Lint/AmbiguousBlockAssociation:
-  Exclude:
-    - 'test/test_god_system.rb'
-
-# Offense count: 4
-# Configuration parameters: AllowSafeAssignment.
-Lint/AssignmentInCondition:
-  Exclude:
-    - 'bin/god'
-    - 'lib/god/cli/command.rb'
-    - 'lib/god/contact.rb'
-
-# Offense count: 1
-Lint/IneffectiveAccessModifier:
-  Exclude:
-    - 'lib/god/system/slash_proc_poller.rb'
-
-# Offense count: 3
-Lint/MissingSuper:
-  Exclude:
-    - 'lib/god/conditions/always.rb'
-    - 'lib/god/conditions/flapping.rb'
-    - 'lib/god/conditions/process_exits.rb'
-
 # Offense count: 7
 Lint/RescueException:
   Exclude:

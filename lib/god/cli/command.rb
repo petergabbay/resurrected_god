@@ -86,8 +86,8 @@ module God
           groups[g][name] = status
         end
 
-        if item = @args[1]
-          if single = statuses[item]
+        if (item = @args[1])
+          if (single = statuses[item])
             # specified task (0 -> up, 1 -> unmonitored, 2 -> other)
             state = single[:state]
             puts "#{item}: #{state}"

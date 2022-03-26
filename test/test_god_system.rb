@@ -26,7 +26,7 @@ class TestGodSystem < MiniTest::Test
       God.inited = false
       God.terminate_timeout = ::God::TERMINATE_TIMEOUT_DEFAULT
       God.internal_init # reset config, set running to false, etc.
-      # set termiante back to old method, for other tests
+      # set terminate back to old method, for other tests
       God.define_singleton_method(:terminate, old_terminate)
     end
   end

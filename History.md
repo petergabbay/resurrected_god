@@ -9,6 +9,8 @@
   * Reduce included files to reduce the gem file size
   * Use Gemfile instead of `Gem::Specification#add_development_dependency`
   * Migrate CI from Travis CI to GitHub Actions
+  * Introduce RuboCop
+  * Format codes with RuboCop
 
 ## 0.14.0 / 2022-03-06
 

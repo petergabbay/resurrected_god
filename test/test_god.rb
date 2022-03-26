@@ -522,7 +522,7 @@ class TestGod < MiniTest::Test
       w.start = 'bar'
     end
 
-    w = God.watches['foo']
+    God.watches['foo']
     assert_equal({ 'foo' => { state: :unmonitored, group: nil } }, God.status)
   end
 
@@ -593,8 +593,7 @@ class TestGod < MiniTest::Test
       end
     CODE
 
-    w = nil
-    w, e = *God.running_load(code, '/foo/bar.god')
+    w, = *God.running_load(code, '/foo/bar.god')
     assert_equal 1, w.size
     assert_equal 'foo', w.first
   end

@@ -14,8 +14,8 @@ begin
 
   options = { daemonize: true, port: 17165, syslog: true, events: true }
 
-  opts = OptionParser.new do |opts|
-    opts.banner = <<-BANNER
+  opts = OptionParser.new do |o|
+    o.banner = <<-BANNER
   Usage:
     Starting:
       god [-c <config file>] [-p <port> | -b] [-P <file>] [-l <file>] [-D]
@@ -44,55 +44,55 @@ begin
     Options:
     BANNER
 
-    opts.on("-cCONFIG", "--config-file CONFIG", "Configuration file") do |x|
+    o.on("-cCONFIG", "--config-file CONFIG", "Configuration file") do |x|
       options[:config] = x
     end
 
-    opts.on("-pPORT", "--port PORT", "Communications port (default 17165)") do |x|
+    o.on("-pPORT", "--port PORT", "Communications port (default 17165)") do |x|
       options[:port] = x
     end
 
-    opts.on("-b", "--auto-bind", "Auto-bind to an unused port number") do
+    o.on("-b", "--auto-bind", "Auto-bind to an unused port number") do
       options[:port] = "0"
     end
 
-    opts.on("-PFILE", "--pid FILE", "Where to write the PID file") do |x|
+    o.on("-PFILE", "--pid FILE", "Where to write the PID file") do |x|
       options[:pid] = x
     end
 
-    opts.on("-lFILE", "--log FILE", "Where to write the log file") do |x|
+    o.on("-lFILE", "--log FILE", "Where to write the log file") do |x|
       options[:log] = x
     end
 
-    opts.on("-D", "--no-daemonize", "Don't daemonize") do
+    o.on("-D", "--no-daemonize", "Don't daemonize") do
       options[:daemonize] = false
     end
 
-    opts.on("-v", "--version", "Print the version number and exit") do
+    o.on("-v", "--version", "Print the version number and exit") do
       options[:version] = true
     end
 
-    opts.on("-V", "Print extended version and build information") do
+    o.on("-V", "Print extended version and build information") do
       options[:info] = true
     end
 
-    opts.on("--log-level LEVEL", "Log level [debug|info|warn|error|fatal]") do |x|
+    o.on("--log-level LEVEL", "Log level [debug|info|warn|error|fatal]") do |x|
       options[:log_level] = x.to_sym
     end
 
-    opts.on("--no-syslog", "Disable output to syslog") do
+    o.on("--no-syslog", "Disable output to syslog") do
       options[:syslog] = false
     end
 
-    opts.on("--attach PID", "Quit god when the attached process dies") do |x|
+    o.on("--attach PID", "Quit god when the attached process dies") do |x|
       options[:attach] = x
     end
 
-    opts.on("--no-events", "Disable the event system") do
+    o.on("--no-events", "Disable the event system") do
       options[:events] = false
     end
 
-    opts.on("--bleakhouse", "Enable bleakhouse profiling") do
+    o.on("--bleakhouse", "Enable bleakhouse profiling") do
       options[:bleakhouse] = true
     end
   end

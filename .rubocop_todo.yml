@@ -21,11 +21,6 @@ Lint/ShadowedException:
   Exclude:
     - 'lib/god/socket.rb'
 
-# Offense count: 1
-Lint/ShadowingOuterLocalVariable:
-  Exclude:
-    - 'bin/god'
-
 # Offense count: 5
 # Configuration parameters: AllowComments, AllowNil.
 Lint/SuppressedException:
@@ -55,8 +50,6 @@ Lint/UselessAssignment:
     - 'lib/god/event_handlers/kqueue_handler.rb'
     - 'lib/god/process.rb'
     - 'lib/god/system/portable_poller.rb'
-    - 'test/test_god.rb'
-    - 'test/test_socket.rb'
 
 # Offense count: 66
 # Configuration parameters: IgnoredMethods, CountRepeatedAttributes.

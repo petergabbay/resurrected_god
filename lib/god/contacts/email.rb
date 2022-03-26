@@ -33,11 +33,9 @@ module God
   module Contacts
     class Email < Contact
       class << self
-        attr_accessor :to_email, :to_name, :from_email, :from_name,
-                      :delivery_method, :server_host, :server_port,
-                      :server_auth, :server_domain, :server_user,
-                      :server_password, :sendmail_path, :sendmail_args
-        attr_accessor :format
+        attr_accessor :to_email, :to_name, :from_email, :from_name, :delivery_method, :server_host, :server_port,
+                      :server_auth, :server_domain, :server_user, :server_password, :sendmail_path, :sendmail_args,
+                      :format
       end
 
       self.from_email = 'god@example.com'

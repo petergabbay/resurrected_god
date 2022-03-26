@@ -16,14 +16,13 @@ module God
   module Contacts
     class Jabber < Contact
       class << self
-        attr_accessor :host, :port, :from_jid, :password, :to_jid, :subject
-        attr_accessor :format
+        attr_accessor :host, :port, :from_jid, :password, :to_jid, :subject, :format
       end
 
       self.port = 5222
       self.subject = 'God Notification'
 
-      self.format = lambda do |message, time, priority, category, host|
+      self.format = lambda do |message, _time, priority, category, host|
         text  = "Message: #{message}\n"
         text += "Host: #{host}\n"         if host
         text += "Priority: #{priority}\n" if priority

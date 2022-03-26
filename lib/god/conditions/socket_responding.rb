@@ -101,10 +101,10 @@ module God
 
       def valid?
         valid = true
-        if self.family == 'tcp' and @port == 0
+        if self.family == 'tcp' && @port == 0
           valid &= complain("Attribute 'port' must be specified for tcp sockets", self)
         end
-        if self.family == 'unix' and self.path.nil?
+        if self.family == 'unix' && self.path.nil?
           valid &= complain("Attribute 'path' must be specified for unix sockets", self)
         end
         valid = false unless %w{tcp unix}.member?(self.family)

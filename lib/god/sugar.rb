@@ -5,7 +5,7 @@ class Numeric
   end
 
   # Public: Units of seconds.
-  alias :second :seconds
+  alias second seconds
 
   # Public: Units of minutes (60 seconds).
   def minutes
@@ -13,7 +13,7 @@ class Numeric
   end
 
   # Public: Units of minutes (60 seconds).
-  alias :minute :minutes
+  alias minute minutes
 
   # Public: Units of hours (3600 seconds).
   def hours
@@ -21,7 +21,7 @@ class Numeric
   end
 
   # Public: Units of hours (3600 seconds).
-  alias :hour :hours
+  alias hour hours
 
   # Public: Units of days (86400 seconds).
   def days
@@ -29,7 +29,7 @@ class Numeric
   end
 
   # Public: Units of days (86400 seconds).
-  alias :day :days
+  alias day days
 
   # Units of kilobytes.
   def kilobytes
@@ -37,7 +37,7 @@ class Numeric
   end
 
   # Units of kilobytes.
-  alias :kilobyte :kilobytes
+  alias kilobyte kilobytes
 
   # Units of megabytes (1024 kilobytes).
   def megabytes
@@ -45,7 +45,7 @@ class Numeric
   end
 
   # Units of megabytes (1024 kilobytes).
-  alias :megabyte :megabytes
+  alias megabyte megabytes
 
   # Units of gigabytes (1,048,576 kilobytes).
   def gigabytes
@@ -53,7 +53,7 @@ class Numeric
   end
 
   # Units of gigabytes (1,048,576 kilobytes).
-  alias :gigabyte :gigabytes
+  alias gigabyte gigabytes
 
   # Units of percent. e.g. 50.percent.
   def percent

@@ -11,7 +11,7 @@ class TestGod < MiniTest::Test
   def teardown
     God.main && God.main.kill
     if God.watches
-      God.watches.each do |k, w|
+      God.watches.each do |_k, w|
         w.driver.thread.kill
       end
     end
@@ -38,7 +38,10 @@ class TestGod < MiniTest::Test
   # # init
 
   def test_pid_file_directory_should_abort_if_called_after_watch
-    God.watch { |w| w.name = 'foo'; w.start = 'bar' }
+    God.watch do |w|
+      w.name = 'foo'
+      w.start = 'bar'
+    end
     assert_abort do
       God.pid_file_directory = 'foo'
     end
@@ -129,50 +132,85 @@ class TestGod < MiniTest::Test
   end
 
   def test_watch_should_allow_multiple_watches
-    God.watch { |w| w.name = 'foo'; w.start = 'bar' }
+    God.watch do |w|
+      w.name = 'foo'
+      w.start = 'bar'
+    end
 
     assert_nothing_raised do
-      God.watch { |w| w.name = 'bar'; w.start = 'bar' }
+      God.watch do |w|
+        w.name = 'bar'
+        w.start = 'bar'
+      end
     end
   end
 
   def test_watch_should_disallow_duplicate_watch_names
-    God.watch { |w| w.name = 'foo'; w.start = 'bar' }
+    God.watch do |w|
+      w.name = 'foo'
+      w.start = 'bar'
+    end
 
     assert_abort do
-      God.watch { |w| w.name = 'foo'; w.start = 'bar' }
+      God.watch do |w|
+        w.name = 'foo'
+        w.start = 'bar'
+      end
     end
   end
 
   def test_watch_should_disallow_identical_watch_and_group_names
-    God.watch { |w| w.name = 'foo'; w.group = 'bar'; w.start = 'bar' }
+    God.watch do |w|
+      w.name = 'foo'
+      w.group = 'bar'
+      w.start = 'bar'
+    end
 
     assert_abort do
-      God.watch { |w| w.name = 'bar'; w.start = 'bar' }
+      God.watch do |w|
+        w.name = 'bar'
+        w.start = 'bar'
+      end
     end
   end
 
   def test_watch_should_disallow_identical_watch_and_group_names_other_way
-    God.watch { |w| w.name = 'bar'; w.start = 'bar' }
+    God.watch do |w|
+      w.name = 'bar'
+      w.start = 'bar'
+    end
 
     assert_abort do
-      God.watch { |w| w.name = 'foo'; w.group = 'bar'; w.start = 'bar' }
+      God.watch do |w|
+        w.name = 'foo'
+        w.group = 'bar'
+        w.start = 'bar'
+      end
     end
   end
 
   def test_watch_should_unwatch_new_watch_if_running_and_duplicate_watch
-    God.watch { |w| w.name = 'foo'; w.start = 'bar' }
+    God.watch do |w|
+      w.name = 'foo'
+      w.start = 'bar'
+    end
     God.running = true
 
     assert_nothing_raised do
-      God.watch { |w| w.name = 'foo'; w.start = 'bar' }
+      God.watch do |w|
+        w.name = 'foo'
+        w.start = 'bar'
+      end
     end
   end
 
   # unwatch
 
   def test_unwatch_should_unmonitor_watch
-    God.watch { |w| w.name = 'bar'; w.start = 'bar' }
+    God.watch do |w|
+      w.name = 'bar'
+      w.start = 'bar'
+    end
     w = God.watches['bar']
     w.state = :up
     w.expects(:unmonitor)
@@ -180,14 +218,20 @@ class TestGod < MiniTest::Test
   end
 
   def test_unwatch_should_unregister_watch
-    God.watch { |w| w.name = 'bar'; w.start = 'bar' }
+    God.watch do |w|
+      w.name = 'bar'
+      w.start = 'bar'
+    end
     w = God.watches['bar']
     w.expects(:unregister!)
     God.unwatch(w)
   end
 
   def test_unwatch_should_remove_same_name_watches
-    God.watch { |w| w.name = 'bar'; w.start = 'bar' }
+    God.watch do |w|
+      w.name = 'bar'
+      w.start = 'bar'
+    end
     w = God.watches['bar']
     God.unwatch(w)
     assert_equal 0, God.watches.size
@@ -219,13 +263,22 @@ class TestGod < MiniTest::Test
 
   def test_contact_should_create_and_store_contact
     contact = nil
-    God.contact(:fake_contact) { |c| c.name = 'tom'; contact = c }
+    God.contact(:fake_contact) do |c|
+      c.name = 'tom'
+      contact = c
+    end
     assert_equal({ "tom" => contact }, God.contacts)
   end
 
   def test_contact_should_add_to_group
-    God.contact(:fake_contact) { |c| c.name = 'tom'; c.group = 'devs' }
-    God.contact(:fake_contact) { |c| c.name = 'chris'; c.group = 'devs' }
+    God.contact(:fake_contact) do |c|
+      c.name = 'tom'
+      c.group = 'devs'
+    end
+    God.contact(:fake_contact) do |c|
+      c.name = 'chris'
+      c.group = 'devs'
+    end
     assert_equal 2, God.contacts.size
     assert_equal 1, God.contact_groups.size
   end
@@ -244,7 +297,10 @@ class TestGod < MiniTest::Test
   end
 
   def test_contact_should_abort_on_contact_with_same_name_as_group
-    God.contact(:fake_contact) { |c| c.name = 'tom'; c.group = 'devs' }
+    God.contact(:fake_contact) do |c|
+      c.name = 'tom'
+      c.group = 'devs'
+    end
     assert_nothing_raised do
       God.contact(:fake_contact) { |c| c.name = 'devs' }
     end
@@ -253,7 +309,10 @@ class TestGod < MiniTest::Test
   def test_contact_should_abort_on_contact_with_same_group_as_name
     God.contact(:fake_contact) { |c| c.name = 'tom' }
     assert_abort do
-      God.contact(:fake_contact) { |c| c.name = 'chris'; c.group = 'tom' }
+      God.contact(:fake_contact) do |c|
+        c.name = 'chris'
+        c.group = 'tom'
+      end
     end
   end
 
@@ -269,7 +328,10 @@ class TestGod < MiniTest::Test
   # control
 
   def test_control_should_monitor_on_start
-    God.watch { |w| w.name = 'foo'; w.start = 'bar' }
+    God.watch do |w|
+      w.name = 'foo'
+      w.start = 'bar'
+    end
 
     w = God.watches['foo']
     w.expects(:monitor)
@@ -277,7 +339,10 @@ class TestGod < MiniTest::Test
   end
 
   def test_control_should_move_to_restart_on_restart
-    God.watch { |w| w.name = 'foo'; w.start = 'bar' }
+    God.watch do |w|
+      w.name = 'foo'
+      w.start = 'bar'
+    end
 
     w = God.watches['foo']
     w.expects(:move).with(:restart)
@@ -285,7 +350,10 @@ class TestGod < MiniTest::Test
   end
 
   def test_control_should_unmonitor_and_stop_on_stop
-    God.watch { |w| w.name = 'foo'; w.start = 'bar' }
+    God.watch do |w|
+      w.name = 'foo'
+      w.start = 'bar'
+    end
 
     w = God.watches['foo']
     w.state = :up
@@ -295,7 +363,10 @@ class TestGod < MiniTest::Test
   end
 
   def test_control_should_unmonitor_on_unmonitor
-    God.watch { |w| w.name = 'foo'; w.start = 'bar' }
+    God.watch do |w|
+      w.name = 'foo'
+      w.start = 'bar'
+    end
 
     w = God.watches['foo']
     w.state = :up
@@ -304,7 +375,10 @@ class TestGod < MiniTest::Test
   end
 
   def test_control_should_unwatch_on_remove
-    God.watch { |w| w.name = 'foo'; w.start = 'bar' }
+    God.watch do |w|
+      w.name = 'foo'
+      w.start = 'bar'
+    end
 
     w = God.watches['foo']
     w.state = :up
@@ -313,7 +387,10 @@ class TestGod < MiniTest::Test
   end
 
   def test_control_should_raise_on_invalid_command
-    God.watch { |w| w.name = 'foo'; w.start = 'bar' }
+    God.watch do |w|
+      w.name = 'foo'
+      w.start = 'bar'
+    end
 
     assert_raises InvalidCommandError do
       God.control('foo', 'invalid')
@@ -419,7 +496,10 @@ class TestGod < MiniTest::Test
   # status
 
   def test_status_should_show_state
-    God.watch { |w| w.name = 'foo'; w.start = 'bar' }
+    God.watch do |w|
+      w.name = 'foo'
+      w.start = 'bar'
+    end
 
     w = God.watches['foo']
     w.state = :up
@@ -427,7 +507,11 @@ class TestGod < MiniTest::Test
   end
 
   def test_status_should_show_state_with_group
-    God.watch { |w| w.name = 'foo'; w.start = 'bar'; w.group = 'g' }
+    God.watch do |w|
+      w.name = 'foo'
+      w.start = 'bar'
+      w.group = 'g'
+    end
 
     w = God.watches['foo']
     w.state = :up
@@ -435,7 +519,10 @@ class TestGod < MiniTest::Test
   end
 
   def test_status_should_show_unmonitored_for_nil_state
-    God.watch { |w| w.name = 'foo'; w.start = 'bar' }
+    God.watch do |w|
+      w.name = 'foo'
+      w.start = 'bar'
+    end
 
     w = God.watches['foo']
     assert_equal({ 'foo' => { state: :unmonitored, group: nil } }, God.status)
@@ -444,7 +531,10 @@ class TestGod < MiniTest::Test
   # running_log
 
   def test_running_log_should_call_watch_log_since_on_main_log
-    God.watch { |w| w.name = 'foo'; w.start = 'bar' }
+    God.watch do |w|
+      w.name = 'foo'
+      w.start = 'bar'
+    end
     t = Time.now
     LOG.expects(:watch_log_since).with('foo', t)
     God.running_log('foo', t)
@@ -639,7 +729,10 @@ class TestGod < MiniTest::Test
   end
 
   def test_start_should_get_and_join_timer
-    God.watch { |w| w.name = 'foo'; w.start = 'bar' }
+    God.watch do |w|
+      w.name = 'foo'
+      w.start = 'bar'
+    end
     God.start
   end
 

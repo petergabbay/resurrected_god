@@ -19,7 +19,7 @@ class TestGodSystem < MiniTest::Test
     ensure
       God.stop_all
       God.terminate # use our monkeypatched terminate
-      God.watches.each do |name, w|
+      God.watches.each do |_name, w|
         w.stop_signal = 'KILL'
         w.action(:stop)
       end
@@ -73,7 +73,7 @@ class TestGodSystem < MiniTest::Test
       sleep 2
       assert_equal true, God.watches['start_watch'].alive?
       God.stop_all
-      assert_equal false, God.watches.any? { |name, w| w.alive? }
+      assert_equal false, God.watches.any? { |_name, w| w.alive? }
     end
   end
 
@@ -109,7 +109,7 @@ class TestGodSystem < MiniTest::Test
       sleep 2
       assert_equal true, God.watches['short_timeout'].alive?
       God.stop_all
-      assert_equal false, God.watches.any? { |name, w| w.alive? }
+      assert_equal false, God.watches.any? { |_name, w| w.alive? }
     end
   end
 
@@ -125,14 +125,14 @@ class TestGodSystem < MiniTest::Test
         God.watches["many_watches_#{i}"].action(:start)
       end
       while true do
-        all_running = God.watches.select { |name, w| name =~ /many_watches_/ }.all? { |name, w| w.alive? }
+        all_running = God.watches.select { |name, _w| name =~ /many_watches_/ }.all? { |_name, w| w.alive? }
         size = God.watches.size
         break if all_running && size >= 20
 
         sleep 2
       end
       God.stop_all
-      assert_equal false, God.watches.any? { |name, w| w.alive? }
+      assert_equal false, God.watches.any? { |_name, w| w.alive? }
     end
   end
 
@@ -150,14 +150,14 @@ class TestGodSystem < MiniTest::Test
         God.watches["tons_of_watches_#{i}"].action(:start)
       end
       while true do
-        all_running = God.watches.select { |name, w| name =~ /tons_of_watches_/ }.all? { |name, w| w.alive? }
+        all_running = God.watches.select { |name, _w| name =~ /tons_of_watches_/ }.all? { |_name, w| w.alive? }
         size = God.watches.size
         break if all_running && size >= 100
 
         sleep 2
       end
       God.stop_all
-      assert_equal false, God.watches.any? { |name, w| w.alive? }
+      assert_equal false, God.watches.any? { |_name, w| w.alive? }
     end
   end
 
@@ -174,7 +174,7 @@ class TestGodSystem < MiniTest::Test
         God.watches["tons_of_watches_#{i}"].action(:start)
       end
       while true do
-        all_running = God.watches.select { |name, w| name =~ /tons_of_watches_/ }.all? { |name, w| w.alive? }
+        all_running = God.watches.select { |name, _w| name =~ /tons_of_watches_/ }.all? { |_name, w| w.alive? }
         size = God.watches.size
         break if all_running && size >= 100
 
@@ -184,7 +184,7 @@ class TestGodSystem < MiniTest::Test
         God::CLI::Command.new('terminate', { port: 17165 }, [])
       rescue SystemExit
       ensure
-        assert_equal false, God.watches.any? { |name, w| w.alive? }
+        assert_equal false, God.watches.any? { |_name, w| w.alive? }
       end
     end
   end

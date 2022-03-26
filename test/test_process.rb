@@ -6,7 +6,7 @@ module God
     #   raise "You forgot to stub fork"
     # end
 
-    def exec(*args)
+    def exec(*)
       raise "You forgot to stub exec"
     end
   end

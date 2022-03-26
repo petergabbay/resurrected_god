@@ -79,13 +79,12 @@ module God
   module Contacts
     class Campfire < Contact
       class << self
-        attr_accessor :subdomain, :token, :room, :ssl
-        attr_accessor :format
+        attr_accessor :subdomain, :token, :room, :ssl, :format
       end
 
       self.ssl = false
 
-      self.format = lambda do |message, time, priority, category, host|
+      self.format = lambda do |message, time, _priority, _category, host|
         "[#{time.strftime('%H:%M:%S')}] #{host} - #{message}"
       end
 

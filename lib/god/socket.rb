@@ -104,7 +104,7 @@ module God
         end
 
         File.chmod(Integer(@perm), socket_file) if @perm
-        File.chown(uid, gid, socket_file) if uid or gid
+        File.chown(uid, gid, socket_file) if uid || gid
       end
     end
   end

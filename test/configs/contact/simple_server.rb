@@ -1,3 +1,6 @@
 #! /usr/bin/env ruby
 
-loop { puts 'server'; sleep 1 }
+loop do
+  puts 'server'
+  sleep 1
+end

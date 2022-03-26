@@ -279,7 +279,7 @@ module God
           ensure_stop if action == :stop
         end
 
-        if @tracking_pid or (@pid_file.nil? and WRITES_PID.include?(action))
+        if @tracking_pid || (@pid_file.nil? && WRITES_PID.include?(action))
           File.open(default_pid_file, 'w') do |f|
             f.write pid
           end

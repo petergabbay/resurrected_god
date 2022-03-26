@@ -127,12 +127,20 @@ module God
 
         puts "Sending signal '#{signal}' to '#{name}'"
 
-        t = Thread.new { loop { sleep(1); STDOUT.print('.'); STDOUT.flush; sleep(1) } }
+        t = Thread.new do
+          loop do
+            sleep(1)
+            STDOUT.print('.')
+            STDOUT.flush
+            sleep(1)
+          end
+        end
 
         watches = @server.signal(name, signal)
 
         # output response
-        t.kill; STDOUT.puts
+        t.kill
+        STDOUT.puts
         unless watches.empty?
           puts 'The following watches were affected:'
           watches.each do |w|
@@ -177,12 +185,20 @@ module God
       end
 
       def terminate_command
-        t = Thread.new { loop { STDOUT.print('.'); STDOUT.flush; sleep(1) } }
+        t = Thread.new do
+          loop do
+            STDOUT.print('.')
+            STDOUT.flush
+            sleep(1)
+          end
+        end
         if @server.stop_all
-          t.kill; STDOUT.puts
+          t.kill
+          STDOUT.puts
           puts 'Stopped all watches'
         else
-          t.kill; STDOUT.puts
+          t.kill
+          STDOUT.puts
           puts "Could not stop all watches within #{@server.terminate_timeout} seconds"
         end
 
@@ -245,13 +261,21 @@ module God
 
         puts "Sending '#{@command}' command"
 
-        t = Thread.new { loop { sleep(1); STDOUT.print('.'); STDOUT.flush; sleep(1) } }
+        t = Thread.new do
+          loop do
+            sleep(1)
+            STDOUT.print('.')
+            STDOUT.flush
+            sleep(1)
+          end
+        end
 
         # send @command
         watches = @server.control(name, @command)
 
         # output response
-        t.kill; STDOUT.puts
+        t.kill
+        STDOUT.puts
         unless watches.empty?
           puts 'The following watches were affected:'
           watches.each do |w|

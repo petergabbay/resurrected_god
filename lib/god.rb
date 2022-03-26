@@ -113,7 +113,7 @@ if $load_god
   end
 
   module Kernel
-    alias_method :abort_orig, :abort
+    alias abort_orig abort
 
     def abort(text = nil)
       $run = false
@@ -121,7 +121,7 @@ if $load_god
       exit(1)
     end
 
-    alias_method :exit_orig, :exit
+    alias exit_orig exit
 
     def exit(code = 0)
       $run = false
@@ -459,7 +459,12 @@ if $load_god
       when "restart"
         items.each { |w| jobs << Thread.new { w.move(:restart) } }
       when "stop"
-        items.each { |w| jobs << Thread.new { w.action(:stop); w.unmonitor if w.state != :unmonitored } }
+        items.each do |w|
+          jobs << Thread.new do
+            w.action(:stop)
+            w.unmonitor if w.state != :unmonitored
+          end
+        end
       when "unmonitor"
         items.each { |w| jobs << Thread.new { w.unmonitor if w.state != :unmonitored } }
       when "remove"
@@ -478,7 +483,7 @@ if $load_god
     # Returns true on success, false if all tasks could not be stopped within 10
     # seconds
     def self.stop_all
-      self.watches.sort.each do |name, w|
+      self.watches.sort.each do |_name, w|
         Thread.new do
           w.action(:stop)
           w.unmonitor if w.state != :unmonitored
@@ -486,7 +491,7 @@ if $load_god
       end
 
       terminate_timeout.times do
-        return true unless self.watches.map { |name, w| w.alive? }.any?
+        return true unless self.watches.map { |_name, w| w.alive? }.any?
 
         sleep 1
       end
@@ -598,7 +603,10 @@ if $load_god
 
           case action
           when 'stop'
-            jobs << Thread.new(watch) { |w| w.action(:stop); self.unwatch(w) }
+            jobs << Thread.new(watch) do |w|
+              w.action(:stop)
+              self.unwatch(w)
+            end
             unloaded_watches << name
           when 'remove'
             jobs << Thread.new(watch) { |w| self.unwatch(w) }

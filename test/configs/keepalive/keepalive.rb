@@ -3,8 +3,8 @@
 data = ''
 
 loop do
-  STDOUT.puts('server');
-  STDOUT.flush;
+  STDOUT.puts('server')
+  STDOUT.flush
 
   100000.times { data << 'x' }
 

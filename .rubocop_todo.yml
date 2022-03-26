@@ -12,12 +12,6 @@ Lint/AmbiguousBlockAssociation:
   Exclude:
     - 'test/test_god_system.rb'
 
-# Offense count: 2
-# This cop supports safe auto-correction (--auto-correct).
-Lint/AmbiguousRegexpLiteral:
-  Exclude:
-    - 'lib/god/contacts/statsd.rb'
-
 # Offense count: 5
 # Configuration parameters: AllowSafeAssignment.
 Lint/AssignmentInCondition:
@@ -26,12 +20,6 @@ Lint/AssignmentInCondition:
     - 'lib/god.rb'
     - 'lib/god/cli/command.rb'
     - 'lib/god/contact.rb'
-
-# Offense count: 1
-# This cop supports unsafe auto-correction (--auto-correct-all).
-Lint/DisjunctiveAssignmentInConstructor:
-  Exclude:
-    - 'lib/god/task.rb'
 
 # Offense count: 1
 Lint/DuplicateMethods:
@@ -78,17 +66,6 @@ Lint/SuppressedException:
     - 'lib/god/conditions/socket_responding.rb'
     - 'test/test_god_system.rb'
 
-# Offense count: 18
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: IgnoreEmptyBlocks, AllowUnusedKeywordArguments.
-Lint/UnusedBlockArgument:
-  Exclude:
-    - 'lib/god.rb'
-    - 'lib/god/contacts/campfire.rb'
-    - 'lib/god/contacts/jabber.rb'
-    - 'test/test_god.rb'
-    - 'test/test_god_system.rb'
-
 # Offense count: 17
 # This cop supports safe auto-correction (--auto-correct).
 # Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods, IgnoreNotImplementedMethods.
@@ -100,7 +77,6 @@ Lint/UnusedMethodArgument:
     - 'lib/god/contacts/scout.rb'
     - 'lib/god/contacts/statsd.rb'
     - 'lib/god/contacts/twitter.rb'
-    - 'test/test_process.rb'
 
 # Offense count: 20
 Lint/UselessAssignment:
@@ -207,41 +183,6 @@ Security/Eval:
     - 'lib/god.rb'
     - 'lib/god/conditions/complex.rb'
 
-# Offense count: 11
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: separated, grouped
-Style/AccessorGrouping:
-  Exclude:
-    - 'lib/god/behaviors/notify_when_flapping.rb'
-    - 'lib/god/contacts/campfire.rb'
-    - 'lib/god/contacts/email.rb'
-    - 'lib/god/contacts/jabber.rb'
-    - 'lib/god/contacts/scout.rb'
-
-# Offense count: 11
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: prefer_alias, prefer_alias_method
-Style/Alias:
-  Exclude:
-    - 'lib/god.rb'
-    - 'lib/god/sugar.rb'
-    - 'lib/god/timeline.rb'
-    - 'test/helper.rb'
-
-# Offense count: 7
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: always, conditionals
-Style/AndOr:
-  Exclude:
-    - 'lib/god/behaviors/notify_when_flapping.rb'
-    - 'lib/god/conditions/socket_responding.rb'
-    - 'lib/god/contacts/airbrake.rb'
-    - 'lib/god/process.rb'
-    - 'lib/god/socket.rb'
-
 # Offense count: 2
 # This cop supports unsafe auto-correction (--auto-correct-all).
 Style/CaseLikeIf:
@@ -270,12 +211,6 @@ Style/ConditionalAssignment:
     - 'lib/god/contacts/slack.rb'
     - 'lib/god/contacts/webhook.rb'
     - 'lib/god/process.rb'
-
-# Offense count: 1
-# This cop supports safe auto-correction (--auto-correct).
-Style/EachWithObject:
-  Exclude:
-    - 'ideas/execve/go.rb'
 
 # Offense count: 4
 # This cop supports safe auto-correction (--auto-correct).
@@ -629,24 +564,6 @@ Style/SafeNavigation:
     - 'lib/god/process.rb'
     - 'test/test_god.rb'
     - 'test/test_god_system.rb'
-
-# Offense count: 59
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: AllowAsExpressionSeparator.
-Style/Semicolon:
-  Exclude:
-    - 'ideas/execve/go.rb'
-    - 'lib/god.rb'
-    - 'lib/god/cli/command.rb'
-    - 'test/configs/child_events/simple_server.rb'
-    - 'test/configs/child_polls/simple_server.rb'
-    - 'test/configs/complex/simple_server.rb'
-    - 'test/configs/contact/simple_server.rb'
-    - 'test/configs/daemon_events/simple_server.rb'
-    - 'test/configs/daemon_polls/simple_server.rb'
-    - 'test/configs/keepalive/keepalive.rb'
-    - 'test/configs/stress/simple_server.rb'
-    - 'test/test_god.rb'
 
 # Offense count: 7
 # This cop supports safe auto-correction (--auto-correct).

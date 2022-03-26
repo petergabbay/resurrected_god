@@ -32,7 +32,7 @@ module God
     attr_accessor :state, :behaviors, :metrics, :directory
 
     def initialize
-      @autostart ||= true
+      @autostart = true
 
       # initial state is unmonitored
       self.state = :unmonitored

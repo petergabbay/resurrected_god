@@ -10,8 +10,7 @@ module God
   module Contacts
     class Scout < Contact
       class << self
-        attr_accessor :client_key, :plugin_id
-        attr_accessor :format
+        attr_accessor :client_key, :plugin_id, :format
       end
 
       self.format = lambda do |message, priority, category, host|

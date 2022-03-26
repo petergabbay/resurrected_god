@@ -152,7 +152,7 @@ end
 # Make sure we return valid exit codes
 if defined?(RUBY_ENGINE) && RUBY_ENGINE == "ruby"
   module Kernel
-    alias :__at_exit :at_exit
+    alias __at_exit at_exit
     def at_exit(&block)
       __at_exit do
         exit_status = $!.status if $!.is_a?(SystemExit)

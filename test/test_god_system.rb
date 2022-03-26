@@ -62,19 +62,6 @@ class TestGodSystem < MiniTest::Test
     end
   end
 
-  def test_start_watch
-    with_god_cleanup do
-      God.start
-      God.watch do |w|
-        w.name = 'start_watch'
-        w.start = File.join(GOD_ROOT, *%w[test configs complex simple_server.rb])
-      end
-      God.watches['start_watch'].action(:start)
-      sleep 2
-      assert_equal true, God.watches['start_watch'].alive?
-    end
-  end
-
   def test_stop_all_with_one
     with_god_cleanup do
       God.start

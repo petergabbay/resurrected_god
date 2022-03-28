@@ -70,10 +70,10 @@ module God
           end
         end
 
-        unless errors.empty?
-          puts errors
-          exit(1)
-        end
+        return if errors.empty?
+
+        puts errors
+        exit(1)
       end
 
       def status_command

@@ -10,7 +10,7 @@ module God
 
     def self.events_mask(events)
       events.inject(0) do |mask, event|
-        mask |= event_mask(event)
+        mask | event_mask(event)
       end
     end
   end

@@ -276,26 +276,26 @@ module God
 
     # Perform the given action.
     #
-    # a - The Symbol action.
-    # c - The Condition.
+    # action - The Symbol action.
+    # condition - The Condition.
     #
     # Returns this Task.
-    def action(a, c = nil)
+    def action(action, condition = nil)
       if !driver.in_driver_context?
         # Called from outside Driver. Send an async message to Driver.
-        driver.message(:action, [a, c])
-      elsif respond_to?(a)
+        driver.message(:action, [action, condition])
+      elsif respond_to?(action)
         # Called from within Driver.
-        command = send(a)
+        command = send(action)
 
         case command
         when String
-          msg = "#{name} #{a}: #{command}"
+          msg = "#{name} #{action}: #{command}"
           applog(self, :info, msg)
 
           system(command)
         when Proc
-          msg = "#{name} #{a}: lambda"
+          msg = "#{name} #{action}: lambda"
           applog(self, :info, msg)
 
           command.call
@@ -364,8 +364,8 @@ module God
         result = condition.test
       rescue Object => e
         cname = condition.class.to_s.split('::').last
-        message = format("Unhandled exception in %s condition - (%s): %s\n%s",
-                         cname, e.class, e.message, e.backtrace.join("\n"))
+        message = format("Unhandled exception in %{cname} condition - (%{class}): %{message}\n%{backtrace}",
+                         cname: cname, class: e.class, message: e.message, backtrace: e.backtrace.join("\n"))
         applog(self, :error, message)
         result = false
       end
@@ -430,9 +430,9 @@ module God
       # Get the destination.
       dest = condition.transition || (metric.destination && metric.destination[true])
 
-      if dest
-        move(dest)
-      end
+      return unless dest
+
+      move(dest)
     end
 
     # Determine whether a trigger happened.

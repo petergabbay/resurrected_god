@@ -66,9 +66,9 @@ def restart
 end
 
 def force_reload
-  if running?
-    restart
-  end
+  return unless running?
+
+  restart
 end
 
 def clean_pid

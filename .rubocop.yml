@@ -4,3 +4,5 @@ Style/Documentation:
   Enabled: false
 Style/EmptyMethod:
   EnforcedStyle: expanded
+Style/FormatStringToken:
+  EnforcedStyle: template

@@ -36,18 +36,19 @@ module God
       base_name
     end
 
-    def self.complain(text, c = nil)
-      watch = c.watch rescue nil
+    # configurable - Should respond to :watch and :friendly_name
+    def self.complain(text, configurable = nil)
+      watch = configurable.watch rescue nil
       msg = ""
       msg += "#{watch.name}: " if watch
       msg += text
-      msg += " for #{c.friendly_name}" if c
+      msg += " for #{configurable.friendly_name}" if configurable
       applog(watch, :error, msg)
       false
     end
 
-    def complain(text, c = nil)
-      Configurable.complain(text, c)
+    def complain(text, configurable = nil)
+      Configurable.complain(text, configurable)
     end
   end
 end

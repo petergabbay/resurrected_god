@@ -22,10 +22,10 @@ module God
         @oper_stack.each(&:prepare)
       end
 
-      def new_oper(kind, op)
+      def new_oper(kind, operand)
         oper = Condition.generate(kind, watch)
         @oper_stack.push(oper)
-        @op_stack.push(op)
+        @op_stack.push(operand)
         oper
       end
 

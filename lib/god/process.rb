@@ -210,12 +210,11 @@ module God
 
       if action == :stop && command.nil?
         pid = self.pid
-        name = self.name
         command = lambda do
-          applog(self, :info, "#{self.name} stop: default lambda killer")
+          applog(self, :info, "#{name} stop: default lambda killer")
 
           ::Process.kill(@stop_signal, pid) rescue nil
-          applog(self, :info, "#{self.name} sent SIG#{@stop_signal}")
+          applog(self, :info, "#{name} sent SIG#{@stop_signal}")
 
           # Poll to see if it's dead
           pid_not_found = false
@@ -225,11 +224,11 @@ module God
                 ::Process.kill(0, pid)
               rescue Errno::ESRCH
                 # It died. Good.
-                applog(self, :info, "#{self.name} process stopped")
+                applog(self, :info, "#{name} process stopped")
                 return
               end
             else
-              applog(self, :warn, "#{self.name} pid not found in #{pid_file}") unless pid_not_found
+              applog(self, :warn, "#{name} pid not found in #{pid_file}") unless pid_not_found
               pid_not_found = true
             end
 
@@ -237,13 +236,12 @@ module God
           end
 
           ::Process.kill('KILL', pid) rescue nil
-          applog(self, :warn, "#{self.name} still alive after #{@stop_timeout}s; sent SIGKILL")
+          applog(self, :warn, "#{name} still alive after #{@stop_timeout}s; sent SIGKILL")
         end
       end
 
-      if command.is_a?(String)
-        pid = nil
-
+      case command
+      when String
         if [:start, :restart].include?(action) && @tracking_pid
           # double fork god-daemonized processes
           # we don't want to wait for them to finish
@@ -273,7 +271,7 @@ module God
           exit_code = status[1] >> 8
 
           if exit_code != 0
-            applog(self, :warn, "#{self.name} #{action} command exited with non-zero code = #{exit_code}")
+            applog(self, :warn, "#{name} #{action} command exited with non-zero code = #{exit_code}")
           end
 
           ensure_stop if action == :stop
@@ -287,7 +285,7 @@ module God
           @tracking_pid = true
           @pid_file = default_pid_file
         end
-      elsif command.is_a?(Proc)
+      when Proc
         # lambda command
         command.call
       else

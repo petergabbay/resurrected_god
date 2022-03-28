@@ -38,6 +38,7 @@ class TestHttpResponseCode < Minitest::Test
 
   # test
 
+  # rubocop:disable Naming/VariableNumber
   def test_test_should_return_false_if_code_is_is_set_to_200_but_response_is_500
     c = valid_condition
     Net::HTTP.any_instance.expects(:start).yields(mock(:read_timeout= => nil, :get => mock(code: 500)))
@@ -67,6 +68,7 @@ class TestHttpResponseCode < Minitest::Test
     Net::HTTP.any_instance.expects(:start).yields(mock(:read_timeout= => nil, :get => mock(code: 500)))
     assert_equal true, c.test
   end
+  # rubocop:enable Naming/VariableNumber
 
   def test_test_should_return_false_if_code_is_is_set_to_200_but_response_times_out
     c = valid_condition

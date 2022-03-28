@@ -56,20 +56,18 @@ module God
         copy = spec.dup
 
         # check :contacts
-        if (contacts = copy.delete(:contacts))
-          case contacts
-          when String
-          # valid
-          when Array
-            unless contacts.all? { |x| x.instance_of?(String) }
-              raise ArgumentError, "has a :contacts key containing non-String elements"
-            end
-          # valid
-          else
-            raise ArgumentError, "must have a :contacts key pointing to a String or Array of Strings"
+        raise ArgumentError, "must have a :contacts key" unless (contacts = copy.delete(:contacts))
+
+        case contacts
+        when String
+        # valid
+        when Array
+          unless contacts.all? { |x| x.instance_of?(String) }
+            raise ArgumentError, "has a :contacts key containing non-String elements"
           end
+        # valid
         else
-          raise ArgumentError, "must have a :contacts key"
+          raise ArgumentError, "must have a :contacts key pointing to a String or Array of Strings"
         end
 
         # remove priority and category

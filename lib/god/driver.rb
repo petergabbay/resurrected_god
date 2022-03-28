@@ -178,8 +178,8 @@ module God
           # queue is empty
           break
         rescue Object => e
-          message = format("Unhandled exception in driver loop - (%s): %s\n%s",
-                           e.class, e.message, e.backtrace.join("\n"))
+          message = format("Unhandled exception in driver loop - (%{class}): %{message}\n%{backtrace}",
+                           class: e.class, message: e.message, backtrace: e.backtrace.join("\n"))
           applog(nil, :fatal, message)
         end
       end

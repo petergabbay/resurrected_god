@@ -124,15 +124,15 @@ module God
         log_file = God.log_file
         log_file = File.expand_path(@options[:log]) if @options[:log]
         log_file = "/dev/null" if !log_file && @options[:daemonize]
-        if log_file
-          puts "Sending output to log file: #{log_file}" unless @options[:daemonize]
+        return unless log_file
 
-          # reset file descriptors
-          $stdin.reopen "/dev/null"
-          $stdout.reopen(log_file, "a")
-          $stderr.reopen $stdout
-          $stdout.sync = true
-        end
+        puts "Sending output to log file: #{log_file}" unless @options[:daemonize]
+
+        # reset file descriptors
+        $stdin.reopen "/dev/null"
+        $stdout.reopen(log_file, "a")
+        $stderr.reopen $stdout
+        $stdout.sync = true
       end
 
       def load_config(config)
@@ -150,14 +150,12 @@ module God
         load File.expand_path(god_file)
         true
       rescue Exception => e
-        if e.instance_of?(SystemExit)
-          raise
-        else
-          puts "There was an error in #{god_file}"
-          puts "\t" + e.message
-          puts "\t" + e.backtrace.join("\n\t")
-          false
-        end
+        raise if e.instance_of?(SystemExit)
+
+        puts "There was an error in #{god_file}"
+        puts "\t" + e.message
+        puts "\t" + e.backtrace.join("\n\t")
+        false
       end
     end
   end

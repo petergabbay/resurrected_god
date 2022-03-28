@@ -85,8 +85,8 @@ module God
         @history.clear
       end
 
-      def socket=(s)
-        components = s.split(':')
+      def socket=(socket)
+        components = socket.split(':')
         if components.size == 3
           @family, @addr, @port = components
           @port = @port.to_i
@@ -113,18 +113,19 @@ module God
 
       def test
         self.info = []
-        if family == 'tcp'
+        case family
+        when 'tcp'
           begin
             s = TCPSocket.new(addr, port)
           rescue SystemCallError
           end
-          status = responding == !s.nil?
-        elsif family == 'unix'
+          status = responding != s.nil?
+        when 'unix'
           begin
             s = UNIXSocket.new(path)
           rescue SystemCallError
           end
-          status = responding == !s.nil?
+          status = responding != s.nil?
         else
           status = false
         end

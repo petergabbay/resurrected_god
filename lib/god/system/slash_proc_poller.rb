@@ -5,27 +5,27 @@ module God
       @@hertz = 100
       @@total_mem = nil
 
-      MeminfoPath = '/proc/meminfo'.freeze
-      UptimePath = '/proc/uptime'.freeze
+      MEMINFO_PATH = '/proc/meminfo'.freeze
+      UPTIME_PATH = '/proc/uptime'.freeze
 
-      RequiredPaths = [MeminfoPath, UptimePath].freeze
+      REQUIRED_PATHS = [MEMINFO_PATH, UPTIME_PATH].freeze
 
       # FreeBSD has /proc by default, but nothing mounted there!
       # So we should check for the actual required paths!
-      # Returns true if +RequiredPaths+ are readable.
+      # Returns true if +REQUIRED_PATHS+ are readable.
       def self.usable?
-        RequiredPaths.all? do |path|
+        REQUIRED_PATHS.all? do |path|
           test('r', path) && readable?(path)
         end
       end
 
       def initialize(pid)
         super(pid)
+        return if @@total_mem
 
-        unless @@total_mem # in K
-          File.open(MeminfoPath) do |f|
-            @@total_mem = f.gets.split[1]
-          end
+        # in K
+        File.open(MEMINFO_PATH) do |f|
+          @@total_mem = f.gets.split[1]
         end
       end
 
@@ -67,7 +67,7 @@ module God
 
       # in seconds
       def uptime
-        File.read(UptimePath).split[0].to_f
+        File.read(UPTIME_PATH).split[0].to_f
       end
 
       def stat

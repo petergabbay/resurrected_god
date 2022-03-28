@@ -409,15 +409,15 @@ if $load_god
       contacts[c.name] = c
 
       # Add to contact group if specified.
-      if c.group
-        # Ensure group name hasn't been used for a contact already.
-        if contacts[c.group]
-          abort "Contact Group name '#{c.group}' already used for a Contact"
-        end
+      return unless c.group
 
-        contact_groups[c.group] ||= []
-        contact_groups[c.group] << c
+      # Ensure group name hasn't been used for a contact already.
+      if contacts[c.group]
+        abort "Contact Group name '#{c.group}' already used for a Contact"
       end
+
+      contact_groups[c.group] ||= []
+      contact_groups[c.group] << c
     end
 
     # Remove the given contact from god.
@@ -427,9 +427,9 @@ if $load_god
     # Returns nothing.
     def self.uncontact(contact)
       contacts.delete(contact.name)
-      if contact.group
-        contact_groups[contact.group].delete(contact)
-      end
+      return unless contact.group
+
+      contact_groups[contact.group].delete(contact)
     end
 
     def self.watches_by_name(name)

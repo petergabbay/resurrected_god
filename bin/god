@@ -124,11 +124,9 @@ begin
     God::CLI::Run.new(options)
   end
 rescue Exception => e
-  if e.instance_of?(SystemExit)
-    raise
-  else
-    puts 'Uncaught exception'
-    puts e.message
-    puts e.backtrace.join("\n")
-  end
+  raise if e.instance_of?(SystemExit)
+
+  puts 'Uncaught exception'
+  puts e.message
+  puts e.backtrace.join("\n")
 end

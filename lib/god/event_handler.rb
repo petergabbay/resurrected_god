@@ -37,12 +37,12 @@ module God
     end
 
     def self.deregister(pid, event)
-      if watching_pid? pid
-        running = ::Process.kill(0, pid.to_i) rescue false
-        @@actions[pid].delete(event)
-        @@handler.register_process(pid, @@actions[pid].keys) if running
-        @@actions.delete(pid) if @@actions[pid].empty?
-      end
+      return unless watching_pid?(pid)
+
+      running = ::Process.kill(0, pid.to_i) rescue false
+      @@actions[pid].delete(event)
+      @@handler.register_process(pid, @@actions[pid].keys) if running
+      @@actions.delete(pid) if @@actions[pid].empty?
     end
 
     def self.call(pid, event, extra_data = {})
@@ -58,8 +58,8 @@ module God
         loop do
           @@handler.handle_events
         rescue Exception => e
-          message = format("Unhandled exception (%s): %s\n%s",
-                           e.class, e.message, e.backtrace.join("\n"))
+          message = format("Unhandled exception (%{class}): %{message}\n%{backtrace}",
+                           class: e.class, message: e.message, backtrace: e.backtrace.join("\n"))
           applog(nil, :fatal, message)
         end
       end
@@ -76,8 +76,6 @@ module God
       com = [false]
 
       Thread.new do
-        event_system = God::EventHandler.event_system
-
         pid = fork do
           loop { sleep(1) }
         end

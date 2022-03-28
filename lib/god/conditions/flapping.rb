@@ -83,39 +83,39 @@ module God
       private
 
       def retry_mechanism
-        if retry_in
-          @retry_timeline << Time.now
+        return unless retry_in
 
-          concensus = (@retry_timeline.size == retry_times)
-          duration = (@retry_timeline.last - @retry_timeline.first) < retry_within
+        @retry_timeline << Time.now
 
-          if concensus && duration
-            # give up
-            Thread.new do
-              sleep 1
+        concensus = (@retry_timeline.size == retry_times)
+        duration = (@retry_timeline.last - @retry_timeline.first) < retry_within
 
-              # log
-              msg = "#{watch.name} giving up"
-              applog(watch, :info, msg)
-            end
-          else
-            # try again later
-            Thread.new do
-              sleep 1
+        if concensus && duration
+          # give up
+          Thread.new do
+            sleep 1
 
-              # log
-              msg = "#{watch.name} auto-reenable monitoring in #{retry_in} seconds"
-              applog(watch, :info, msg)
+            # log
+            msg = "#{watch.name} giving up"
+            applog(watch, :info, msg)
+          end
+        else
+          # try again later
+          Thread.new do
+            sleep 1
 
-              sleep retry_in
+            # log
+            msg = "#{watch.name} auto-reenable monitoring in #{retry_in} seconds"
+            applog(watch, :info, msg)
 
-              # log
-              msg = "#{watch.name} auto-reenabling monitoring"
-              applog(watch, :info, msg)
+            sleep retry_in
 
-              if watch.state == :unmonitored
-                watch.monitor
-              end
+            # log
+            msg = "#{watch.name} auto-reenabling monitoring"
+            applog(watch, :info, msg)
+
+            if watch.state == :unmonitored
+              watch.monitor
             end
           end
         end

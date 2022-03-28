@@ -119,7 +119,7 @@ module God
         connection.verify_mode = OpenSSL::SSL::VERIFY_NONE if connection.use_ssl?
 
         if connection.use_ssl? && ca_file
-          pem = File.read(ca_file)
+          File.read(ca_file) # it may raise EOFError
           connection.ca_file = ca_file
           connection.verify_mode = OpenSSL::SSL::VERIFY_PEER
         end

@@ -240,30 +240,30 @@ module God
 
     # Perform an action.
     #
-    # a - The Symbol action to perform. One of :start, :restart, :stop.
-    # c - The Condition.
+    # action - The Symbol action to perform. One of :start, :restart, :stop.
+    # condition - The Condition.
     #
     # Returns this Watch.
-    def action(a, c = nil)
+    def action(action, condition = nil)
       if !driver.in_driver_context?
         # Called from outside Driver. Send an async message to Driver.
-        driver.message(:action, [a, c])
+        driver.message(:action, [action, condition])
       else
         # Called from within Driver.
-        case a
+        case action
         when :start
-          call_action(c, :start)
+          call_action(condition, :start)
           sleep(start_grace + grace)
         when :restart
           if restart
-            call_action(c, :restart)
+            call_action(condition, :restart)
           else
-            action(:stop, c)
-            action(:start, c)
+            action(:stop, condition)
+            action(:start, condition)
           end
           sleep(restart_grace + grace)
         when :stop
-          call_action(c, :stop)
+          call_action(condition, :stop)
           sleep(stop_grace + grace)
         end
       end

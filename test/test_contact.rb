@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/helper'
+require_relative 'helper'
 
 class TestContact < Minitest::Test
   def test_exists
@@ -28,8 +28,8 @@ class TestContact < Minitest::Test
   end
 
   def test_normalize_should_accept_an_array_of_strings
-    input = ['tom', 'kevin']
-    output = { contacts: ['tom', 'kevin'] }
+    input = %w[tom kevin]
+    output = { contacts: %w[tom kevin] }
     assert_equal(output, Contact.normalize(input))
   end
 
@@ -40,8 +40,8 @@ class TestContact < Minitest::Test
   end
 
   def test_normalize_should_accept_a_hash_with_contacts_array_of_strings
-    input = { contacts: ['tom', 'kevin'] }
-    output = { contacts: ['tom', 'kevin'] }
+    input = { contacts: %w[tom kevin] }
+    output = { contacts: %w[tom kevin] }
     assert_equal(output, Contact.normalize(input))
   end
 

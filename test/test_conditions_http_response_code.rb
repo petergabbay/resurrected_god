@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/helper'
+require_relative 'helper'
 
 class TestHttpResponseCode < Minitest::Test
   def valid_condition

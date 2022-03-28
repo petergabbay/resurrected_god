@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/helper'
+require_relative 'helper'
 
 class TestConditionsProcessRunning < Minitest::Test
   def test_missing_pid_file_returns_opposite

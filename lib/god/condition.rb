@@ -29,7 +29,7 @@ module God
         begin
           Contact.normalize(condition.notify)
         rescue ArgumentError => e
-          valid &= Configurable.complain("Attribute 'notify' " + e.message, condition)
+          valid &= Configurable.complain("Attribute 'notify' #{e.message}", condition)
         end
       end
       valid

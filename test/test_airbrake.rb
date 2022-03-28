@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/helper'
+require_relative 'helper'
 
 class TestAirbrake < Minitest::Test
   def test_notify

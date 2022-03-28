@@ -66,10 +66,10 @@ module God
         @timeline.push(process.memory)
         self.info = []
 
-        history = "[" + @timeline.map { |x| "#{x > above ? '*' : ''}#{x}kb" }.join(", ") + "]"
+        history = @timeline.map { |x| "#{x > above ? '*' : ''}#{x}kb" }.join(", ")
 
         if @timeline.select { |x| x > above }.size >= times.first
-          self.info = "memory out of bounds #{history}"
+          self.info = "memory out of bounds [#{history}]"
           true
         else
           false

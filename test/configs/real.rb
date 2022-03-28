@@ -1,5 +1,5 @@
 if $0 == __FILE__
-  require File.join(File.dirname(__FILE__), *%w[.. .. lib god])
+  require_relative '../../lib/god'
 end
 
 RAILS_ROOT = "/Users/tom/dev/git/helloworld".freeze

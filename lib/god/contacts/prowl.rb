@@ -27,8 +27,8 @@ module God
           n.apikey      = arg(:apikey)
           n.priority    = map_priority(priority.to_i)
           n.application = category || "God"
-          n.event       = "on " + host.to_s
-          n.description = message.to_s + " at " + time.to_s
+          n.event       = "on #{host}"
+          n.description = "#{message} at #{time}"
         end
 
         self.info = if result.succeeded?

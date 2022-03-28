@@ -172,9 +172,9 @@ module God
 
       def history(code, passed)
         entry = code.to_s.dup
-        entry = '*' + entry if passed
+        entry = "*#{entry}" if passed
         @history << entry
-        '[' + @history.join(", ") + ']'
+        "[#{@history.join(', ')}]"
       end
     end
   end

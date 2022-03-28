@@ -397,7 +397,7 @@ module God
         begin
           move(dest)
         rescue EventRegistrationFailedError
-          msg = name + ' Event registration failed, moving back to previous state'
+          msg = "#{name} Event registration failed, moving back to previous state"
           applog(self, :info, msg)
 
           dest = state
@@ -475,7 +475,7 @@ module God
       end
 
       # Log.
-      debug_message = watch.name + ' ' + condition.base_name + " [#{result}] " + dest_desc(metric, condition)
+      debug_message = "#{watch.name} #{condition.base_name} [#{result}] #{dest_desc(metric, condition)}"
       applog(watch, :debug, debug_message)
 
       messages

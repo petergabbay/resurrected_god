@@ -64,10 +64,10 @@ module God
         @timeline.push(process.percent_cpu)
         self.info = []
 
-        history = "[" + @timeline.map { |x| "#{x > above ? '*' : ''}#{x}%%" }.join(", ") + "]"
+        history = @timeline.map { |x| "#{x > above ? '*' : ''}#{x}%%" }.join(", ")
 
         if @timeline.select { |x| x > above }.size >= times.first
-          self.info = "cpu out of bounds #{history}"
+          self.info = "cpu out of bounds [#{history}]"
           true
         else
           false

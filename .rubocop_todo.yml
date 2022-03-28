@@ -225,8 +225,8 @@ Style/SpecialGlobalVars:
 # Offense count: 65
 # This cop supports unsafe auto-correction (--auto-correct-all).
 # Configuration parameters: Mode.
-Style/StringConcatenation:
-  Enabled: false
+#Style/StringConcatenation:
+#  Enabled: false
 
 # Offense count: 279
 # This cop supports safe auto-correction (--auto-correct).
@@ -243,25 +243,3 @@ Style/StringLiteralsInInterpolation:
   Exclude:
     - 'lib/god/contacts/airbrake.rb'
     - 'lib/god/task.rb'
-
-# Offense count: 35
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: MinSize.
-# SupportedStyles: percent, brackets
-Style/SymbolArray:
-  EnforcedStyle: brackets
-
-# Offense count: 5
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: WordRegex.
-# SupportedStyles: percent, brackets
-Style/WordArray:
-  EnforcedStyle: percent
-  MinSize: 3
-
-# Offense count: 16
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
-# URISchemes: http, https
-Layout/LineLength:
-  Max: 233

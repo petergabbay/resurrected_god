@@ -130,9 +130,9 @@ module God
           status = false
         end
         @timeline.push(status)
-        history = "[" + @timeline.map { |t| t ? '*' : '' }.join(',') + "]"
+        history = @timeline.map { |t| t ? '*' : '' }.join(',')
         if @timeline.select { |x| x }.size >= times.first
-          self.info = "socket out of bounds #{history}"
+          self.info = "socket out of bounds [#{history}]"
           true
         else
           false

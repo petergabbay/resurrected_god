@@ -3,8 +3,9 @@ $:.unshift File.expand_path('../lib', __dir__) # For use/testing when no gem is 
 # Use this flag to actually load all of the god infrastructure
 $load_god = true
 
-require File.join(File.dirname(__FILE__), *%w[.. lib god sys_logger])
-require File.join(File.dirname(__FILE__), *%w[.. lib god])
+require_relative '../lib/god/sys_logger'
+require_relative '../lib/god'
+
 God::EventHandler.load
 
 require 'minitest/autorun'

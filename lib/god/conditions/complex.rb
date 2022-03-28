@@ -69,7 +69,7 @@ module God
 
         @op_stack.each do |op|
           cond = @oper_stack.shift
-          eval "res " + (op & AND > 0 ? "&&" : "||") + "= " + (op & NOT > 0 ? "!" : "") + "cond.test"
+          eval "res #{op & AND > 0 ? "&&" : "||"}= #{op & NOT > 0 ? "!" : ""}cond.test"
           @oper_stack.push cond
         end
 

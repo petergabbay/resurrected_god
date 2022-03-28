@@ -1,6 +1,6 @@
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Send a notice to a SENSU client socket, port 3030 on 'localhost' only.
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # [mandatory]
 # check_name    - a unique check name
 #
@@ -36,7 +36,7 @@ module God
 
       def sensu_client_socket(msg)
         u = UDPSocket.new
-        u.send(msg + "\n", 0, arg(:host).nil? ? host : arg(:host), arg(:port).nil? ? port : arg(:port))
+        u.send("#{msg}\n", 0, arg(:host).nil? ? host : arg(:host), arg(:port).nil? ? port : arg(:port))
         u.close
       end
 
@@ -48,7 +48,13 @@ module God
           host: host,
           time: time
         }
-        parcel = { 'name' => arg(:check_name), 'status' => arg(:status_code).nil? ? status_code : arg(:status_code), 'output' => data.to_json, 'handler' => arg(:handler).empty? ? handler : arg(:handler), 'executed' => Time.now.to_i }
+        parcel = {
+          'name' => arg(:check_name),
+          'status' => arg(:status_code).nil? ? status_code : arg(:status_code),
+          'output' => data.to_json,
+          'handler' => arg(:handler).empty? ? handler : arg(:handler),
+          'executed' => Time.now.to_i
+        }
         sensu_client_socket parcel.to_json
         self.info = "notified sensu: #{arg(:check_name)}"
       end

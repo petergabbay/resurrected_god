@@ -153,8 +153,8 @@ module God
         raise if e.instance_of?(SystemExit)
 
         puts "There was an error in #{god_file}"
-        puts "\t" + e.message
-        puts "\t" + e.backtrace.join("\n\t")
+        puts "\t#{e.message}"
+        puts "\t#{e.backtrace.join("\n\t")}"
         false
       end
     end

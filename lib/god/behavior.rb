@@ -44,7 +44,7 @@ module God
     #
     # Behavior FooBar on Watch 'baz'
     def friendly_name
-      "Behavior " + super + " on Watch '#{watch.name}'"
+      "Behavior #{super} on Watch '#{watch.name}'"
     end
   end
 end

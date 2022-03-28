@@ -70,7 +70,9 @@ module God
       def valid?
         valid = true
         valid &= complain("Attribute 'to_email' must be specified", self) unless arg(:to_email)
-        valid &= complain("Attribute 'delivery_method' must be one of [ :smtp | :sendmail ]", self) unless [:smtp, :sendmail].include?(arg(:delivery_method))
+        unless [:smtp, :sendmail].include?(arg(:delivery_method))
+          valid &= complain("Attribute 'delivery_method' must be one of [ :smtp | :sendmail ]", self)
+        end
         if arg(:delivery_method) == :smtp
           valid &= complain("Attribute 'server_host' must be specified", self) unless arg(:server_host)
           valid &= complain("Attribute 'server_port' must be specified", self) unless arg(:server_port)

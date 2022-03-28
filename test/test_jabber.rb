@@ -1,5 +1,4 @@
-#!/usr/bin/env ruby
-require File.dirname(__FILE__) + '/helper'
+require_relative 'helper'
 
 class TestJabber < Minitest::Test
   def setup

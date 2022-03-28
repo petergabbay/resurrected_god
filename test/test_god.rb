@@ -1,4 +1,5 @@
-require File.dirname(__FILE__) + '/helper'
+require_relative 'helper'
+
 class TestGod < MiniTest::Test
   def setup
     God::Socket.stubs(:new).returns(true)
@@ -691,7 +692,7 @@ class TestGod < MiniTest::Test
   # load
 
   def test_load_should_collect_and_load_globbed_path
-    Dir.expects(:[]).with('/path/to/*.thing').returns(['a', 'b'])
+    Dir.expects(:[]).with('/path/to/*.thing').returns(%w[a b])
     Kernel.expects(:load).with('a').once
     Kernel.expects(:load).with('b').once
     God.load('/path/to/*.thing')

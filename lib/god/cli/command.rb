@@ -59,14 +59,14 @@ module God
         unless affected.empty?
           puts 'The following tasks were affected:'
           affected.each do |w|
-            puts '  ' + w
+            puts "  #{w}"
           end
         end
 
         unless removed.empty?
           puts 'The following tasks were removed:'
           removed.each do |w|
-            puts '  ' + w
+            puts "  #{w}"
           end
         end
 
@@ -153,7 +153,7 @@ module God
         else
           puts 'The following watches were affected:'
           watches.each do |w|
-            puts '  ' + w
+            puts "  #{w}"
           end
         end
       end
@@ -281,7 +281,7 @@ module God
         else
           puts 'The following watches were affected:'
           watches.each do |w|
-            puts '  ' + w
+            puts "  #{w}"
           end
         end
       end

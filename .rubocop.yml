@@ -1,8 +1,13 @@
 inherit_from: .rubocop_todo.yml
 
+Layout/LineLength:
+  Max: 140
+
 Style/Documentation:
   Enabled: false
 Style/EmptyMethod:
   EnforcedStyle: expanded
 Style/FormatStringToken:
   EnforcedStyle: template
+Style/SymbolArray:
+  EnforcedStyle: brackets

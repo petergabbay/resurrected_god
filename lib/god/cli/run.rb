@@ -11,9 +11,7 @@ module God
         # have at_exit start god
         $run = true
 
-        if @options[:syslog]
-          require 'god/sys_logger'
-        end
+        require 'god/sys_logger' if @options[:syslog]
 
         # run
         if @options[:daemonize]
@@ -41,17 +39,11 @@ module God
         setup_logging
 
         # start attached pid watcher if necessary
-        if @options[:attach]
-          attach
-        end
+        attach if @options[:attach]
 
-        if @options[:port]
-          God.port = @options[:port]
-        end
+        God.port = @options[:port] if @options[:port]
 
-        if @options[:events]
-          God::EventHandler.load
-        end
+        God::EventHandler.load if @options[:events]
 
         # set log level, defaults to WARN
         God.log_level = if @options[:log_level]
@@ -61,9 +53,7 @@ module God
                         end
 
         if @options[:config]
-          if !@options[:config].include?('*') && !File.exist?(@options[:config])
-            abort "File not found: #{@options[:config]}"
-          end
+          abort "File not found: #{@options[:config]}" if !@options[:config].include?('*') && !File.exist?(@options[:config])
 
           # start the event handler
           God::EventHandler.start if God::EventHandler.loaded?
@@ -89,9 +79,7 @@ module God
           require 'god'
 
           # set pid if requested
-          if @options[:pid] # and as deamon
-            God.pid = @options[:pid]
-          end
+          God.pid = @options[:pid] if @options[:pid] # and as daemon
 
           default_run
 
@@ -111,9 +99,7 @@ module God
           abort "There was a fatal system error while starting god (see above)"
         end
 
-        if @options[:pid]
-          File.open(@options[:pid], 'w') { |f| f.write pid }
-        end
+        File.open(@options[:pid], 'w') { |f| f.write pid } if @options[:pid]
 
         ::Process.detach pid
 
@@ -139,9 +125,7 @@ module God
         files = File.directory?(config) ? Dir['**/*.god'] : Dir[config]
         abort "No files could be found" if files.empty?
         files.each do |god_file|
-          unless load_god_file(god_file)
-            abort "File '#{god_file}' could not be loaded"
-          end
+          abort "File '#{god_file}' could not be loaded" unless load_god_file(god_file)
         end
       end
 

@@ -75,7 +75,7 @@ module God
   end
 
   class TriggerCondition < Condition
-    def process(event, payload)
+    def process(event, payload) # rubocop:disable Lint/UnusedMethodArgument
       raise AbstractMethodNotOverriddenError, "TriggerCondition#process must be overridden in subclasses"
     end
 

@@ -30,7 +30,7 @@ module God
         valid
       end
 
-      def notify(message, time, priority, category, host)
+      def notify(message, _time, priority, category, host)
         data = {
           :client_key => arg(:client_key),
           :plugin_id => arg(:plugin_id),

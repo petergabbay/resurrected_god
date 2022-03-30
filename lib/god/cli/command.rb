@@ -49,9 +49,7 @@ module God
         puts "Sending '#{@command}' command with action '#{action}'"
         puts
 
-        unless File.exist?(file)
-          abort "File not found: #{file}"
-        end
+        abort "File not found: #{file}" unless File.exist?(file)
 
         affected, errors, removed = *@server.running_load(File.read(file), File.expand_path(file), action)
 

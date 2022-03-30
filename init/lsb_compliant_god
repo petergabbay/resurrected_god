@@ -40,9 +40,7 @@ def start
     exit
   end
 
-  if dead?
-    clean_pid
-  end
+  clean_pid if dead?
 
   puts "starting #{NAME}"
   system("#{DAEMON} -c #{CONFIGFILE} #{START_FLAGS}")

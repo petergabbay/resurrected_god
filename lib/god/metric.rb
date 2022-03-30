@@ -44,9 +44,7 @@ module God
       c.prepare
 
       # Test generic and specific validity.
-      unless Condition.valid?(c) && c.valid?
-        abort "Exiting on invalid condition"
-      end
+      abort "Exiting on invalid condition" unless Condition.valid?(c) && c.valid?
 
       # Inherit interval from watch if no poll condition specific interval was
       # set.

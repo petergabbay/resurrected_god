@@ -39,9 +39,7 @@ module God
       end
 
       def prepare
-        if times.is_a?(Integer)
-          self.times = [times, times]
-        end
+        self.times = [times, times] if times.is_a?(Integer)
 
         @timeline = Timeline.new(times[1])
       end

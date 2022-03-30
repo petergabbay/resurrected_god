@@ -90,9 +90,7 @@ module God
         self.code_is = Array(code_is).map(&:to_i) if code_is
         self.code_is_not = Array(code_is_not).map(&:to_i) if code_is_not
 
-        if times.is_a?(Integer)
-          self.times = [times, times]
-        end
+        self.times = [times, times] if times.is_a?(Integer)
 
         @timeline = Timeline.new(times[1])
         @history = Timeline.new(times[1])

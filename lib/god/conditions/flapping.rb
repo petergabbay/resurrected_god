@@ -114,9 +114,7 @@ module God
             msg = "#{watch.name} auto-reenabling monitoring"
             applog(watch, :info, msg)
 
-            if watch.state == :unmonitored
-              watch.monitor
-            end
+            watch.monitor if watch.state == :unmonitored
           end
         end
       end

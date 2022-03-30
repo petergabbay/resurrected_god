@@ -22,11 +22,11 @@ module God
 
       attr_accessor :apikey
 
-      def notify(message, time, priority, category, host)
+      def notify(message, _time, priority, category, host)
         ::Airbrake.configure {}
 
         message = "God: #{message} at #{host}"
-        message << " | #{[category, priority].join(" ")}" unless category.to_s.empty? || priority.to_s.empty?
+        message << " | #{[category, priority].join(' ')}" unless category.to_s.empty? || priority.to_s.empty?
 
         self.info = if ::Airbrake.notify nil, error_message: message, api_key: arg(:apikey)
                       "sent airbrake notification to #{name}"

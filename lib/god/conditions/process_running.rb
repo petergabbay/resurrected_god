@@ -52,9 +52,7 @@ module God
           info.concat(["process is not running"])
           true
         else
-          if running
-            info.concat(["process is not running"])
-          end
+          info.concat(["process is not running"]) if running
           false
         end
       end

@@ -133,9 +133,7 @@ if $load_god
     def safe_attr_accessor(*args)
       args.each do |arg|
         define_method("#{arg}=".intern) do |other|
-          if !running && inited
-            abort "God.#{arg} must be set before any Tasks are defined"
-          end
+          abort "God.#{arg} must be set before any Tasks are defined" if !running && inited
 
           if running && inited
             applog(nil, :warn, "God.#{arg} can't be set while god is running")
@@ -295,9 +293,7 @@ if $load_god
       end
 
       # Ensure the new watch has a unique name.
-      if watches[t.name] || groups[t.name]
-        abort "Task name '#{t.name}' already used for a Task or Group"
-      end
+      abort "Task name '#{t.name}' already used for a Task or Group" if watches[t.name] || groups[t.name]
 
       # Ensure watch is internally valid.
       t.valid? || abort("Task '#{t.name}' is not valid (see above)")
@@ -311,9 +307,7 @@ if $load_god
       # Add to group if specified.
       if t.group
         # Ensure group name hasn't been used for a watch already.
-        if watches[t.group]
-          abort "Group name '#{t.group}' already used for a Task"
-        end
+        abort "Group name '#{t.group}' already used for a Task" if watches[t.group]
 
         groups[t.group] ||= []
         groups[t.group] << t
@@ -346,9 +340,7 @@ if $load_god
       watches.delete(watch.name)
 
       # Remove from groups.
-      if watch.group
-        groups[watch.group].delete(watch)
-      end
+      groups[watch.group].delete(watch) if watch.group
 
       applog(watch, :info, "#{watch.name} unwatched")
     end
@@ -389,9 +381,7 @@ if $load_god
 
       # Remove existing contacts of same name.
       existing_contact = contacts[c.name]
-      if running && existing_contact
-        uncontact(existing_contact)
-      end
+      uncontact(existing_contact) if running && existing_contact
 
       # Warn and noop if the contact has been defined before.
       if contacts[c.name] || contact_groups[c.name]
@@ -401,9 +391,7 @@ if $load_god
 
       # Abort if the Contact is invalid, the Contact will have printed out its
       # own error messages by now.
-      unless Contact.valid?(c) && c.valid?
-        abort "Exiting on invalid contact"
-      end
+      abort "Exiting on invalid contact" unless Contact.valid?(c) && c.valid?
 
       # Add to list of contacts.
       contacts[c.name] = c
@@ -412,9 +400,7 @@ if $load_god
       return unless c.group
 
       # Ensure group name hasn't been used for a contact already.
-      if contacts[c.group]
-        abort "Contact Group name '#{c.group}' already used for a Contact"
-      end
+      abort "Contact Group name '#{c.group}' already used for a Contact" if contacts[c.group]
 
       contact_groups[c.group] ||= []
       contact_groups[c.group] << c
@@ -552,9 +538,7 @@ if $load_god
     def self.running_log(watch_name, since)
       matches = pattern_match(watch_name, watches.keys)
 
-      unless matches.first
-        raise NoSuchWatchError
-      end
+      raise NoSuchWatchError unless matches.first
 
       LOG.watch_log_since(matches.first, since)
     end

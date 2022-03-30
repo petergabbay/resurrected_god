@@ -8,9 +8,7 @@ module God
       sym = kind.to_s.capitalize.gsub(/_(.)/) { Regexp.last_match(1).upcase }.intern
       c = God::Contacts.const_get(sym).new
 
-      unless c.is_a?(Contact)
-        abort "Contact '#{c.class.name}' must subclass God::Contact"
-      end
+      abort "Contact '#{c.class.name}' must subclass God::Contact" unless c.is_a?(Contact)
 
       c
     rescue NameError
@@ -47,9 +45,7 @@ module God
       when String
         { contacts: Array(spec) }
       when Array
-        unless spec.all? { |x| x.instance_of?(String) }
-          raise ArgumentError, "contains non-String elements"
-        end
+        raise ArgumentError, "contains non-String elements" unless spec.all? { |x| x.instance_of?(String) }
 
         { contacts: spec }
       when Hash
@@ -62,9 +58,7 @@ module God
         when String
         # valid
         when Array
-          unless contacts.all? { |x| x.instance_of?(String) }
-            raise ArgumentError, "has a :contacts key containing non-String elements"
-          end
+          raise ArgumentError, "has a :contacts key containing non-String elements" unless contacts.all? { |x| x.instance_of?(String) }
         # valid
         else
           raise ArgumentError, "must have a :contacts key pointing to a String or Array of Strings"
@@ -75,9 +69,7 @@ module God
         copy.delete(:category)
 
         # check for invalid keys
-        unless copy.empty?
-          raise ArgumentError, "contains extra elements: #{copy.inspect}"
-        end
+        raise ArgumentError, "contains extra elements: #{copy.inspect}" unless copy.empty?
 
         # normalize
         spec[:contacts] &&= Array(spec[:contacts])
@@ -97,7 +89,7 @@ module God
     #   +priority+ is the arbitrary priority String
     #   +category+ is the arbitrary category String
     #   +host+ is the hostname of the server
-    def notify(message, time, priority, category, host)
+    def notify(message, time, priority, category, host) # rubocop:disable Lint/UnusedMethodArgument
       raise AbstractMethodNotOverriddenError, "Contact#notify must be overridden in subclasses"
     end
 

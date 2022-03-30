@@ -14,17 +14,7 @@ require 'set'
 
 include God
 
-begin
-  require 'mocha/setup'
-rescue LoadError
-  if gems ||= false
-    abort "=> You need the Mocha gem to run these tests."
-  else
-    require 'rubygems'
-    gems = true
-    retry
-  end
-end
+require 'mocha/setup'
 
 module God
   module Conditions

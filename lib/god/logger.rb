@@ -71,11 +71,7 @@ module God
       # get and join lines since given time
       @mutex.synchronize do
         @spool = Time.now
-        logs[watch_name].select do |x|
-          x.first > since
-        end.map do |x|
-          x[1]
-        end.join
+        logs[watch_name].select { |x| x.first > since }.map { |x| x[1] }.join
       end
     end
 

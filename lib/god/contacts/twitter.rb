@@ -35,7 +35,7 @@ module God
       attr_accessor :consumer_token, :consumer_secret,
                     :access_token, :access_secret
 
-      def notify(message, time, priority, category, host)
+      def notify(message, _time, _priority, _category, _host)
         oauth = ::Twitter::OAuth.new(arg(:consumer_token), arg(:consumer_secret))
         oauth.authorize_from_access(arg(:access_token), arg(:access_secret))
 

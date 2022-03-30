@@ -29,18 +29,6 @@ Lint/SuppressedException:
     - 'lib/god/conditions/socket_responding.rb'
     - 'test/test_god_system.rb'
 
-# Offense count: 16
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods, IgnoreNotImplementedMethods.
-Lint/UnusedMethodArgument:
-  Exclude:
-    - 'lib/god/condition.rb'
-    - 'lib/god/contact.rb'
-    - 'lib/god/contacts/airbrake.rb'
-    - 'lib/god/contacts/scout.rb'
-    - 'lib/god/contacts/statsd.rb'
-    - 'lib/god/contacts/twitter.rb'
-
 # Offense count: 12
 Lint/UselessAssignment:
   Exclude:
@@ -123,11 +111,6 @@ Style/GlobalVars:
     - 'test/configs/matias/matias.god'
     - 'test/helper.rb'
 
-# Offense count: 50
-# This cop supports safe auto-correction (--auto-correct).
-Style/IfUnlessModifier:
-  Enabled: false
-
 # Offense count: 3
 Style/MissingRespondToMissing:
   Exclude:
@@ -141,11 +124,6 @@ Style/MixinUsage:
     - 'lib/god/conditions/socket_responding.rb'
     - 'test/helper.rb'
 
-# Offense count: 1
-Style/MultilineBlockChain:
-  Exclude:
-    - 'lib/god/logger.rb'
-
 # Offense count: 3
 # This cop supports safe auto-correction (--auto-correct).
 # Configuration parameters: EnforcedStyle.
@@ -153,36 +131,6 @@ Style/MultilineBlockChain:
 Style/MutableConstant:
   Exclude:
     - 'lib/god.rb'
-
-# Offense count: 3
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedOctalStyle.
-# SupportedOctalStyles: zero_with_o, zero_only
-Style/NumericLiteralPrefix:
-  Exclude:
-    - 'lib/god.rb'
-    - 'test/test_process.rb'
-
-# Offense count: 13
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: Strict, AllowedNumbers.
-Style/NumericLiterals:
-  MinDigits: 11
-
-# Offense count: 9
-# This cop supports unsafe auto-correction (--auto-correct-all).
-# Configuration parameters: EnforcedStyle, IgnoredMethods.
-# SupportedStyles: predicate, comparison
-Style/NumericPredicate:
-  Exclude:
-    - 'spec/**/*'
-    - 'init/lsb_compliant_god'
-    - 'lib/god/conditions/complex.rb'
-    - 'lib/god/conditions/socket_responding.rb'
-    - 'lib/god/driver.rb'
-    - 'lib/god/process.rb'
-    - 'lib/god/system/slash_proc_poller.rb'
-    - 'test/test_system_process.rb'
 
 # Offense count: 14
 # This cop supports safe auto-correction (--auto-correct).
@@ -222,24 +170,9 @@ Style/RescueStandardError:
 Style/SpecialGlobalVars:
   EnforcedStyle: use_perl_names
 
-# Offense count: 65
-# This cop supports unsafe auto-correction (--auto-correct-all).
-# Configuration parameters: Mode.
-#Style/StringConcatenation:
-#  Enabled: false
-
 # Offense count: 279
 # This cop supports safe auto-correction (--auto-correct).
 # Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
 # SupportedStyles: single_quotes, double_quotes
 Style/StringLiterals:
   Enabled: false
-
-# Offense count: 2
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiteralsInInterpolation:
-  Exclude:
-    - 'lib/god/contacts/airbrake.rb'
-    - 'lib/god/task.rb'

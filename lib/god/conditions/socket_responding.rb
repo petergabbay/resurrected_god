@@ -72,9 +72,7 @@ module God
       end
 
       def prepare
-        if times.is_a?(Integer)
-          self.times = [times, times]
-        end
+        self.times = [times, times] if times.is_a?(Integer)
 
         @timeline = Timeline.new(times[1])
         @history = Timeline.new(times[1])
@@ -101,12 +99,8 @@ module God
 
       def valid?
         valid = true
-        if family == 'tcp' && @port == 0
-          valid &= complain("Attribute 'port' must be specified for tcp sockets", self)
-        end
-        if family == 'unix' && path.nil?
-          valid &= complain("Attribute 'path' must be specified for unix sockets", self)
-        end
+        valid &= complain("Attribute 'port' must be specified for tcp sockets", self) if family == 'tcp' && @port == 0
+        valid &= complain("Attribute 'path' must be specified for unix sockets", self) if family == 'unix' && path.nil?
         valid = false unless %w[tcp unix].member?(family)
         valid
       end

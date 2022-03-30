@@ -270,9 +270,7 @@ module God
           status = ::Process.waitpid2(pid, 0)
           exit_code = status[1] >> 8
 
-          if exit_code != 0
-            applog(self, :warn, "#{name} #{action} command exited with non-zero code = #{exit_code}")
-          end
+          applog(self, :warn, "#{name} #{action} command exited with non-zero code = #{exit_code}") if exit_code != 0
 
           ensure_stop if action == :stop
         end

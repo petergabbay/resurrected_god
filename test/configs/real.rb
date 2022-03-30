@@ -1,6 +1,4 @@
-if $0 == __FILE__
-  require_relative '../../lib/god'
-end
+require_relative '../../lib/god' if $0 == __FILE__
 
 RAILS_ROOT = "/Users/tom/dev/git/helloworld".freeze
 

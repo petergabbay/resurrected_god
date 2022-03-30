@@ -206,25 +206,19 @@ module God
         # Cleanup from current state.
         driver.clear_events
         metrics[from_state].each(&:disable)
-        if to_state == :unmonitored
-          metrics[nil].each(&:disable)
-        end
+        metrics[nil].each(&:disable) if to_state == :unmonitored
 
         # Perform action.
         action(to_state)
 
         # Enable simple mode.
-        if [:start, :restart].include?(to_state) && metrics[to_state].empty?
-          to_state = :up
-        end
+        to_state = :up if [:start, :restart].include?(to_state) && metrics[to_state].empty?
 
         # Move to new state.
         metrics[to_state].each(&:enable)
 
         # If no from state, enable lifecycle metric.
-        if from_state == :unmonitored
-          metrics[nil].each(&:enable)
-        end
+        metrics[nil].each(&:enable) if from_state == :unmonitored
 
         # Set state.
         self.state = to_state
@@ -260,15 +254,11 @@ module God
     ###########################################################################
 
     def method_missing(sym, *args)
-      unless sym.to_s =~ /=$/
-        super
-      end
+      super unless sym.to_s =~ /=$/
 
       base = sym.to_s.chop.intern
 
-      unless valid_states.include?(base)
-        super
-      end
+      super unless valid_states.include?(base)
 
       self.class.send(:attr_accessor, base)
       send(sym, *args)
@@ -374,9 +364,7 @@ module God
       messages = log_line(self, metric, condition, result)
 
       # Notify.
-      if result && condition.notify
-        notify(condition, messages.last)
-      end
+      notify(condition, messages.last) if result && condition.notify
 
       # After-condition.
       condition.after
@@ -423,9 +411,7 @@ module God
       messages = log_line(self, metric, condition, true)
 
       # Notify.
-      if condition.notify
-        notify(condition, messages.last)
-      end
+      notify(condition, messages.last) if condition.notify
 
       # Get the destination.
       dest = condition.transition || (metric.destination && metric.destination[true])
@@ -518,7 +504,7 @@ module God
 
       # Warn about unmatched contacts.
       unless unmatched.empty?
-        msg = "#{condition.watch.name} no matching contacts for '#{unmatched.join(", ")}'"
+        msg = "#{condition.watch.name} no matching contacts for '#{unmatched.join(', ')}'"
         applog(condition.watch, :warn, msg)
       end
 

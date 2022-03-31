@@ -84,7 +84,6 @@ Metrics/PerceivedComplexity:
 Security/Eval:
   Exclude:
     - 'lib/god.rb'
-    - 'lib/god/conditions/complex.rb'
 
 # Offense count: 17
 Style/ClassVars:

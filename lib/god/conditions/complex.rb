@@ -69,7 +69,12 @@ module God
 
         @op_stack.each do |op|
           cond = @oper_stack.shift
-          eval("res #{op & AND > 0 ? '&&' : '||'}= #{op & NOT > 0 ? '!' : ''}cond.test", binding, __FILE__, __LINE__)
+          value = op & NOT > 0 ? !cond.test : cond.test
+          if op & AND > 0
+            res &&= value
+          else
+            res ||= value
+          end
           @oper_stack.push cond
         end
 

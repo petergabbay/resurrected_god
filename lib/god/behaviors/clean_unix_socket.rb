@@ -10,9 +10,9 @@ module God
       def before_start
         File.delete(watch.unix_socket)
 
-        "deleted unix socket"
+        'deleted unix socket'
       rescue
-        "no unix socket to delete"
+        'no unix socket to delete'
       end
     end
   end

@@ -85,18 +85,18 @@ module God
 
           unless God::EventHandler.loaded?
             puts
-            puts "***********************************************************************"
-            puts "*"
-            puts "* Event conditions are not available for your installation of god."
-            puts "* You may still use and write custom conditions using the poll system"
-            puts "*"
-            puts "***********************************************************************"
+            puts '***********************************************************************'
+            puts '*'
+            puts '* Event conditions are not available for your installation of god.'
+            puts '* You may still use and write custom conditions using the poll system'
+            puts '*'
+            puts '***********************************************************************'
             puts
           end
         rescue => e
           puts e.message
           puts e.backtrace.join("\n")
-          abort "There was a fatal system error while starting god (see above)"
+          abort 'There was a fatal system error while starting god (see above)'
         end
 
         File.open(@options[:pid], 'w') { |f| f.write pid } if @options[:pid]
@@ -109,21 +109,21 @@ module God
       def setup_logging
         log_file = God.log_file
         log_file = File.expand_path(@options[:log]) if @options[:log]
-        log_file = "/dev/null" if !log_file && @options[:daemonize]
+        log_file = '/dev/null' if !log_file && @options[:daemonize]
         return unless log_file
 
         puts "Sending output to log file: #{log_file}" unless @options[:daemonize]
 
         # reset file descriptors
-        $stdin.reopen "/dev/null"
-        $stdout.reopen(log_file, "a")
+        $stdin.reopen '/dev/null'
+        $stdout.reopen(log_file, 'a')
         $stderr.reopen $stdout
         $stdout.sync = true
       end
 
       def load_config(config)
         files = File.directory?(config) ? Dir['**/*.god'] : Dir[config]
-        abort "No files could be found" if files.empty?
+        abort 'No files could be found' if files.empty?
         files.each do |god_file|
           abort "File '#{god_file}' could not be loaded" unless load_god_file(god_file)
         end

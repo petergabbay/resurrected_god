@@ -1,6 +1,6 @@
 module God
   class DummyHandler
-    EVENT_SYSTEM = "none".freeze
+    EVENT_SYSTEM = 'none'.freeze
 
     def self.register_process(pid, events)
       raise NotImplementedError

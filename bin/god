@@ -44,55 +44,55 @@ begin
     Options:
     BANNER
 
-    o.on("-cCONFIG", "--config-file CONFIG", "Configuration file") do |x|
+    o.on('-cCONFIG', '--config-file CONFIG', 'Configuration file') do |x|
       options[:config] = x
     end
 
-    o.on("-pPORT", "--port PORT", "Communications port (default 17165)") do |x|
+    o.on('-pPORT', '--port PORT', 'Communications port (default 17165)') do |x|
       options[:port] = x
     end
 
-    o.on("-b", "--auto-bind", "Auto-bind to an unused port number") do
-      options[:port] = "0"
+    o.on('-b', '--auto-bind', 'Auto-bind to an unused port number') do
+      options[:port] = '0'
     end
 
-    o.on("-PFILE", "--pid FILE", "Where to write the PID file") do |x|
+    o.on('-PFILE', '--pid FILE', 'Where to write the PID file') do |x|
       options[:pid] = x
     end
 
-    o.on("-lFILE", "--log FILE", "Where to write the log file") do |x|
+    o.on('-lFILE', '--log FILE', 'Where to write the log file') do |x|
       options[:log] = x
     end
 
-    o.on("-D", "--no-daemonize", "Don't daemonize") do
+    o.on('-D', '--no-daemonize', "Don't daemonize") do
       options[:daemonize] = false
     end
 
-    o.on("-v", "--version", "Print the version number and exit") do
+    o.on('-v', '--version', 'Print the version number and exit') do
       options[:version] = true
     end
 
-    o.on("-V", "Print extended version and build information") do
+    o.on('-V', 'Print extended version and build information') do
       options[:info] = true
     end
 
-    o.on("--log-level LEVEL", "Log level [debug|info|warn|error|fatal]") do |x|
+    o.on('--log-level LEVEL', 'Log level [debug|info|warn|error|fatal]') do |x|
       options[:log_level] = x.to_sym
     end
 
-    o.on("--no-syslog", "Disable output to syslog") do
+    o.on('--no-syslog', 'Disable output to syslog') do
       options[:syslog] = false
     end
 
-    o.on("--attach PID", "Quit god when the attached process dies") do |x|
+    o.on('--attach PID', 'Quit god when the attached process dies') do |x|
       options[:attach] = x
     end
 
-    o.on("--no-events", "Disable the event system") do
+    o.on('--no-events', 'Disable the event system') do
       options[:events] = false
     end
 
-    o.on("--bleakhouse", "Enable bleakhouse profiling") do
+    o.on('--bleakhouse', 'Enable bleakhouse profiling') do
       options[:bleakhouse] = true
     end
   end

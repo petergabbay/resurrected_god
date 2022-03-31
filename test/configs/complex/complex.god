@@ -1,5 +1,5 @@
 God.watch do |w|
-  w.name = "complex"
+  w.name = 'complex'
   w.interval = 5.seconds
   w.start = File.join(GOD_ROOT, *%w[test configs complex simple_server.rb])
   # w.log = File.join(GOD_ROOT, *%w[test configs child_events god.log])

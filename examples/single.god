@@ -1,12 +1,12 @@
-RAILS_ROOT = "/Users/tom/dev/gravatar2".freeze
+RAILS_ROOT = '/Users/tom/dev/gravatar2'.freeze
 
 God.watch do |w|
-  w.name = "local-3000"
+  w.name = 'local-3000'
   w.interval = 5.seconds # default
   w.start = "mongrel_rails start -c #{RAILS_ROOT} -P #{RAILS_ROOT}/log/mongrel.pid -p 3000 -d"
   w.stop = "mongrel_rails stop -P #{RAILS_ROOT}/log/mongrel.pid"
   w.restart = "mongrel_rails restart -P #{RAILS_ROOT}/log/mongrel.pid"
-  w.pid_file = File.join(RAILS_ROOT, "log/mongrel.pid")
+  w.pid_file = File.join(RAILS_ROOT, 'log/mongrel.pid')
 
   # clean pid files before start if necessary
   w.behavior(:clean_pid_file)

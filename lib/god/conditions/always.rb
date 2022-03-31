@@ -20,7 +20,7 @@ module God
 
       def initialize
         super
-        self.info = "always"
+        self.info = 'always'
       end
 
       def valid?

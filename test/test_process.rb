@@ -7,7 +7,7 @@ module God
     # end
 
     def exec(*)
-      raise "You forgot to stub exec"
+      raise 'You forgot to stub exec'
     end
   end
 end
@@ -133,7 +133,7 @@ class TestProcessChild < Minitest::Test
       @p.expects(:fork)
       Process.expects(:waitpid)
       File.expects(:open).with(@p.default_pid_file, 'w')
-      @p.send("#{action}=", "run")
+      @p.send("#{action}=", 'run')
       @p.call_action(action)
     end
   end
@@ -180,7 +180,7 @@ class TestProcessDaemon < Minitest::Test
   # pid
 
   def test_pid_should_return_integer_for_valid_pid_files
-    File.stubs(:read).returns("123")
+    File.stubs(:read).returns('123')
     assert_equal 123, @p.pid
   end
 
@@ -190,18 +190,18 @@ class TestProcessDaemon < Minitest::Test
   end
 
   def test_pid_should_return_nil_for_invalid_pid_files
-    File.stubs(:read).returns("four score and seven years ago")
+    File.stubs(:read).returns('four score and seven years ago')
     assert_equal nil, @p.pid
   end
 
   def test_pid_should_retain_last_pid_value_if_pid_file_is_removed
-    File.stubs(:read).returns("123")
+    File.stubs(:read).returns('123')
     assert_equal 123, @p.pid
 
     File.stubs(:read).raises(Errno::ENOENT)
     assert_equal 123, @p.pid
 
-    File.stubs(:read).returns("246")
+    File.stubs(:read).returns('246')
     assert_equal 246, @p.pid
   end
 
@@ -228,14 +228,14 @@ class TestProcessDaemon < Minitest::Test
   # These actually excercise call_action in the back at this point - Kev
 
   def test_call_action_with_string_should_call_system
-    @p.start = "do something"
+    @p.start = 'do something'
     @p.expects(:fork)
     Process.expects(:waitpid2).returns([123, 0])
     @p.call_action(:start)
   end
 
   def test_call_action_with_lambda_should_call
-    cmd = -> { puts "Hi" }
+    cmd = -> { puts 'Hi' }
     cmd.expects(:call)
     @p.start = cmd
     @p.call_action(:start)

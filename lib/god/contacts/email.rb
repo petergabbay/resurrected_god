@@ -118,7 +118,7 @@ module God
       end
 
       def notify_sendmail(mail)
-        IO.popen("#{arg(:sendmail_path)} #{arg(:sendmail_args)}", "w+") do |sm|
+        IO.popen("#{arg(:sendmail_path)} #{arg(:sendmail_args)}", 'w+') do |sm|
           sm.print(mail.gsub(/\r/, ''))
           sm.flush
         end

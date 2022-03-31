@@ -1,6 +1,6 @@
 require_relative 'helper'
 
-if God::EventHandler.event_system == "kqueue"
+if God::EventHandler.event_system == 'kqueue'
 
   class TestHandlersKqueueHandler < Minitest::Test
     def test_register_process

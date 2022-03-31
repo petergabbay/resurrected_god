@@ -1,5 +1,5 @@
 God.watch do |w|
-  w.name = "daemon-events"
+  w.name = 'daemon-events'
   w.interval = 5.seconds
   w.start = "ruby #{File.join(File.dirname(__FILE__), *%w[simple_server.rb])} start"
   w.stop = "ruby #{File.join(File.dirname(__FILE__), *%w[simple_server_stop.rb])}"

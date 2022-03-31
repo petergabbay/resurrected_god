@@ -4,7 +4,7 @@
 # Run with:
 # god -c /path/to/events.god
 
-RAILS_ROOT = "/Users/tom/dev/helloworld".freeze
+RAILS_ROOT = '/Users/tom/dev/helloworld'.freeze
 
 God::Contacts::Email.delivery_method = :smtp
 God::Contacts::Email.server_settings = {}
@@ -17,11 +17,11 @@ God.contact(:email) do |c|
 end
 
 God.watch do |w|
-  w.name = "local-3000"
+  w.name = 'local-3000'
   w.interval = 5.seconds
   w.start = "mongrel_rails start -P ./log/mongrel.pid -c #{RAILS_ROOT} -d"
   w.stop = "mongrel_rails stop -P ./log/mongrel.pid -c #{RAILS_ROOT}"
-  w.pid_file = File.join(RAILS_ROOT, "log/mongrel.pid")
+  w.pid_file = File.join(RAILS_ROOT, 'log/mongrel.pid')
 
   # clean pid files before start if necessary
   w.behavior(:clean_pid_file)

@@ -45,23 +45,23 @@ module God
       when String
         { contacts: Array(spec) }
       when Array
-        raise ArgumentError, "contains non-String elements" unless spec.all? { |x| x.instance_of?(String) }
+        raise ArgumentError, 'contains non-String elements' unless spec.all? { |x| x.instance_of?(String) }
 
         { contacts: spec }
       when Hash
         copy = spec.dup
 
         # check :contacts
-        raise ArgumentError, "must have a :contacts key" unless (contacts = copy.delete(:contacts))
+        raise ArgumentError, 'must have a :contacts key' unless (contacts = copy.delete(:contacts))
 
         case contacts
         when String
         # valid
         when Array
-          raise ArgumentError, "has a :contacts key containing non-String elements" unless contacts.all? { |x| x.instance_of?(String) }
+          raise ArgumentError, 'has a :contacts key containing non-String elements' unless contacts.all? { |x| x.instance_of?(String) }
         # valid
         else
-          raise ArgumentError, "must have a :contacts key pointing to a String or Array of Strings"
+          raise ArgumentError, 'must have a :contacts key pointing to a String or Array of Strings'
         end
 
         # remove priority and category
@@ -78,7 +78,7 @@ module God
 
         spec
       else
-        raise ArgumentError, "must be a String (contact name), Array (of contact names), or Hash (contact specification)"
+        raise ArgumentError, 'must be a String (contact name), Array (of contact names), or Hash (contact specification)'
       end
     end
 
@@ -90,7 +90,7 @@ module God
     #   +category+ is the arbitrary category String
     #   +host+ is the hostname of the server
     def notify(message, time, priority, category, host) # rubocop:disable Lint/UnusedMethodArgument
-      raise AbstractMethodNotOverriddenError, "Contact#notify must be overridden in subclasses"
+      raise AbstractMethodNotOverriddenError, 'Contact#notify must be overridden in subclasses'
     end
 
     # Construct the friendly name of this Contact, looks like:

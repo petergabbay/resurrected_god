@@ -26,7 +26,7 @@ module God
         result = Prowly.notify do |n|
           n.apikey      = arg(:apikey)
           n.priority    = map_priority(priority.to_i)
-          n.application = category || "God"
+          n.application = category || 'God'
           n.event       = "on #{host}"
           n.description = "#{message} at #{time}"
         end

@@ -23,14 +23,14 @@ module God
           self.interval = @original_interval
         else
           if @tries == 2
-            self.info = "lambda condition was satisfied"
+            self.info = 'lambda condition was satisfied'
             return true
           end
           self.interval = interval / 2.0
           @tries += 1
         end
 
-        self.info = "lambda condition was not satisfied"
+        self.info = 'lambda condition was not satisfied'
         false
       end
 

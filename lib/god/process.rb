@@ -65,7 +65,7 @@ module God
       # a start command must be specified
       if start.nil?
         valid = false
-        applog(self, :error, "No start command was specified")
+        applog(self, :error, 'No start command was specified')
       end
 
       # uid must exist if specified
@@ -311,16 +311,16 @@ module God
         self.dir ||= '/'
         Dir.chdir self.dir
         $0 = command
-        $stdin.reopen "/dev/null"
+        $stdin.reopen '/dev/null'
         if log_cmd
-          $stdout.reopen IO.popen(log_cmd, "a")
+          $stdout.reopen IO.popen(log_cmd, 'a')
         else
-          $stdout.reopen file_in_chroot(log), "a"
+          $stdout.reopen file_in_chroot(log), 'a'
         end
         if err_log_cmd
-          $stderr.reopen IO.popen(err_log_cmd, "a")
+          $stderr.reopen IO.popen(err_log_cmd, 'a')
         elsif err_log && (log_cmd || err_log != log)
-          $stderr.reopen file_in_chroot(err_log), "a"
+          $stderr.reopen file_in_chroot(err_log), 'a'
         else
           $stderr.reopen $stdout
         end

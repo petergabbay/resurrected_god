@@ -23,7 +23,7 @@ module God
     def initialize(io)
       @io = io
       @level = INFO
-      @datetime_format = "%Y-%m-%d %H:%M:%S"
+      @datetime_format = '%Y-%m-%d %H:%M:%S'
     end
 
     def output(level, msg)

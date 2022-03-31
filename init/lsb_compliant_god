@@ -2,15 +2,15 @@
 
 # see http://refspecs.freestandards.org/LSB_3.1.0/LSB-Core-generic/LSB-Core-generic/iniscrptact.html
 
-PATH = "/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin".freeze
-NAME = "god".freeze
+PATH = '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin'.freeze
+NAME = 'god'.freeze
 DAEMON = "/usr/bin/#{NAME}".freeze
-CONFIGFILE = "/etc/god/god.conf".freeze
+CONFIGFILE = '/etc/god/god.conf'.freeze
 PIDFILE = "/var/run/#{NAME}.pid".freeze
 SCRIPTNAME = "/etc/init.d/#{NAME}".freeze
 START_FLAGS = "--no-syslog -P #{PIDFILE}".freeze
 
-ENV["PATH"] = PATH
+ENV['PATH'] = PATH
 
 def read_pid
   @pid = File.read(PIDFILE).to_i
@@ -48,11 +48,11 @@ end
 
 def stop
   unless running?
-    puts "not running"
+    puts 'not running'
     exit
   end
 
-  system("god quit")
+  system('god quit')
 end
 
 def restart
@@ -94,7 +94,7 @@ when 'status'
     puts "dead (#{@pid})"
     exit!(1)
   else
-    puts "not running"
+    puts 'not running'
     exit!(3)
   end
 else

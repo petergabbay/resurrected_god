@@ -266,7 +266,7 @@ class TestGod < MiniTest::Test
       c.name = 'tom'
       contact = c
     end
-    assert_equal({ "tom" => contact }, God.contacts)
+    assert_equal({ 'tom' => contact }, God.contacts)
   end
 
   def test_contact_should_add_to_group
@@ -487,7 +487,7 @@ class TestGod < MiniTest::Test
 
   def test_terminate_should_delete_pid
     God.pid = '/foo/bar'
-    FileUtils.expects(:rm_f).with("/foo/bar")
+    FileUtils.expects(:rm_f).with('/foo/bar')
     God.expects(:exit!)
     God.terminate
   end

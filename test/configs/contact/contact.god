@@ -61,10 +61,10 @@
 # end
 
 God.watch do |w|
-  w.name = "contact"
+  w.name = 'contact'
   w.interval = 5.seconds
   w.start = "ruby #{File.join(File.dirname(__FILE__), *%w[simple_server.rb])}"
-  w.log = "/Users/tom/contact.log"
+  w.log = '/Users/tom/contact.log'
 
   # determine the state on startup
   w.transition(:init, { true => :up, false => :start }) do |on|

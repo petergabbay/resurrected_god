@@ -2,7 +2,7 @@ require 'netlink_handler_ext'
 
 module God
   class NetlinkHandler
-    EVENT_SYSTEM = "netlink".freeze
+    EVENT_SYSTEM = 'netlink'.freeze
 
     def self.register_process(pid, events)
       # netlink doesn't need to do this

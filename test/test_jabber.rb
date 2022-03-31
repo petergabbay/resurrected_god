@@ -22,6 +22,6 @@ class TestJabber < Minitest::Test
     Jabber::Client.any_instance.expects(:close)
 
     @jabber.notify('msg', Time.now, 'prio', 'cat', 'host')
-    assert_equal "sent jabber message to dev@jabber.org", @jabber.info
+    assert_equal 'sent jabber message to dev@jabber.org', @jabber.info
   end
 end

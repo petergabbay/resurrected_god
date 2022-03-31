@@ -169,10 +169,3 @@ Style/RescueStandardError:
 # SupportedStyles: use_perl_names, use_english_names
 Style/SpecialGlobalVars:
   EnforcedStyle: use_perl_names
-
-# Offense count: 279
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Enabled: false

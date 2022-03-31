@@ -1,7 +1,7 @@
-$pid_file = "/tmp/matias.pid"
+$pid_file = '/tmp/matias.pid'
 
 God.task do |w|
-  w.name = "watcher"
+  w.name = 'watcher'
   w.interval = 5.seconds
   w.valid_states = [:init, :up, :down]
   w.initial_state = :init

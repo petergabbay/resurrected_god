@@ -20,7 +20,7 @@ class TestEmail < Minitest::Test
     God::Contacts::Email.any_instance.expects(:notify_smtp).once.returns(nil)
 
     @email.notify('msg', Time.now, 'prio', 'cat', 'host')
-    assert_equal "sent email to dev@example.com via smtp", @email.info
+    assert_equal 'sent email to dev@example.com via smtp', @email.info
   end
 
   def test_sendmail_delivery_method_for_notify
@@ -30,6 +30,6 @@ class TestEmail < Minitest::Test
     God::Contacts::Email.any_instance.expects(:notify_sendmail).once.returns(nil)
 
     @email.notify('msg', Time.now, 'prio', 'cat', 'host')
-    assert_equal "sent email to dev@example.com via sendmail", @email.info
+    assert_equal 'sent email to dev@example.com via sendmail', @email.info
   end
 end

@@ -41,7 +41,7 @@ module God
 
         ::Twitter::Base.new(oauth).update(message)
 
-        self.info = "sent twitter update"
+        self.info = 'sent twitter update'
       rescue => e
         applog(nil, :info, "failed to send twitter update: #{e.message}")
         applog(nil, :debug, e.backtrace.join("\n"))

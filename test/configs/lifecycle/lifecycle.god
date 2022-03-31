@@ -11,15 +11,15 @@ God.contact(:twitter) do |c|
 end
 
 God.watch do |w|
-  w.name = "lifecycle"
+  w.name = 'lifecycle'
   w.interval = 5.seconds
-  w.start = "/dev/null"
+  w.start = '/dev/null'
 
   # lifecycle
   w.lifecycle do |on|
     on.condition(:always) do |c|
       c.what = true
-      c.notify = "tom2"
+      c.notify = 'tom2'
     end
   end
 end

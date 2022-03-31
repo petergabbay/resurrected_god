@@ -21,7 +21,7 @@ module God
 
       def initialize
         super
-        self.info = "process exited"
+        self.info = 'process exited'
       end
 
       def valid?
@@ -37,7 +37,7 @@ module God
 
         begin
           EventHandler.register(pid, :proc_exit) do |extra|
-            formatted_extra = extra.empty? ? "" : " #{extra.inspect}"
+            formatted_extra = extra.empty? ? '' : " #{extra.inspect}"
             self.info = "process #{pid} exited#{formatted_extra}"
             watch.trigger(self)
           end

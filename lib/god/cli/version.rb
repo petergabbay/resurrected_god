@@ -11,7 +11,7 @@ module God
 
       def self.version_extended
         puts "Version: #{God.version}"
-        puts "Polls: enabled"
+        puts 'Polls: enabled'
         puts "Events: #{God::EventHandler.event_system}"
 
         exit

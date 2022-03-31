@@ -359,7 +359,7 @@ if $load_god
       # Verify contact has been loaded.
       if CONTACT_LOAD_SUCCESS[kind] == false
         applog(nil, :error, "A required dependency for the #{kind} contact is unavailable.")
-        applog(nil, :error, "Run the following commands to install the dependencies:")
+        applog(nil, :error, 'Run the following commands to install the dependencies:')
         CONTACT_DEPS[kind].each do |d|
           applog(nil, :error, "  [sudo] gem install #{d}")
         end
@@ -391,7 +391,7 @@ if $load_god
 
       # Abort if the Contact is invalid, the Contact will have printed out its
       # own error messages by now.
-      abort "Exiting on invalid contact" unless Contact.valid?(c) && c.valid?
+      abort 'Exiting on invalid contact' unless Contact.valid?(c) && c.valid?
 
       # Add to list of contacts.
       contacts[c.name] = c
@@ -420,7 +420,7 @@ if $load_god
 
     def self.watches_by_name(name)
       case name
-      when "", nil then watches.values.dup
+      when '', nil then watches.values.dup
       else Array(watches[name] || groups[name]).dup
       end
     end
@@ -440,20 +440,20 @@ if $load_god
 
       # Do the command.
       case command
-      when "start", "monitor"
+      when 'start', 'monitor'
         items.each { |w| jobs << Thread.new { w.monitor if w.state != :up } }
-      when "restart"
+      when 'restart'
         items.each { |w| jobs << Thread.new { w.move(:restart) } }
-      when "stop"
+      when 'stop'
         items.each do |w|
           jobs << Thread.new do
             w.action(:stop)
             w.unmonitor if w.state != :unmonitored
           end
         end
-      when "unmonitor"
+      when 'unmonitor'
         items.each { |w| jobs << Thread.new { w.unmonitor if w.state != :unmonitored } }
-      when "remove"
+      when 'remove'
         items.each { |w| unwatch(w) }
       else
         raise InvalidCommandError
@@ -561,7 +561,7 @@ if $load_god
     #                          from the system (if 'remove' or 'stop' was
     #                          specified as the action).
     def self.running_load(code, filename, action = nil)
-      errors = ""
+      errors = ''
       loaded_watches = []
       unloaded_watches = []
       jobs = []
@@ -668,9 +668,9 @@ if $load_god
       end
 
       if God::Logger.syslog
-        LOG.info("Syslog enabled.")
+        LOG.info('Syslog enabled.')
       else
-        LOG.info("Syslog disabled.")
+        LOG.info('Syslog disabled.')
       end
 
       applog(nil, :info, "Using pid file directory: #{pid_file_directory}")

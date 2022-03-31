@@ -1,4 +1,4 @@
-ENV['GOD_TEST_RAILS_ROOT'] || abort("Set a rails root for testing in an environment variable called GOD_TEST_RAILS_ROOT")
+ENV['GOD_TEST_RAILS_ROOT'] || abort('Set a rails root for testing in an environment variable called GOD_TEST_RAILS_ROOT')
 
 RAILS_ROOT = ENV['GOD_TEST_RAILS_ROOT']
 
@@ -11,7 +11,7 @@ God.watch do |w|
   w.restart = "mongrel_rails restart -P ./log/mongrel.pid -c #{RAILS_ROOT}"
   w.stop = "mongrel_rails stop -P ./log/mongrel.pid -c #{RAILS_ROOT}"
   w.group = 'mongrels'
-  w.pid_file = File.join(RAILS_ROOT, "log/mongrel.pid")
+  w.pid_file = File.join(RAILS_ROOT, 'log/mongrel.pid')
 
   # clean pid files before start if necessary
   w.behavior(:clean_pid_file)

@@ -21,7 +21,7 @@ module God
         require 'god/event_handlers/netlink_handler'
         @@handler = NetlinkHandler
       else
-        raise NotImplementedError, "Platform not supported for EventHandler"
+        raise NotImplementedError, 'Platform not supported for EventHandler'
       end
       @@loaded = true
     rescue Exception

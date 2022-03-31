@@ -27,7 +27,7 @@ class TestCondition < Minitest::Test
   end
 
   def test_generate_should_return_a_good_error_message_for_invalid_types
-    emsg = "No Condition found with the class name God::Conditions::FooBar"
+    emsg = 'No Condition found with the class name God::Conditions::FooBar'
     rmsg = nil
 
     begin

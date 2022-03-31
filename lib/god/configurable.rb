@@ -39,7 +39,7 @@ module God
     # configurable - Should respond to :watch and :friendly_name
     def self.complain(text, configurable = nil)
       watch = configurable.watch rescue nil
-      msg = ""
+      msg = ''
       msg += "#{watch.name}: " if watch
       msg += text
       msg += " for #{configurable.friendly_name}" if configurable

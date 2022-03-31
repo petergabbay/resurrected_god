@@ -39,7 +39,7 @@ module God
 
       def initialize
         super
-        self.info = "process is flapping"
+        self.info = 'process is flapping'
       end
 
       def prepare

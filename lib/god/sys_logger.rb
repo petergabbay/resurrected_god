@@ -8,7 +8,7 @@ begin
     Syslog.reopen('god')
   end
 
-  Syslog.info("Syslog enabled.")
+  Syslog.info('Syslog enabled.')
 
   module God
     class SysLogger

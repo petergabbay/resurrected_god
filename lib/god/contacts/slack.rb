@@ -21,9 +21,9 @@ module God
         attr_accessor :url, :channel, :notify_channel, :format, :username, :emoji
       end
 
-      self.channel        = "#general"
+      self.channel        = '#general'
       self.notify_channel = false
-      self.format         = "%{priority} alert on %{host}: %{message} (%{category}, %{time})"
+      self.format         = '%{priority} alert on %{host}: %{message} (%{category}, %{time})'
 
       def valid?
         valid = true
@@ -34,8 +34,8 @@ module God
       attr_accessor :url, :channel, :notify_channel, :format, :username, :emoji
 
       def text(data)
-        text = ""
-        text << "<!channel> " if arg(:notify_channel)
+        text = ''
+        text << '<!channel> ' if arg(:notify_channel)
         text << arg(:format) % data
 
         text

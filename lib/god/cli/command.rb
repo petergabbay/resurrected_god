@@ -17,7 +17,7 @@ module God
         begin
           @server.ping
         rescue DRb::DRbConnError
-          puts "The server is not available (or you do not have permissions to access it)"
+          puts 'The server is not available (or you do not have permissions to access it)'
           abort
         end
       end
@@ -102,7 +102,7 @@ module God
             puts "#{item}:"
             groups[item].keys.sort.each do |name|
               state = groups[item][name][:state]
-              print "  "
+              print '  '
               puts "#{name}: #{state}"
               exitcode += 1 unless state == :up
             end
@@ -116,7 +116,7 @@ module God
             puts "#{group}:" unless group.empty?
             groups[group].keys.sort.each do |name|
               state = groups[group][name][:state]
-              print "  " unless group.empty?
+              print '  ' unless group.empty?
               puts "#{name}: #{state}"
             end
           end
@@ -161,11 +161,11 @@ module God
         name = @args[1]
 
         unless name
-          puts "You must specify a Task or Group name"
+          puts 'You must specify a Task or Group name'
           exit!
         end
 
-        puts "Please wait..."
+        puts 'Please wait...'
         t = Time.at(0)
         loop do
           print @server.running_log(name, t)
@@ -173,9 +173,9 @@ module God
           sleep 0.25
         end
       rescue God::NoSuchWatchError
-        puts "No such watch"
+        puts 'No such watch'
       rescue DRb::DRbConnError
-        puts "The server went away"
+        puts 'The server went away'
       end
 
       def quit_command
@@ -216,10 +216,10 @@ module God
           puts "using event system: #{event_system}"
 
           if God::EventHandler.loaded?
-            puts "starting event handler"
+            puts 'starting event handler'
             God::EventHandler.start
           else
-            puts "[fail] event system did not load"
+            puts '[fail] event system did not load'
             exit(1)
           end
 
@@ -232,13 +232,13 @@ module God
           puts "forked process with pid = #{pid}"
 
           God::EventHandler.register(pid, :proc_exit) do
-            puts "[ok] process exit event received"
+            puts '[ok] process exit event received'
             exit!(0)
           end
 
           sleep(1)
 
-          puts "killing process"
+          puts 'killing process'
 
           ::Process.kill('KILL', pid)
           ::Process.waitpid(pid)
@@ -249,7 +249,7 @@ module God
 
         sleep(2)
 
-        puts "[fail] never received process exit event"
+        puts '[fail] never received process exit event'
         exit(1)
       end
 

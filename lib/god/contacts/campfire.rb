@@ -18,8 +18,8 @@ end
 module Marshmallow
   class Connection
     def initialize(options)
-      raise "Required option :subdomain not set." unless options[:subdomain]
-      raise "Required option :token not set." unless options[:token]
+      raise 'Required option :subdomain not set.' unless options[:subdomain]
+      raise 'Required option :token not set.' unless options[:token]
 
       @options = options
     end

@@ -10,7 +10,7 @@ class TestWebhook < Minitest::Test
     Net::HTTP.any_instance.expects(:request).returns(Net::HTTPSuccess.new('a', 'b', 'c'))
 
     @webhook.notify('msg', Time.now, 'prio', 'cat', 'host')
-    assert_equal "sent webhook to http://example.com/switch", @webhook.info
+    assert_equal 'sent webhook to http://example.com/switch', @webhook.info
   end
 
   def test_notify_with_url_containing_query_parameters

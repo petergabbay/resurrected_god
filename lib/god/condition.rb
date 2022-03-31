@@ -56,7 +56,7 @@ module God
     # Return true if the test passes (everything is ok)
     # Return false otherwise
     def test
-      raise AbstractMethodNotOverriddenError, "PollCondition#test must be overridden in subclasses"
+      raise AbstractMethodNotOverriddenError, 'PollCondition#test must be overridden in subclasses'
     end
 
     # Override this method in your Conditions (optional)
@@ -66,17 +66,17 @@ module God
 
   class EventCondition < Condition
     def register
-      raise AbstractMethodNotOverriddenError, "EventCondition#register must be overridden in subclasses"
+      raise AbstractMethodNotOverriddenError, 'EventCondition#register must be overridden in subclasses'
     end
 
     def deregister
-      raise AbstractMethodNotOverriddenError, "EventCondition#deregister must be overridden in subclasses"
+      raise AbstractMethodNotOverriddenError, 'EventCondition#deregister must be overridden in subclasses'
     end
   end
 
   class TriggerCondition < Condition
     def process(event, payload) # rubocop:disable Lint/UnusedMethodArgument
-      raise AbstractMethodNotOverriddenError, "TriggerCondition#process must be overridden in subclasses"
+      raise AbstractMethodNotOverriddenError, 'TriggerCondition#process must be overridden in subclasses'
     end
 
     def trigger

@@ -1,15 +1,15 @@
 require_relative '../../lib/god' if $0 == __FILE__
 
-RAILS_ROOT = "/Users/tom/dev/git/helloworld".freeze
+RAILS_ROOT = '/Users/tom/dev/git/helloworld'.freeze
 
 God.watch do |w|
-  w.name = "local-3000"
+  w.name = 'local-3000'
   w.interval = 5 # seconds
   w.start = "mongrel_rails start -P ./log/mongrel.pid -c #{RAILS_ROOT} -d"
   w.stop = "mongrel_rails stop -P ./log/mongrel.pid -c #{RAILS_ROOT}"
   w.grace = 5
 
-  pid_file = File.join(RAILS_ROOT, "log/mongrel.pid")
+  pid_file = File.join(RAILS_ROOT, 'log/mongrel.pid')
 
   # clean pid files before start if necessary
   w.behavior(:clean_pid_file) do |b|

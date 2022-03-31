@@ -25,7 +25,7 @@ class TestEventHandler < Minitest::Test
     pid = 4445
     event = :proc_exit
     block = lambda {
-      puts "Hi"
+      puts 'Hi'
     }
 
     mock_handler = mock
@@ -38,7 +38,7 @@ class TestEventHandler < Minitest::Test
 
   def test_register_multiple_events_per_process
     pid = 4445
-    exit_block = -> { puts "Hi" }
+    exit_block = -> { puts 'Hi' }
     @h.actions = { pid => { proc_exit: exit_block } }
 
     mock_handler = mock
@@ -47,7 +47,7 @@ class TestEventHandler < Minitest::Test
     end
     @h.handler = mock_handler
 
-    fork_block = -> { puts "Forking" }
+    fork_block = -> { puts 'Forking' }
     @h.register(pid, :proc_fork, &fork_block)
     assert_equal @h.actions, { pid => { proc_exit: exit_block,
                                         proc_fork: fork_block } }

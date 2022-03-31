@@ -111,7 +111,7 @@ module God
     def pop
       @monitor.synchronize do
         if @events.empty?
-          raise ThreadError, "queue empty" if @shutdown
+          raise ThreadError, 'queue empty' if @shutdown
 
           @resource.wait
         else

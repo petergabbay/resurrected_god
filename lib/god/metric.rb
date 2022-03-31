@@ -44,7 +44,7 @@ module God
       c.prepare
 
       # Test generic and specific validity.
-      abort "Exiting on invalid condition" unless Condition.valid?(c) && c.valid?
+      abort 'Exiting on invalid condition' unless Condition.valid?(c) && c.valid?
 
       # Inherit interval from watch if no poll condition specific interval was
       # set.
@@ -54,7 +54,7 @@ module God
         else
           abort "No interval set for Condition '#{c.class.name}' in Watch " \
                 "'#{watch.name}', and no default Watch interval from " \
-                "which to inherit."
+                'which to inherit.'
         end
       end
 

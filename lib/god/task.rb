@@ -68,19 +68,19 @@ module God
       # A name must be specified.
       if name.nil?
         valid = false
-        applog(self, :error, "No name String was specified.")
+        applog(self, :error, 'No name String was specified.')
       end
 
       # Valid states must be specified.
       if valid_states.nil?
         valid = false
-        applog(self, :error, "No valid_states Array or Symbols was specified.")
+        applog(self, :error, 'No valid_states Array or Symbols was specified.')
       end
 
       # An initial state must be specified.
       if initial_state.nil?
         valid = false
-        applog(self, :error, "No initial_state Symbol was specified.")
+        applog(self, :error, 'No initial_state Symbol was specified.')
       end
 
       valid
@@ -442,9 +442,9 @@ module God
     def log_line(watch, metric, condition, result)
       status =
         if trigger?(metric, result)
-          "[trigger]"
+          '[trigger]'
         else
-          "[ok]"
+          '[ok]'
         end
 
       messages = []

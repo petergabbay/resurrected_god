@@ -76,7 +76,7 @@ module God
         @drb ||= DRb.start_service(socket, self)
         applog(nil, :info, "Started on #{DRb.uri}")
       rescue Errno::EADDRINUSE
-        applog(nil, :info, "Socket already in use")
+        applog(nil, :info, 'Socket already in use')
         server = DRbObject.new(nil, socket)
 
         begin
@@ -85,7 +85,7 @@ module God
           end
           abort "Socket #{socket} already in use by another instance of god"
         rescue StandardError, Timeout::Error
-          applog(nil, :info, "Socket is stale, reopening")
+          applog(nil, :info, 'Socket is stale, reopening')
           File.delete(socket_file) rescue nil
           @drb ||= DRb.start_service(socket, self)
           applog(nil, :info, "Started on #{DRb.uri}")

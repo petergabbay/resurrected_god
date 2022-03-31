@@ -1,4 +1,6 @@
-$:.unshift File.expand_path('../lib', __dir__) # For use/testing when no gem is installed
+require 'English'
+
+$LOAD_PATH.unshift File.expand_path('../lib', __dir__) # For use/testing when no gem is installed
 
 # Use this flag to actually load all of the god infrastructure
 $load_god = true
@@ -136,7 +138,7 @@ if defined?(RUBY_ENGINE) && RUBY_ENGINE == 'ruby'
     alias __at_exit at_exit
     def at_exit(&block)
       __at_exit do
-        exit_status = $!.status if $!.is_a?(SystemExit)
+        exit_status = $ERROR_INFO.status if $ERROR_INFO.is_a?(SystemExit)
         block.call
         exit exit_status if exit_status
       end

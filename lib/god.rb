@@ -90,7 +90,7 @@ if $load_god
   load_contact(:slack)
   load_contact(:sensu)
 
-  $:.unshift File.join(File.dirname(__FILE__), *%w[.. ext god])
+  $LOAD_PATH.unshift File.join(File.dirname(__FILE__), *%w[.. ext god])
 
   # App wide logging system
   LOG = God::Logger.new

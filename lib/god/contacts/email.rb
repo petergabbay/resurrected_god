@@ -26,6 +26,7 @@
 #                   (default: "/usr/sbin/sendmail").
 # sendmail_args   - The String args to send to sendmail (default "-i -t").
 
+require 'English'
 require 'time'
 require 'net/smtp'
 
@@ -53,7 +54,7 @@ module God
           To: #{to_name || name} <#{to_email}>
           Subject: [god] #{message}
           Date: #{time.httpdate}
-          Message-Id: <#{rand(1000000000).to_s(36)}.#{$$}.#{from_email}>
+          Message-Id: <#{rand(1000000000).to_s(36)}.#{$PROCESS_ID}.#{from_email}>
 
           Message: #{message}
           Host: #{host}

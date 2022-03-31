@@ -9,6 +9,10 @@ Style/EmptyMethod:
   EnforcedStyle: expanded
 Style/FormatStringToken:
   EnforcedStyle: template
+Style/GlobalVars:
+  AllowedVariables:
+    - $load_god
+    - $run
 Style/NumericLiteralPrefix:
   EnforcedOctalStyle: zero_only
 Style/NumericLiterals:

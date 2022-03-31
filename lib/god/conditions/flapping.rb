@@ -65,10 +65,10 @@ module God
           if from_state_match && to_state_match
             @timeline << Time.now
 
-            concensus = (@timeline.size == times)
+            consensus = (@timeline.size == times)
             duration = (@timeline.last - @timeline.first) < within
 
-            if concensus && duration
+            if consensus && duration
               @timeline.clear
               trigger
               retry_mechanism
@@ -87,10 +87,10 @@ module God
 
         @retry_timeline << Time.now
 
-        concensus = (@retry_timeline.size == retry_times)
+        consensus = (@retry_timeline.size == retry_times)
         duration = (@retry_timeline.last - @retry_timeline.first) < retry_within
 
-        if concensus && duration
+        if consensus && duration
           # give up
           Thread.new do
             sleep 1

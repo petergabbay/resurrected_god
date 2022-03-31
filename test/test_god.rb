@@ -4,7 +4,7 @@ class TestGod < MiniTest::Test
   def setup
     God::Socket.stubs(:new).returns(true)
     God.stubs(:setup).returns(true)
-    God.stubs(:validater).returns(true)
+    God.stubs(:validator).returns(true)
     God.reset
     God.pid_file_directory = '/var/run/god'
   end

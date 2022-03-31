@@ -95,7 +95,7 @@ class TestTask < Minitest::Test
     @task.attach(c)
   end
 
-  def test_attach_should_regsiter_for_event_condition
+  def test_attach_should_register_for_event_condition
     c = Conditions::FakeEventCondition.new
     c.expects(:register)
     @task.attach(c)

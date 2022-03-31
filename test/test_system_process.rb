@@ -10,7 +10,7 @@ class TestSystemProcess < Minitest::Test
     assert_equal true, @process.exists?
   end
 
-  def test_exists_should_return_false_for_non_existant_process
+  def test_exists_should_return_false_for_non_existent_process
     assert_equal false, System::Process.new(9999999).exists?
   end
 

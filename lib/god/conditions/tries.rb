@@ -20,7 +20,7 @@ module God
       def test
         @timeline << Time.now
 
-        concensus = (@timeline.size == times)
+        consensus = (@timeline.size == times)
         duration = within.nil? || (@timeline.last - @timeline.first) < within
 
         history = if within
@@ -29,7 +29,7 @@ module God
                     "[#{@timeline.size}/#{times}]"
                   end
 
-        if concensus && duration
+        if consensus && duration
           self.info = "tries exceeded #{history}"
           true
         else

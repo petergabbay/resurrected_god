@@ -8,7 +8,7 @@ module God
     # The Array of Symbol valid task states.
     VALID_STATES = [:init, :up, :start, :restart].freeze
 
-    # The Sybmol initial state.
+    # The Symbol initial state.
     INITIAL_STATE = :init
 
     # Public: The grace period for this process (seconds).
@@ -93,7 +93,7 @@ module God
     #
     ###########################################################################
 
-    # Default Integer interval at which keepalive will runn poll checks.
+    # Default Integer interval at which keepalive will run poll checks.
     DEFAULT_KEEPALIVE_INTERVAL = 5.seconds
 
     # Default Integer or Array of Integers specification of how many times the
@@ -127,7 +127,7 @@ module God
     #                           3 (three times), [3, 5] (three out of any five
     #                           checks). Default: [3, 5].
     #           :cpu_max      - The Integer CPU percentage max. Range is
-    #                           0 to 100. You may use the Numberic#percent
+    #                           0 to 100. You may use the Numeric#percent
     #                           sugar to clarify e.g. 50.percent.
     #           :cpu_times    - If :cpu_max is set, :cpu_times can be
     #                           set to either an Integer or a 2 element

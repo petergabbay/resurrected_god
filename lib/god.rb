@@ -159,7 +159,7 @@ if $load_god
     # permissions will be used.
     PID_FILE_DIRECTORY_DEFAULTS = ['/var/run/god', '~/.god/pids']
 
-    # The default Integer port number for the DRb communcations channel.
+    # The default Integer port number for the DRb communications channel.
     DRB_PORT_DEFAULT = 17165
 
     # The default Array of String IPs that will allow DRb communication access.

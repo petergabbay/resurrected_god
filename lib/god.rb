@@ -8,13 +8,6 @@ if $load_god
   require 'stringio'
   require 'fileutils'
 
-  begin
-    require 'fastthread'
-  rescue LoadError
-  end
-
-  # stdlib
-
   # internal requires
   require 'god/errors'
   require 'god/simple_logger'

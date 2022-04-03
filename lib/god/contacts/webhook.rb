@@ -42,9 +42,6 @@ module God
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = true if uri.scheme == 'https'
 
-        req = nil
-        res = nil
-
         case arg(:format)
         when :form
           req = Net::HTTP::Post.new(uri.request_uri)
@@ -52,6 +49,9 @@ module God
         when :json
           req = Net::HTTP::Post.new(uri.request_uri)
           req.body = data.to_json
+        else
+          # This line is unreachable
+          raise 'Condition is invalid'
         end
 
         res = http.request(req)

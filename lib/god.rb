@@ -657,7 +657,7 @@ if $load_god
               self.pid_file_directory = dir
               break
             end
-          rescue Errno::EACCES => e
+          rescue Errno::EACCES
           end
         end
 

@@ -34,7 +34,7 @@ module God
       attr_accessor :url, :channel, :notify_channel, :format, :username, :emoji
 
       def text(data)
-        text = ''
+        text = +''
         text << '<!channel> ' if arg(:notify_channel)
         text << arg(:format) % data
 

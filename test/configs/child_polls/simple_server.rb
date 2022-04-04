@@ -1,6 +1,6 @@
 #! /usr/bin/env ruby
 
-data = ''
+data = +''
 
 loop do
   $stdout.puts('server')

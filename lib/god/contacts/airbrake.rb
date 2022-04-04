@@ -25,7 +25,7 @@ module God
       def notify(message, _time, priority, category, host)
         ::Airbrake.configure {}
 
-        message = "God: #{message} at #{host}"
+        message = +"God: #{message} at #{host}"
         message << " | #{[category, priority].join(' ')}" unless category.to_s.empty? || priority.to_s.empty?
 
         self.info = if ::Airbrake.notify nil, error_message: message, api_key: arg(:apikey)

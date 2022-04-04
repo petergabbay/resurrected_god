@@ -563,7 +563,7 @@ if $load_god
         LOG.start_capture
 
         Gem.clear_paths
-        eval(code, root_binding, filename)
+        eval(code, root_binding, filename) # rubocop:disable Security/Eval
         pending_watches.each do |w|
           if (previous_state = pending_watch_states[w.name])
             w.monitor unless previous_state == :unmonitored
@@ -632,7 +632,7 @@ if $load_god
         unless File.exist?(pid_file_directory)
           begin
             FileUtils.mkdir_p(pid_file_directory)
-          rescue Errno::EACCES => e
+          rescue Errno::EACCES => e # rubocop:disable Metrics/BlockNesting
             abort "Failed to create pid file directory: #{e.message}"
           end
         end

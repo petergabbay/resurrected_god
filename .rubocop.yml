@@ -3,6 +3,23 @@ inherit_from: .rubocop_todo.yml
 Layout/LineLength:
   Max: 135
 
+Metrics/AbcSize:
+  Enabled: false
+Metrics/BlockLength:
+  Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+Metrics/CyclomaticComplexity:
+  Enabled: false
+Metrics/MethodLength:
+  Enabled: false
+Metrics/ModuleLength:
+  Enabled: false
+Metrics/ParameterLists:
+  MaxOptionalParameters: 4
+Metrics/PerceivedComplexity:
+  Enabled: false
+
 Style/Documentation:
   Enabled: false
 Style/EmptyMethod:

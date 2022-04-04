@@ -2,7 +2,6 @@ require 'bundler/gem_tasks'
 require 'rubygems'
 require 'rake'
 require 'rdoc/task'
-require 'date'
 
 require_relative 'lib/god/version'
 
@@ -18,22 +17,6 @@ end
 
 def version
   God::VERSION
-end
-
-def date
-  Date.today.to_s
-end
-
-def gemspec_file
-  "#{name}.gemspec"
-end
-
-def gem_file
-  "#{name}-#{version}.gem"
-end
-
-def replace_header(head, header_name)
-  head.sub!(/(\.#{header_name}\s*= ').*'/) { "#{Regexp.last_match(1)}#{send(header_name)}'" }
 end
 
 #############################################################################

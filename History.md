@@ -11,6 +11,8 @@
   * Migrate CI from Travis CI to GitHub Actions
   * Introduce RuboCop
   * Format codes with RuboCop
+  * Introduce CodeClimate to analyze code quality
+  * Introduce CodeCov to analyze test coverage
 
 ## 0.14.0 / 2022-03-06
 

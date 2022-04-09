@@ -18,6 +18,13 @@ include God
 
 require 'mocha/setup'
 
+require 'simplecov'
+SimpleCov.start
+if ENV['CI']
+  require 'simplecov-cobertura'
+  SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
+end
+
 module God
   module Conditions
     class FakeCondition < Condition

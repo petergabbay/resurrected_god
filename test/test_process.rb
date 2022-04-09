@@ -56,7 +56,7 @@ class TestProcessChild < Minitest::Test
     @p.log = '/tmp/foo.log'
     @p.uid = 'foobarbaz'
 
-    assert !@p.valid?
+    refute @p.valid?
   end
 
   def test_valid_should_return_true_if_gid_exists
@@ -74,7 +74,7 @@ class TestProcessChild < Minitest::Test
     @p.log = '/tmp/foo.log'
     @p.gid = 'foobarbaz'
 
-    assert !@p.valid?
+    refute @p.valid?
   end
 
   def test_valid_should_return_true_if_dir_exists
@@ -90,7 +90,7 @@ class TestProcessChild < Minitest::Test
     @p.log = '/tmp/foo.log'
     @p.dir = '/tmp/doesnotexist'
 
-    assert !@p.valid?
+    refute @p.valid?
   end
 
   def test_valid_should_return_false_if_dir_is_not_a_dir
@@ -98,13 +98,13 @@ class TestProcessChild < Minitest::Test
     @p.log = '/tmp/foo.log'
     @p.dir = '/etc/passwd'
 
-    assert !@p.valid?
+    refute @p.valid?
   end
 
   def test_valid_should_return_false_with_bogus_chroot
     @p.chroot = '/bogusroot'
 
-    assert !@p.valid?
+    refute @p.valid?
   end
 
   def test_valid_should_return_true_with_chroot_and_valid_log
@@ -161,12 +161,12 @@ class TestProcessDaemon < Minitest::Test
   def test_alive_should_call_system_process_exists
     File.expects(:read).with('blah.pid').times(2).returns('1234')
     System::Process.any_instance.expects(:exists?).returns(false)
-    assert !@p.alive?
+    refute @p.alive?
   end
 
   def test_alive_should_return_false_if_no_such_file
     File.expects(:read).with('blah.pid').raises(Errno::ENOENT)
-    assert !@p.alive?
+    refute @p.alive?
   end
 
   # valid?
@@ -174,7 +174,7 @@ class TestProcessDaemon < Minitest::Test
   def test_valid_should_return_false_if_no_start
     @p.name = 'foo'
     @p.stop = 'baz'
-    assert !@p.valid?
+    refute @p.valid?
   end
 
   # pid
@@ -186,12 +186,12 @@ class TestProcessDaemon < Minitest::Test
 
   def test_pid_should_return_nil_for_missing_files
     @p.pid_file = ''
-    assert_equal nil, @p.pid
+    assert_nil @p.pid
   end
 
   def test_pid_should_return_nil_for_invalid_pid_files
     File.stubs(:read).returns('four score and seven years ago')
-    assert_equal nil, @p.pid
+    assert_nil @p.pid
   end
 
   def test_pid_should_retain_last_pid_value_if_pid_file_is_removed

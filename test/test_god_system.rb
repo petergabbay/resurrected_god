@@ -2,7 +2,7 @@ require_relative 'helper'
 
 class TestGodSystem < MiniTest::Test
   def assert_watch_running(watch_name)
-    assert_equal true, God.watches[watch_name].alive?
+    assert God.watches[watch_name].alive?
   end
 
   def with_god_cleanup
@@ -58,7 +58,7 @@ class TestGodSystem < MiniTest::Test
       end
       God.watches['start_watch'].action(:start)
       sleep 2
-      assert_equal true, God.watches['start_watch'].alive?
+      assert God.watches['start_watch'].alive?
     end
   end
 
@@ -71,9 +71,9 @@ class TestGodSystem < MiniTest::Test
       end
       God.watches['start_watch'].action(:start)
       sleep 2
-      assert_equal true, God.watches['start_watch'].alive?
+      assert God.watches['start_watch'].alive?
       God.stop_all
-      assert_equal(false, God.watches.any? { |_name, w| w.alive? })
+      assert(God.watches.none? { |_name, w| w.alive? })
     end
   end
 
@@ -89,7 +89,7 @@ class TestGodSystem < MiniTest::Test
       end
       God.watches['long_timeout'].action(:start)
       sleep 2
-      assert_equal true, God.watches['long_timeout'].alive?
+      assert God.watches['long_timeout'].alive?
       God.stop_all
       assert_watch_running('long_timeout')
     end
@@ -107,9 +107,9 @@ class TestGodSystem < MiniTest::Test
       end
       God.watches['short_timeout'].action(:start)
       sleep 2
-      assert_equal true, God.watches['short_timeout'].alive?
+      assert God.watches['short_timeout'].alive?
       God.stop_all
-      assert_equal(false, God.watches.any? { |_name, w| w.alive? })
+      assert(God.watches.none? { |_name, w| w.alive? })
     end
   end
 
@@ -132,7 +132,7 @@ class TestGodSystem < MiniTest::Test
         sleep 2
       end
       God.stop_all
-      assert_equal(false, God.watches.any? { |_name, w| w.alive? })
+      assert(God.watches.none? { |_name, w| w.alive? })
     end
   end
 
@@ -157,7 +157,7 @@ class TestGodSystem < MiniTest::Test
         sleep 2
       end
       God.stop_all
-      assert_equal(false, God.watches.any? { |_name, w| w.alive? })
+      assert(God.watches.none? { |_name, w| w.alive? })
     end
   end
 
@@ -184,7 +184,7 @@ class TestGodSystem < MiniTest::Test
         God::CLI::Command.new('terminate', { port: 17165 }, [])
       rescue SystemExit
       ensure
-        assert_equal(false, God.watches.any? { |_name, w| w.alive? })
+        assert(God.watches.none? { |_name, w| w.alive? })
       end
     end
   end

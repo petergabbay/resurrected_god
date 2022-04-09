@@ -20,7 +20,7 @@ class TestTimeline < Minitest::Test
   def test_clear_should_clear_array
     @timeline << 1
     assert_equal [1], @timeline
-    assert_equal [], @timeline.clear
+    assert_empty @timeline.clear
   end
 
   # def test_benchmark

@@ -25,4 +25,5 @@ gem 'xmpp4r'
 gem 'net-smtp' if RUBY_VERSION >= '3.1'
 
 gem 'rubocop'
+gem 'rubocop-minitest'
 gem 'simplecov-cobertura', '~> 2.0'

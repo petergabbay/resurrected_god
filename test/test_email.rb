@@ -10,7 +10,7 @@ class TestEmail < Minitest::Test
 
   def test_validity_delivery
     @email.delivery_method = :brainwaves
-    assert_equal false, @email.valid?
+    refute @email.valid?
   end
 
   def test_smtp_delivery_method_for_notify

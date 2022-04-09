@@ -13,6 +13,6 @@ class TestBehavior < Minitest::Test
 
   def test_complain
     SysLogger.expects(:log).with(:error, 'foo')
-    assert !Behavior.allocate.bypass.complain('foo')
+    refute Behavior.allocate.bypass.complain('foo')
   end
 end

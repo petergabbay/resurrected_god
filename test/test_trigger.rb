@@ -12,7 +12,7 @@ class TestTrigger < Minitest::Test
   # base case
 
   def test_should_have_empty_triggers
-    assert_equal({}, Trigger.triggers)
+    assert_empty(Trigger.triggers)
   end
 
   # register
@@ -46,7 +46,7 @@ class TestTrigger < Minitest::Test
     Trigger.register(c)
     Trigger.deregister(c)
 
-    assert_equal({}, Trigger.triggers)
+    assert_empty(Trigger.triggers)
   end
 
   # broadcast

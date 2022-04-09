@@ -6,34 +6,34 @@ class TestConditionsSocketResponding < Minitest::Test
   def test_valid_should_return_false_if_no_options_set
     c = Conditions::SocketResponding.new
     c.watch = stub(name: 'foo')
-    assert_equal false, c.valid?
+    refute c.valid?
   end
 
   def test_valid_should_return_true_if_required_options_set_for_default
     c = Conditions::SocketResponding.new
     c.port = 443
-    assert_equal true, c.valid?
+    assert c.valid?
   end
 
   def test_valid_should_return_true_if_required_options_set_for_tcp
     c = Conditions::SocketResponding.new
     c.family = 'tcp'
     c.port = 443
-    assert_equal true, c.valid?
+    assert c.valid?
   end
 
   def test_valid_should_return_true_if_required_options_set_for_unix
     c = Conditions::SocketResponding.new
     c.path = 'some-path'
     c.family = 'unix'
-    assert_equal true, c.valid?
+    assert c.valid?
   end
 
   def test_valid_should_return_true_if_family_is_tcp
     c = Conditions::SocketResponding.new
     c.port = 443
     c.family = 'tcp'
-    assert_equal true, c.valid?
+    assert c.valid?
   end
 
   def test_valid_should_return_true_if_family_is_unix
@@ -41,7 +41,7 @@ class TestConditionsSocketResponding < Minitest::Test
     c.path = 'some-path'
     c.family = 'unix'
     c.watch = stub(name: 'foo')
-    assert_equal true, c.valid?
+    assert c.valid?
   end
 
   # socket method
@@ -79,7 +79,7 @@ class TestConditionsSocketResponding < Minitest::Test
     c.prepare
 
     TCPSocket.expects(:new).returns(0)
-    assert_equal false, c.test
+    refute c.test
   end
 
   def test_test_tcp_should_return_true_if_no_socket_is_listening
@@ -87,7 +87,7 @@ class TestConditionsSocketResponding < Minitest::Test
     c.prepare
 
     TCPSocket.expects(:new).returns(nil)
-    assert_equal true, c.test
+    assert c.test
   end
 
   def test_test_unix_should_return_false_if_socket_is_listening
@@ -96,7 +96,7 @@ class TestConditionsSocketResponding < Minitest::Test
 
     c.prepare
     UNIXSocket.expects(:new).returns(0)
-    assert_equal false, c.test
+    refute c.test
   end
 
   def test_test_unix_should_return_true_if_no_socket_is_listening
@@ -105,7 +105,7 @@ class TestConditionsSocketResponding < Minitest::Test
     c.prepare
 
     UNIXSocket.expects(:new).returns(nil)
-    assert_equal true, c.test
+    assert c.test
   end
 
   def test_test_unix_should_return_true_if_socket_is_listening_2_times
@@ -115,8 +115,8 @@ class TestConditionsSocketResponding < Minitest::Test
     c.prepare
 
     UNIXSocket.expects(:new).returns(nil).times(2)
-    assert_equal false, c.test
-    assert_equal true, c.test
+    refute c.test
+    assert c.test
   end
 
   # test : responding = true
@@ -127,7 +127,7 @@ class TestConditionsSocketResponding < Minitest::Test
     c.prepare
 
     TCPSocket.expects(:new).returns(0)
-    assert_equal true, c.test
+    assert c.test
   end
 
   def test_test_tcp_should_return_false_if_no_socket_is_listening_with_responding_true
@@ -136,7 +136,7 @@ class TestConditionsSocketResponding < Minitest::Test
     c.prepare
 
     TCPSocket.expects(:new).returns(nil)
-    assert_equal false, c.test
+    refute c.test
   end
 
   def test_test_unix_should_return_true_if_socket_is_listening_with_responding_true
@@ -146,7 +146,7 @@ class TestConditionsSocketResponding < Minitest::Test
 
     c.prepare
     UNIXSocket.expects(:new).returns(0)
-    assert_equal true, c.test
+    assert c.test
   end
 
   def test_test_unix_should_return_false_if_no_socket_is_listening_with_responding_true
@@ -156,7 +156,7 @@ class TestConditionsSocketResponding < Minitest::Test
     c.prepare
 
     UNIXSocket.expects(:new).returns(nil)
-    assert_equal false, c.test
+    refute c.test
   end
 
   def test_test_unix_should_return_false_if_socket_is_listening_2_times_with_responding_true
@@ -167,7 +167,7 @@ class TestConditionsSocketResponding < Minitest::Test
     c.prepare
 
     UNIXSocket.expects(:new).returns(nil).times(2)
-    assert_equal false, c.test
-    assert_equal false, c.test
+    refute c.test
+    refute c.test
   end
 end

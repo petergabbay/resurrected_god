@@ -6,7 +6,7 @@ class TestConditionsTries < Minitest::Test
   def test_valid_should_return_false_if_times_not_set
     c = Conditions::Tries.new
     c.watch = stub(name: 'foo')
-    assert !c.valid?
+    refute c.valid?
   end
 end
 
@@ -26,8 +26,8 @@ class TestConditionsTries < Minitest::Test
   # test
 
   def test_test_should_return_true_if_called_three_times_within_one_second
-    assert !@c.test
-    assert !@c.test
+    refute @c.test
+    refute @c.test
     assert @c.test
   end
 
@@ -36,7 +36,7 @@ class TestConditionsTries < Minitest::Test
   def test_test_should_return_false_on_fourth_call_if_called_three_times_within_one_second
     3.times { @c.test }
     @c.reset
-    assert !@c.test
+    refute @c.test
   end
 end
 
@@ -51,15 +51,15 @@ class TestConditionsTriesWithin < Minitest::Test
   # test
 
   def test_test_should_return_true_if_called_three_times_within_one_second
-    assert !@c.test
-    assert !@c.test
+    refute @c.test
+    refute @c.test
     assert @c.test
   end
 
   def test_test_should_return_false_if_called_three_times_within_two_seconds
-    assert !@c.test
-    assert !@c.test
+    refute @c.test
+    refute @c.test
     assert sleep(1.1)
-    assert !@c.test
+    refute @c.test
   end
 end

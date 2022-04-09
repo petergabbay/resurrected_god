@@ -31,7 +31,7 @@ class TestGod < MiniTest::Test
 
   def test_init_should_initialize_watches_to_empty_array
     God.internal_init {}
-    assert_equal({}, God.watches)
+    assert_empty(God.watches)
   end
 
   # # init
@@ -244,7 +244,7 @@ class TestGod < MiniTest::Test
     end
     w = God.watches['bar']
     God.unwatch(w)
-    assert !God.groups[w.group].include?(w)
+    refute_includes God.groups[w.group], w
   end
 
   # contact

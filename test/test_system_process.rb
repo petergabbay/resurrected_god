@@ -7,11 +7,11 @@ class TestSystemProcess < Minitest::Test
   end
 
   def test_exists_should_return_true_for_running_process
-    assert_equal true, @process.exists?
+    assert @process.exists?
   end
 
   def test_exists_should_return_false_for_non_existent_process
-    assert_equal false, System::Process.new(9999999).exists?
+    refute System::Process.new(9999999).exists?
   end
 
   def test_memory

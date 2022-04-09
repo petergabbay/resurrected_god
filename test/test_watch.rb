@@ -13,12 +13,12 @@ class TestWatch < Minitest::Test
   # new
 
   def test_new_should_have_no_behaviors
-    assert_equal [], @watch.behaviors
+    assert_empty @watch.behaviors
   end
 
   def test_new_should_have_no_metrics
     Watch::VALID_STATES.each do |state|
-      assert_equal [], @watch.metrics[state]
+      assert_empty @watch.metrics[state]
     end
   end
 

@@ -1,5 +1,8 @@
 inherit_from: .rubocop_todo.yml
 
+require:
+  - rubocop-minitest
+
 Layout/LineLength:
   Max: 135
 

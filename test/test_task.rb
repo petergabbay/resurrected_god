@@ -15,17 +15,17 @@ class TestTask < Minitest::Test
 
   def test_valid_should_return_false_if_no_name
     @task.name = nil
-    assert !@task.valid?
+    refute @task.valid?
   end
 
   def test_valid_should_return_false_if_no_valid_states
     @task.valid_states = nil
-    assert !@task.valid?
+    refute @task.valid?
   end
 
   def test_valid_should_return_false_if_no_initial_state
     @task.initial_state = nil
-    assert !@task.valid?
+    refute @task.valid?
   end
 
   # transition

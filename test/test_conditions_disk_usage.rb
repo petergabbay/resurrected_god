@@ -7,14 +7,14 @@ class TestConditionsDiskUsage < Minitest::Test
     c = Conditions::DiskUsage.new
     c.mount_point = '/'
     c.watch = stub(name: 'foo')
-    assert_equal false, c.valid?
+    refute c.valid?
   end
 
   def test_valid_should_return_false_if_no_mount_point_given
     c = Conditions::DiskUsage.new
     c.above = 90
     c.watch = stub(name: 'foo')
-    assert_equal false, c.valid?
+    refute c.valid?
   end
 
   def test_valid_should_return_true_if_required_options_all_set
@@ -23,7 +23,7 @@ class TestConditionsDiskUsage < Minitest::Test
     c.mount_point = '/'
     c.watch = stub(name: 'foo')
 
-    assert_equal true, c.valid?
+    assert c.valid?
   end
 
   # test
@@ -35,7 +35,7 @@ class TestConditionsDiskUsage < Minitest::Test
 
     c.expects(:`).returns('91')
 
-    assert_equal true, c.test
+    assert c.test
   end
 
   def test_test_should_return_false_if_below_limit
@@ -45,6 +45,6 @@ class TestConditionsDiskUsage < Minitest::Test
 
     c.expects(:`).returns('90')
 
-    assert_equal false, c.test
+    refute c.test
   end
 end

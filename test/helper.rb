@@ -1,6 +1,15 @@
-require 'English'
+require 'simplecov'
+SimpleCov.start do
+  add_filter 'test/'
+end
+if ENV['CI']
+  require 'simplecov-cobertura'
+  SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
+end
 
-$LOAD_PATH.unshift File.expand_path('../lib', __dir__) # For use/testing when no gem is installed
+require 'English'
+require 'minitest/autorun'
+require 'mocha/setup'
 
 # Use this flag to actually load all of the god infrastructure
 $load_god = true
@@ -10,20 +19,7 @@ require_relative '../lib/god'
 
 God::EventHandler.load
 
-require 'minitest/autorun'
-require 'minitest/unit'
-require 'set'
-
 include God
-
-require 'mocha/setup'
-
-require 'simplecov'
-SimpleCov.start
-if ENV['CI']
-  require 'simplecov-cobertura'
-  SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
-end
 
 module God
   module Conditions

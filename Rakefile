@@ -1,5 +1,4 @@
 require 'bundler/gem_tasks'
-require 'rubygems'
 require 'rake'
 require 'rdoc/task'
 
@@ -40,14 +39,6 @@ Rake::TestTask.new(:system_test) do |test|
   test.libs << 'lib' << 'test'
   test.pattern = 'test/**/test_god_system.rb'
   test.verbose = true
-end
-
-desc 'Generate RCov test coverage and open in your browser'
-task :coverage do
-  require 'rcov'
-  sh 'rm -fr coverage'
-  sh 'rcov test/test_*.rb'
-  sh 'open coverage/index.html'
 end
 
 Rake::RDocTask.new do |rdoc|

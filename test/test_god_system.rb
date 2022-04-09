@@ -18,7 +18,7 @@ class TestGodSystem < MiniTest::Test
       yield
     ensure
       God.stop_all
-      God.terminate # use our monkeypatched terminate
+      God.terminate # use our monkey-patched terminate
       God.watches.each do |_name, w|
         w.stop_signal = 'KILL'
         w.action(:stop)

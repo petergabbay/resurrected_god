@@ -162,8 +162,8 @@ your `sample.god` config file to look like this:
 God.watch do |w|
   w.name = "simple"
   w.start = "ruby /full/path/to/simple.rb"
-  w.keepalive(:memory_max => 150.megabytes,
-              :cpu_max => 50.percent)
+  w.keepalive(memory_max: 150.megabytes,
+              cpu_max: 50.percent)
 end
 ```
 

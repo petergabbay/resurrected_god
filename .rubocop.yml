@@ -25,6 +25,9 @@ Metrics/ParameterLists:
 Metrics/PerceivedComplexity:
   Enabled: false
 
+Performance/RedundantBlockCall:
+  Enabled: false # for readability
+
 Style/Documentation:
   Enabled: false
 Style/EmptyMethod:

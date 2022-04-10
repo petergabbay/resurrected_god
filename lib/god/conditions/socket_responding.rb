@@ -88,10 +88,10 @@ module God
         if components.size == 3
           @family, @addr, @port = components
           @port = @port.to_i
-        elsif components[0] =~ /^tcp$/
+        elsif /^tcp$/.match?(components[0])
           @family = components[0]
           @port = components[1].to_i
-        elsif components[0] =~ /^unix$/
+        elsif /^unix$/.match?(components[0])
           @family = components[0]
           @path = components[1]
         end
@@ -125,7 +125,7 @@ module God
         end
         @timeline.push(status)
         history = @timeline.map { |t| t ? '*' : '' }.join(',')
-        if @timeline.select { |x| x }.size >= times.first
+        if @timeline.count { |x| x } >= times.first
           self.info = "socket out of bounds [#{history}]"
           true
         else

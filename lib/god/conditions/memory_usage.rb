@@ -66,7 +66,7 @@ module God
 
         history = @timeline.map { |x| "#{x > above ? '*' : ''}#{x}kb" }.join(', ')
 
-        if @timeline.select { |x| x > above }.size >= times.first
+        if @timeline.count { |x| x > above } >= times.first
           self.info = "memory out of bounds [#{history}]"
           true
         else

@@ -118,7 +118,7 @@ end
 class Object
   class Bypass
     instance_methods.each do |m|
-      undef_method m unless m =~ /^(__|object_id)/
+      undef_method m unless /^(__|object_id)/.match?(m)
     end
 
     def initialize(ref)

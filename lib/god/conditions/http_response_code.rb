@@ -153,7 +153,7 @@ module God
 
       def pass(code)
         @timeline << true
-        if @timeline.select { |x| x }.size >= times.first
+        if @timeline.count { |x| x } >= times.first
           self.info = "http response abnormal #{history(code, true)}"
           true
         else

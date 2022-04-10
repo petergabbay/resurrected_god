@@ -120,7 +120,7 @@ module God
 
       def notify_sendmail(mail)
         IO.popen("#{arg(:sendmail_path)} #{arg(:sendmail_args)}", 'w+') do |sm|
-          sm.print(mail.gsub(/\r/, ''))
+          sm.print(mail.delete("\r"))
           sm.flush
         end
       end

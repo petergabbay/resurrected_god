@@ -65,7 +65,7 @@ task :site do
   puts 'Generating dynamic...'
   require 'gollum'
   wiki = Gollum::Wiki.new('.', base_path: '/doc')
-  html = wiki.page('god', 'HEAD').formatted_data.gsub("\342\200\231", "'")
+  html = wiki.page('god', 'HEAD').formatted_data.tr("\342\200\231", "'")
   template = File.read('./site/index.template.html')
   index = template.sub('{{ content }}', html)
   File.open('./site/index.html', 'w') do |f|

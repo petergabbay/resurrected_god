@@ -170,7 +170,7 @@ module God
     # Returns Integer(pid) or nil
     def pid
       contents = File.read(pid_file).strip rescue ''
-      real_pid = contents =~ /^\d+$/ ? contents.to_i : nil
+      real_pid = /^\d+$/.match?(contents) ? contents.to_i : nil
 
       if real_pid
         @pid = real_pid

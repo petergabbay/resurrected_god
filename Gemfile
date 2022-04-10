@@ -26,5 +26,6 @@ gem 'net-smtp' if RUBY_VERSION >= '3.1'
 
 gem 'rubocop'
 gem 'rubocop-minitest'
+gem 'rubocop-performance'
 gem 'rubocop-rake'
 gem 'simplecov-cobertura', '~> 2.0'

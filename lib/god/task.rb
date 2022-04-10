@@ -254,7 +254,7 @@ module God
     ###########################################################################
 
     def method_missing(sym, *args)
-      super unless sym.to_s =~ /=$/
+      super unless /=$/.match?(sym.to_s)
 
       base = sym.to_s.chop.intern
 

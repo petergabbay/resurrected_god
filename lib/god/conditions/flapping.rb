@@ -16,7 +16,7 @@ module God
     #              your code (see examples).
     #     --one or both of--
     #     +from_state+ is the state (as a Symbol) from which the transition must occur.
-    #     +to_state is the state (as a Symbol) to which the transition must occur.
+    #     +to_state+ is the state (as a Symbol) to which the transition must occur.
     #
     #   Optional:
     #     +retry_in+ is the number of seconds after which to re-monitor the Task after
@@ -56,23 +56,23 @@ module God
       end
 
       def process(event, payload)
-        if event == :state_change
-          event_from_state, event_to_state = *payload
+        return if event != :state_change
 
-          from_state_match = !from_state || from_state && Array(from_state).include?(event_from_state)
-          to_state_match = !to_state || to_state && Array(to_state).include?(event_to_state)
+        event_from_state, event_to_state = *payload
 
-          if from_state_match && to_state_match
-            @timeline << Time.now
+        from_state_match = !from_state || Array(from_state).include?(event_from_state)
+        to_state_match = !to_state || Array(to_state).include?(event_to_state)
 
-            consensus = (@timeline.size == times)
-            duration = (@timeline.last - @timeline.first) < within
+        if from_state_match && to_state_match
+          @timeline << Time.now
 
-            if consensus && duration
-              @timeline.clear
-              trigger
-              retry_mechanism
-            end
+          consensus = (@timeline.size == times)
+          duration = (@timeline.last - @timeline.first) < within
+
+          if consensus && duration
+            @timeline.clear
+            trigger
+            retry_mechanism
           end
         end
       rescue => e

@@ -99,7 +99,7 @@ module God
           abort 'There was a fatal system error while starting god (see above)'
         end
 
-        File.open(@options[:pid], 'w') { |f| f.write pid } if @options[:pid]
+        File.write(@options[:pid], pid) if @options[:pid]
 
         ::Process.detach pid
 

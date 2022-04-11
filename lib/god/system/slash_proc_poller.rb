@@ -45,7 +45,7 @@ module God
       def percent_cpu
         stats = stat
         total_time = stats[:utime].to_i + stats[:stime].to_i # in jiffies
-        seconds = uptime - stats[:starttime].to_i / @@hertz
+        seconds = uptime - (stats[:starttime].to_i / @@hertz)
         if seconds == 0
           0
         else

@@ -68,9 +68,7 @@ task :site do
   html = wiki.page('god', 'HEAD').formatted_data.tr("\342\200\231", "'")
   template = File.read('./site/index.template.html')
   index = template.sub('{{ content }}', html)
-  File.open('./site/index.html', 'w') do |f|
-    f.write(index)
-  end
+  File.write('./site/index.html', index)
 
   puts 'Done. Opening in browser...'
   sh 'open site/index.html'

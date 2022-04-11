@@ -17,7 +17,7 @@ God.watch do |w|
       c.lambda = lambda {
         begin
           sock = TCPSocket.open('127.0.0.1', 9090)
-          sock.send "2\n", 0
+          sock.send :"2\n", 0
           retval = sock.gets
           puts "Retval is #{retval}"
           sock.close

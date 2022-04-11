@@ -68,7 +68,7 @@ class TestMetric < Minitest::Test
 
   def test_condition_should_abort_on_no_such_condition
     assert_abort do
-      @metric.condition(:invalid) {}
+      @metric.condition(:invalid)
     end
   end
 end

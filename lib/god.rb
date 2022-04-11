@@ -734,11 +734,9 @@ if $load_god
     #
     # Returns the Array of matching name Strings.
     def self.pattern_match(pattern, list)
-      regex = pattern.split('').join('.*')
+      regex = pattern.chars.join('.*')
 
-      list.select do |item|
-        item =~ Regexp.new(regex)
-      end.sort_by(&:size)
+      list.grep(Regexp.new(regex)).sort_by(&:size)
     end
   end
 

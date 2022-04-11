@@ -34,7 +34,7 @@ class TestGodSystem < MiniTest::Test
   def test_start_running
     with_god_cleanup do
       God.start
-      assert_equal(God.running, true)
+      assert God.running
     end
   end
 
@@ -125,7 +125,7 @@ class TestGodSystem < MiniTest::Test
         God.watches["many_watches_#{i}"].action(:start)
       end
       loop do
-        all_running = God.watches.select { |name, _w| name =~ /many_watches_/ }.all? { |_name, w| w.alive? }
+        all_running = God.watches.select { |name, _w| name.include?('many_watches_') }.all? { |_name, w| w.alive? }
         size = God.watches.size
         break if all_running && size >= 20
 
@@ -150,7 +150,7 @@ class TestGodSystem < MiniTest::Test
         God.watches["tons_of_watches_#{i}"].action(:start)
       end
       loop do
-        all_running = God.watches.select { |name, _w| name =~ /tons_of_watches_/ }.all? { |_name, w| w.alive? }
+        all_running = God.watches.select { |name, _w| name.include?('tons_of_watches_') }.all? { |_name, w| w.alive? }
         size = God.watches.size
         break if all_running && size >= 100
 
@@ -174,7 +174,7 @@ class TestGodSystem < MiniTest::Test
         God.watches["tons_of_watches_#{i}"].action(:start)
       end
       loop do
-        all_running = God.watches.select { |name, _w| name =~ /tons_of_watches_/ }.all? { |_name, w| w.alive? }
+        all_running = God.watches.select { |name, _w| name.include?('tons_of_watches_') }.all? { |_name, w| w.alive? }
         size = God.watches.size
         break if all_running && size >= 100
 

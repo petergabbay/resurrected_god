@@ -225,10 +225,10 @@ module God
     #
     # Returns nothing.
     def monitor
-      if !metrics[:init].empty?
-        move(:init)
-      else
+      if metrics[:init].empty?
         move(:up)
+      else
+        move(:init)
       end
     end
 
@@ -245,10 +245,7 @@ module God
     #
     # Returns this Watch.
     def action(action, condition = nil)
-      if !driver.in_driver_context?
-        # Called from outside Driver. Send an async message to Driver.
-        driver.message(:action, [action, condition])
-      else
+      if driver.in_driver_context?
         # Called from within Driver.
         case action
         when :start
@@ -266,6 +263,9 @@ module God
           call_action(condition, :stop)
           sleep(stop_grace + grace)
         end
+      else
+        # Called from outside Driver. Send an async message to Driver.
+        driver.message(:action, [action, condition])
       end
 
       self

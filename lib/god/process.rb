@@ -276,9 +276,7 @@ module God
         end
 
         if @tracking_pid || (@pid_file.nil? && WRITES_PID.include?(action))
-          File.open(default_pid_file, 'w') do |f|
-            f.write pid
-          end
+          File.write(default_pid_file, pid)
 
           @tracking_pid = true
           @pid_file = default_pid_file

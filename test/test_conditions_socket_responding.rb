@@ -48,28 +48,28 @@ class TestConditionsSocketResponding < Minitest::Test
   def test_socket_should_return_127_0_0_1_for_default_addr
     c = Conditions::SocketResponding.new
     c.socket = 'tcp:443'
-    assert_equal c.addr, '127.0.0.1'
+    assert_equal '127.0.0.1', c.addr
   end
 
   def test_socket_should_set_properties_for_tcp
     c = Conditions::SocketResponding.new
     c.socket = 'tcp:127.0.0.1:443'
-    assert_equal c.family, 'tcp'
-    assert_equal c.addr, '127.0.0.1'
-    assert_equal c.port, 443
-    assert_equal c.responding, false
+    assert_equal 'tcp', c.family
+    assert_equal '127.0.0.1', c.addr
+    assert_equal 443, c.port
+    refute c.responding
     # path should not be set for tcp sockets
-    assert_equal c.path, nil
+    assert_nil c.path
   end
 
   def test_socket_should_set_properties_for_unix
     c = Conditions::SocketResponding.new
     c.socket = 'unix:/tmp/process.sock'
-    assert_equal c.family, 'unix'
-    assert_equal c.path, '/tmp/process.sock'
-    assert_equal c.responding, false
+    assert_equal 'unix', c.family
+    assert_equal '/tmp/process.sock', c.path
+    refute c.responding
     # path should not be set for unix domain sockets
-    assert_equal c.port, 0
+    assert_equal 0, c.port
   end
 
   # test : responding = false

@@ -129,10 +129,11 @@ class TestProcessChild < Minitest::Test
     # Only for start, restart
     [:start, :restart].each do |action|
       @p.stubs(:test).returns true
-      IO.expects(:pipe).returns([StringIO.new('1234'), StringIO.new])
+      pid = '1234'
+      IO.expects(:pipe).returns([StringIO.new(pid), StringIO.new])
       @p.expects(:fork)
       Process.expects(:waitpid)
-      File.expects(:open).with(@p.default_pid_file, 'w')
+      File.expects(:write).with(@p.default_pid_file, pid)
       @p.send("#{action}=", 'run')
       @p.call_action(action)
     end

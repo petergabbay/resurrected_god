@@ -191,10 +191,7 @@ module God
     #
     # Returns this Task.
     def move(to_state)
-      if !driver.in_driver_context?
-        # Called from outside Driver. Send an async message to Driver.
-        driver.message(:move, [to_state])
-      else
+      if driver.in_driver_context?
         # Called from within Driver. Record original info.
         orig_to_state = to_state
         from_state = state
@@ -229,6 +226,9 @@ module God
         # Log.
         msg = "#{name} moved '#{from_state}' to '#{to_state}'"
         applog(self, :info, msg)
+      else
+        # Called from outside Driver. Send an async message to Driver.
+        driver.message(:move, [to_state])
       end
 
       self

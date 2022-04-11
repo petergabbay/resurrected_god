@@ -284,7 +284,7 @@ class TestGod < MiniTest::Test
 
   def test_contact_should_abort_on_no_name
     assert_abort do
-      God.contact(:fake_contact) { |c| }
+      God.contact(:fake_contact)
     end
   end
 

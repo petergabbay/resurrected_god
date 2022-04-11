@@ -36,7 +36,7 @@ module God
       def text(data)
         text = +''
         text << '<!channel> ' if arg(:notify_channel)
-        text << arg(:format) % data
+        text << (arg(:format) % data)
 
         text
       end

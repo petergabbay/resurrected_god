@@ -9,7 +9,7 @@ end
 
 require 'English'
 require 'minitest/autorun'
-require 'mocha/setup'
+require 'mocha/minitest'
 
 # Use this flag to actually load all of the god infrastructure
 $load_god = true

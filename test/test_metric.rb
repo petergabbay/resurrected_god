@@ -56,7 +56,7 @@ class TestMetric < Minitest::Test
     metric = Metric.new(stub(name: 'foo', interval: 10), nil)
 
     assert_abort do
-      metric.condition(:fake_condition) { |c| }
+      metric.condition(:fake_condition)
     end
   end
 

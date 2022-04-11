@@ -30,7 +30,7 @@ class TestGod < MiniTest::Test
   # internal_init
 
   def test_init_should_initialize_watches_to_empty_array
-    God.internal_init {}
+    God.internal_init
     assert_empty(God.watches)
   end
 

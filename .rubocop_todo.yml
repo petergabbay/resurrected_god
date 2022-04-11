@@ -20,8 +20,6 @@ Lint/EmptyBlock:
     - 'lib/god/cli/run.rb'
     - 'lib/god/contacts/airbrake.rb'
     - 'test/configs/stop_options/simple_server.rb'
-    - 'test/test_god.rb'
-    - 'test/test_metric.rb'
     - 'test/test_watch.rb'
 
 # Offense count: 1

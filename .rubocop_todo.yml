@@ -13,15 +13,6 @@ Lint/DuplicateBranch:
     - 'lib/god/conditions/http_response_code.rb'
     - 'lib/god/contacts/prowl.rb'
 
-# Offense count: 12
-# Configuration parameters: AllowComments, AllowEmptyLambdas.
-Lint/EmptyBlock:
-  Exclude:
-    - 'lib/god/cli/run.rb'
-    - 'lib/god/contacts/airbrake.rb'
-    - 'test/configs/stop_options/simple_server.rb'
-    - 'test/test_watch.rb'
-
 # Offense count: 1
 # Configuration parameters: AllowComments.
 Lint/EmptyClass:

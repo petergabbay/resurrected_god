@@ -70,20 +70,20 @@ class TestWatch < Minitest::Test
   def test_transition_should_accept_all_valid_start_states
     assert_nothing_raised do
       Watch::VALID_STATES.each do |state|
-        @watch.transition(state, :bar) {}
+        @watch.transition(state, :bar) {} # block must be passed
       end
     end
   end
 
   def test_transition_should_create_and_record_a_metric_for_the_given_start_state
-    @watch.transition(:init, :start) {}
+    @watch.transition(:init, :start) {} # block must be passed
     assert_equal 1, @watch.metrics[:init].size
   end
 
   # lifecycle
 
   def test_lifecycle_should_create_and_record_a_metric_for_nil_start_state
-    @watch.lifecycle {}
+    @watch.lifecycle {} # block must be passed
     assert_equal 1, @watch.metrics[nil].size
   end
 
@@ -97,14 +97,14 @@ class TestWatch < Minitest::Test
   # start_if
 
   def test_start_if_should_place_a_metric_on_up_state
-    @watch.start_if {}
+    @watch.start_if {} # block must be passed
     assert_equal 1, @watch.metrics[:up].size
   end
 
   # restart_if
 
   def test_restart_if_should_place_a_metric_on_up_state
-    @watch.restart_if {}
+    @watch.restart_if {} # block must be passed
     assert_equal 1, @watch.metrics[:up].size
   end
 
@@ -112,7 +112,7 @@ class TestWatch < Minitest::Test
 
   def test_monitor_should_move_to_init_if_available
     @watch.instance_eval do
-      transition(:init, :up) {}
+      transition(:init, :up) {} # block must be passed
     end
     @watch.expects(:move).with(:init)
     @watch.monitor

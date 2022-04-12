@@ -23,7 +23,7 @@ module God
       attr_accessor :apikey
 
       def notify(message, _time, priority, category, host)
-        ::Airbrake.configure {}
+        ::Airbrake.configure {} # block must be passed
 
         message = +"God: #{message} at #{host}"
         message << " | #{[category, priority].join(' ')}" unless category.to_s.empty? || priority.to_s.empty?

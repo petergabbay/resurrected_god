@@ -1,6 +1,7 @@
 #! /usr/bin/env ruby
 
 trap :USR1 do
+  # do nothing
 end
 
 loop do

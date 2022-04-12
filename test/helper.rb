@@ -58,9 +58,11 @@ module God
 
   module Contacts
     class FakeContact < Contact
+      # Dummy Contact used by `God.contact(:fake_contact)`
     end
 
     class InvalidContact
+      # Dummy Contact used by `God.contact(:invalid_contact)`
     end
   end
 

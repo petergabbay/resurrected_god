@@ -14,12 +14,6 @@ Lint/DuplicateBranch:
     - 'lib/god/contacts/prowl.rb'
 
 # Offense count: 1
-# Configuration parameters: AllowComments.
-Lint/EmptyClass:
-  Exclude:
-    - 'test/helper.rb'
-
-# Offense count: 1
 Lint/NoReturnInBeginEndBlocks:
   Exclude:
     - 'lib/god/process.rb'

@@ -11,6 +11,9 @@ AllCops:
 Layout/LineLength:
   Max: 135
 
+Lint/EmptyClass:
+  AllowComments: true
+
 Metrics/AbcSize:
   Enabled: false
 Metrics/BlockLength:

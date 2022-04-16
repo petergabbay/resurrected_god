@@ -20,7 +20,6 @@ gem 'rake'
 gem 'rdoc'
 gem 'statsd-ruby'
 gem 'twitter'
-gem 'xmpp4r'
 
 gem 'net-smtp' if RUBY_VERSION >= '3.1'
 

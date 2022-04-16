@@ -5,6 +5,10 @@
     * Now Ruby 2.6+ is required.
   * Drop support for HipChat
     * HipChat has been out of service since February 2019.
+  * Drop support for Jabber
+    * Sending notices to Jabber requires `xmpp4r`, but this gem is not maintained.  
+      (The last commit was made on 2014-12-03)
+    * `xmpp4r` prints numerous warnings and they are quite annoying.
 * Minor Enhancements
   * Reduce included files to reduce the gem file size
   * Use Gemfile instead of `Gem::Specification#add_development_dependency`

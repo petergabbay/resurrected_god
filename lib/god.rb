@@ -73,7 +73,6 @@ if $load_god
   require 'god/contact'
   load_contact(:campfire)
   load_contact(:email)
-  load_contact(:jabber)
   load_contact(:prowl)
   load_contact(:scout)
   load_contact(:statsd)

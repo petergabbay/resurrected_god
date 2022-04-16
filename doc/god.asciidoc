@@ -1040,33 +1040,6 @@ sendmail_path   - The String path to the sendmail executable
 sendmail_args   - The String args to send to sendmail (default "-i -t").
 ```
 
-Jabber
-~~~~~~
-
-Send a notice to a Jabber address (http://jabber.org/).
-
-Google Mail addresses should work. If you need a non-Gmail address, you can
-sign up for one at http://register.jabber.org/.
-
-```ruby
-God::Contacts::Jabber.defaults do |d|
-  ...
-end
-
-God.contact(:jabber) do |c|
-  ...
-end
-```
-
-```
-host     - The String hostname of the Jabber server.
-port     - The Integer port of the Jabber server.
-from_jid - The String Jabber ID of the sender.
-password - The String password of the sender.
-to_jid   - The String Jabber ID of the recipient.
-subject  - The String subject of the message (default: "God Notification").
-```
-
 Prowl
 ~~~~~
 

@@ -52,14 +52,6 @@
 #   c.url = "http://www.postbin.org/wk7guh"
 # end
 
-# God.contact(:jabber) do |c|
-#   c.name = 'tom'
-#   c.host = 'talk.google.com'
-#   c.to_jid = 'mojombo@jabber.org'
-#   c.from_jid = 'mojombo@gmail.com'
-#   c.password = 'secret'
-# end
-
 God.watch do |w|
   w.name = 'contact'
   w.interval = 5.seconds

@@ -204,7 +204,7 @@ class TestGodSystem < MiniTest::Test
       begin
         God::CLI::Command.new('terminate', { port: 17165 }, [])
       rescue SystemExit
-        # Ignore `abort 'Could not stop god'`
+        # Ignore `exit` in `abort 'Could not stop god'`
       ensure
         assert(God.watches.none? { |_name, w| w.alive? })
       end

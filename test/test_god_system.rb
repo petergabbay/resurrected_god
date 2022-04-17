@@ -6,12 +6,16 @@ class TestGodSystem < MiniTest::Test
   end
 
   def with_god_cleanup
-    old_terminate = God.method(:terminate)
-    # necessary cuz actual god terminate will do exit(0) will stops tests
+    # necessary cuz actual god terminate will do exit!(0) will stops tests
     God.class_eval do
-      def self.terminate
-        FileUtils.rm_f(pid) if pid
-        server&.stop
+      class << self
+        alias_method :orig_terminate, :terminate
+        undef :terminate
+
+        def terminate
+          FileUtils.rm_f(pid) if pid
+          server&.stop
+        end
       end
     end
     begin
@@ -27,7 +31,13 @@ class TestGodSystem < MiniTest::Test
       God.terminate_timeout = ::God::TERMINATE_TIMEOUT_DEFAULT
       God.internal_init # reset config, set running to false, etc.
       # set terminate back to old method, for other tests
-      God.define_singleton_method(:terminate, old_terminate)
+      God.class_eval do
+        class << self
+          undef :terminate
+
+          alias_method :terminate, :orig_terminate # rubocop:disable Lint/DuplicateMethods
+        end
+      end
     end
   end
 

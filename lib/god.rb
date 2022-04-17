@@ -469,7 +469,7 @@ if $load_god
       end
 
       terminate_timeout.times do
-        return true unless watches.map { |_name, w| w.alive? }.any?
+        return true if watches.none? { |_name, w| w.alive? }
 
         sleep 1
       end

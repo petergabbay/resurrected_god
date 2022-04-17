@@ -136,13 +136,15 @@ class TestGodSystem < MiniTest::Test
         end
         God.watches["many_watches_#{i}"].action(:start)
       end
-      loop do
-        # Wait until all watches have started
-        all_running = God.watches.select { |name, _w| name.include?('many_watches_') }.all? { |_name, w| w.alive? }
-        size = God.watches.size
-        break if all_running && size >= 20
+      Timeout.timeout(10) do # Prevent loop blocks from running infinitely
+        loop do
+          # Wait until all watches have started
+          all_running = God.watches.select { |name, _w| name.include?('many_watches_') }.all? { |_name, w| w.alive? }
+          size = God.watches.size
+          break if all_running && size >= 20
 
-        sleep 0.5
+          sleep 0.5
+        end
       end
       God.stop_all
       assert(God.watches.none? { |_name, w| w.alive? })
@@ -162,13 +164,15 @@ class TestGodSystem < MiniTest::Test
         end
         God.watches["tons_of_watches_#{i}"].action(:start)
       end
-      loop do
-        # Wait until all watches have started
-        all_running = God.watches.select { |name, _w| name.include?('tons_of_watches_') }.all? { |_name, w| w.alive? }
-        size = God.watches.size
-        break if all_running && size >= 100
+      Timeout.timeout(10) do # Prevent loop blocks from running infinitely
+        loop do
+          # Wait until all watches have started
+          all_running = God.watches.select { |name, _w| name.include?('tons_of_watches_') }.all? { |_name, w| w.alive? }
+          size = God.watches.size
+          break if all_running && size >= 100
 
-        sleep 0.5
+          sleep 0.5
+        end
       end
       God.stop_all
       assert(God.watches.none? { |_name, w| w.alive? })
@@ -187,13 +191,15 @@ class TestGodSystem < MiniTest::Test
         end
         God.watches["tons_of_watches_#{i}"].action(:start)
       end
-      loop do
-        # Wait until all watches have started
-        all_running = God.watches.select { |name, _w| name.include?('tons_of_watches_') }.all? { |_name, w| w.alive? }
-        size = God.watches.size
-        break if all_running && size >= 100
+      Timeout.timeout(10) do # Prevent loop blocks from running infinitely
+        loop do
+          # Wait until all watches have started
+          all_running = God.watches.select { |name, _w| name.include?('tons_of_watches_') }.all? { |_name, w| w.alive? }
+          size = God.watches.size
+          break if all_running && size >= 100
 
-        sleep 0.5
+          sleep 0.5
+        end
       end
       begin
         God::CLI::Command.new('terminate', { port: 17165 }, [])

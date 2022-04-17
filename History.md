@@ -67,7 +67,7 @@
     * Re-open log files on SIGUSR1 (#103)
   * Bug fixes
     * Send query params on webhook reporter (#160)
-    * Don't thow an exception when there are problems reading pid file (#164)
+    * Don't throw an exception when there are problems reading pid file (#164)
 
 ## 0.13.3 / 2013-09-25
 
@@ -228,7 +228,7 @@ and committer in the commit for that info.
 
   * Minor Enhancements
     * Only store log lines when a client wishes to see them
-    * Add an lsb-compliant init script into god/init [Woody Peterson]
+    * Add a lsb-compliant init script into god/init [Woody Peterson]
     * Never require stop command; use default killer if none is specified
   * Bug Fixes
     * Fix redefinition error for time.h and allow it to compile on Ubuntu Edgy [github.com/tbuser]

@@ -10,6 +10,8 @@
       (The last commit was made on 2014-12-03)
     * `xmpp4r` prints numerous warnings and they are quite annoying.
 * Minor Enhancements
+  * Expand `God.pid_file_directory` to the absolute path
+    * Now `~/.god/pids` is expanded to `/home/john/.god/pids`.
   * Reduce included files to reduce the gem file size
   * Use Gemfile instead of `Gem::Specification#add_development_dependency`
   * Migrate CI from Travis CI to GitHub Actions

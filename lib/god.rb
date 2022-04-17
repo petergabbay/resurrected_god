@@ -627,18 +627,18 @@ if $load_god
     # Returns nothing.
     def self.setup
       if pid_file_directory
+        dir = File.expand_path(pid_file_directory)
         # Pid file dir was specified, ensure it is created and writable.
-        unless File.exist?(pid_file_directory)
+        unless File.exist?(dir)
           begin
-            FileUtils.mkdir_p(pid_file_directory)
+            FileUtils.mkdir_p(dir)
           rescue Errno::EACCES => e # rubocop:disable Metrics/BlockNesting
             abort "Failed to create pid file directory: #{e.message}"
           end
         end
+        abort "The pid file directory (#{dir}) is not writable by #{Etc.getlogin}" unless File.writable?(dir)
 
-        unless File.writable?(pid_file_directory)
-          abort "The pid file directory (#{pid_file_directory}) is not writable by #{Etc.getlogin}"
-        end
+        self.pid_file_directory = dir
       else
         # No pid file dir specified, try defaults.
         PID_FILE_DIRECTORY_DEFAULTS.each do |idir|
@@ -650,6 +650,7 @@ if $load_god
               break
             end
           rescue Errno::EACCES
+            # Ignore errors on directory creation failure here.
           end
         end
 

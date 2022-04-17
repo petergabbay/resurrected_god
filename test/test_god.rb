@@ -17,7 +17,7 @@ class TestGod < MiniTest::Test
     God.reset
     # Some of the tests in this file intentionally set pid_file_directory to an invalid value
     # This can cause a later test failure since God will call abort if pid_file_directory is not writable
-    God.pid_file_directory = '~/.god/pids'
+    God.pid_file_directory = '/tmp/var/run/god'
   end
 
   # applog
@@ -42,7 +42,7 @@ class TestGod < MiniTest::Test
       w.start = 'bar'
     end
     assert_abort do
-      God.pid_file_directory = 'foo'
+      God.pid_file_directory = '/tmp/foo'
     end
   end
 
@@ -54,9 +54,9 @@ class TestGod < MiniTest::Test
   end
 
   def test_pid_file_directory_equals_should_set
-    God.pid_file_directory = '/foo'
+    God.pid_file_directory = '/tmp/foo'
     God.internal_init
-    assert_equal '/foo', God.pid_file_directory
+    assert_equal '/tmp/foo', God.pid_file_directory
   end
 
   # watch

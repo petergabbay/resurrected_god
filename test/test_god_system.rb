@@ -67,7 +67,7 @@ class TestGodSystem < MiniTest::Test
         w.start = File.join(GOD_ROOT, *%w[test configs complex simple_server.rb])
       end
       God.watches['start_watch'].action(:start)
-      sleep 2
+      sleep 0.1
       assert God.watches['start_watch'].alive?
     end
   end
@@ -80,7 +80,7 @@ class TestGodSystem < MiniTest::Test
         w.start = File.join(GOD_ROOT, *%w[test configs complex simple_server.rb])
       end
       God.watches['start_watch'].action(:start)
-      sleep 2
+      sleep 0.1
       assert God.watches['start_watch'].alive?
       God.stop_all
       assert(God.watches.none? { |_name, w| w.alive? })
@@ -98,7 +98,7 @@ class TestGodSystem < MiniTest::Test
         w.start = File.join(GOD_ROOT, *%w[test configs usr1_trapper.rb])
       end
       God.watches['long_timeout'].action(:start)
-      sleep 2
+      sleep 0.5
       assert God.watches['long_timeout'].alive?
       God.stop_all
       assert_watch_running('long_timeout')
@@ -107,16 +107,18 @@ class TestGodSystem < MiniTest::Test
 
   # use short timeout to send SIGKILL before 10s timeout
   def test_stop_all_with_non_killing_signal_short_timeout
+    stop_timeout = 1
+    assert stop_timeout < ::God::STOP_TIMEOUT_DEFAULT
     with_god_cleanup do
       God.start
       God.watch do |w|
         w.name = 'short_timeout'
         w.stop_signal = 'USR1'
-        w.stop_timeout = ::God::STOP_TIMEOUT_DEFAULT - 1
+        w.stop_timeout = stop_timeout
         w.start = File.join(GOD_ROOT, *%w[test configs usr1_trapper.rb])
       end
       God.watches['short_timeout'].action(:start)
-      sleep 2
+      sleep 0.1
       assert God.watches['short_timeout'].alive?
       God.stop_all
       assert(God.watches.none? { |_name, w| w.alive? })
@@ -135,11 +137,12 @@ class TestGodSystem < MiniTest::Test
         God.watches["many_watches_#{i}"].action(:start)
       end
       loop do
+        # Wait until all watches have started
         all_running = God.watches.select { |name, _w| name.include?('many_watches_') }.all? { |_name, w| w.alive? }
         size = God.watches.size
         break if all_running && size >= 20
 
-        sleep 2
+        sleep 0.5
       end
       God.stop_all
       assert(God.watches.none? { |_name, w| w.alive? })
@@ -160,11 +163,12 @@ class TestGodSystem < MiniTest::Test
         God.watches["tons_of_watches_#{i}"].action(:start)
       end
       loop do
+        # Wait until all watches have started
         all_running = God.watches.select { |name, _w| name.include?('tons_of_watches_') }.all? { |_name, w| w.alive? }
         size = God.watches.size
         break if all_running && size >= 100
 
-        sleep 2
+        sleep 0.5
       end
       God.stop_all
       assert(God.watches.none? { |_name, w| w.alive? })
@@ -184,15 +188,17 @@ class TestGodSystem < MiniTest::Test
         God.watches["tons_of_watches_#{i}"].action(:start)
       end
       loop do
+        # Wait until all watches have started
         all_running = God.watches.select { |name, _w| name.include?('tons_of_watches_') }.all? { |_name, w| w.alive? }
         size = God.watches.size
         break if all_running && size >= 100
 
-        sleep 2
+        sleep 0.5
       end
       begin
         God::CLI::Command.new('terminate', { port: 17165 }, [])
       rescue SystemExit
+        # Ignore `abort 'Could not stop god'`
       ensure
         assert(God.watches.none? { |_name, w| w.alive? })
       end

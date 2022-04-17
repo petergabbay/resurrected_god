@@ -49,8 +49,7 @@ class TestSlack < Minitest::Test
 
   def test_notify_channel
     @slack.notify_channel = true
-    @slack.format = ''
     text = @slack.text(@sample_data)
-    assert_equal '<!channel> ', text
+    assert_match(/\A<!channel> /, text)
   end
 end

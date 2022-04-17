@@ -149,7 +149,7 @@ if $load_god
     # An Array of directory paths to be used as the default PID file directory.
     # This list will be searched in order and the first one that has write
     # permissions will be used.
-    PID_FILE_DIRECTORY_DEFAULTS = ['/var/run/god', '~/.god/pids']
+    PID_FILE_DIRECTORY_DEFAULTS = ['/var/run/god', '~/.god/pids'].freeze
 
     # The default Integer port number for the DRb communications channel.
     DRB_PORT_DEFAULT = 17165

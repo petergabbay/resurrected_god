@@ -82,7 +82,7 @@ class TestGodSystem < MiniTest::Test
       God.watches['start_watch'].action(:start)
       sleep 0.1
       assert God.watches['start_watch'].alive?
-      God.stop_all
+      assert God.stop_all, 'Should stop all watches within 10 seconds'
       assert(God.watches.none? { |_name, w| w.alive? })
     end
   end
@@ -100,7 +100,7 @@ class TestGodSystem < MiniTest::Test
       God.watches['long_timeout'].action(:start)
       sleep 0.5
       assert God.watches['long_timeout'].alive?
-      God.stop_all
+      refute God.stop_all, 'long_timeout should still be alive'
       assert_watch_running('long_timeout')
     end
   end
@@ -120,7 +120,7 @@ class TestGodSystem < MiniTest::Test
       God.watches['short_timeout'].action(:start)
       sleep 0.1
       assert God.watches['short_timeout'].alive?
-      God.stop_all
+      assert God.stop_all, 'Should stop all watches within 10 seconds'
       assert(God.watches.none? { |_name, w| w.alive? })
     end
   end
@@ -146,7 +146,7 @@ class TestGodSystem < MiniTest::Test
           sleep 0.5
         end
       end
-      God.stop_all
+      assert God.stop_all, 'Should stop all watches within 10 seconds'
       assert(God.watches.none? { |_name, w| w.alive? })
     end
   end
@@ -174,7 +174,7 @@ class TestGodSystem < MiniTest::Test
           sleep 0.5
         end
       end
-      God.stop_all
+      assert God.stop_all, 'Should stop all watches within 10 seconds'
       assert(God.watches.none? { |_name, w| w.alive? })
     end
   end

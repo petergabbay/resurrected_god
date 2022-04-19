@@ -167,10 +167,14 @@ class TestGodSystem < MiniTest::Test
       Timeout.timeout(10) do # Prevent loop blocks from running infinitely
         loop do
           # Wait until all watches have started
-          all_running = God.watches.select { |name, _w| name.include?('tons_of_watches_') }.all? { |_name, w| w.alive? }
+          watches = God.watches.select { |name, _w| name.include?('tons_of_watches_') }
+          all_running = watches.all? { |_name, w| w.alive? }
           size = God.watches.size
           break if all_running && size >= 100
 
+          puts "Alive watches: #{watches.count { |_name, w| w.alive? }}, "\
+               "Not alive watches: #{watches.count { |_name, w| !w.alive? }}, "\
+               "Watches: #{size}. Go to sleep..."
           sleep 0.5
         end
       end
@@ -194,10 +198,14 @@ class TestGodSystem < MiniTest::Test
       Timeout.timeout(10) do # Prevent loop blocks from running infinitely
         loop do
           # Wait until all watches have started
-          all_running = God.watches.select { |name, _w| name.include?('tons_of_watches_') }.all? { |_name, w| w.alive? }
+          watches = God.watches.select { |name, _w| name.include?('tons_of_watches_') }
+          all_running = watches.all? { |_name, w| w.alive? }
           size = God.watches.size
           break if all_running && size >= 100
 
+          puts "Alive watches: #{watches.count { |_name, w| w.alive? }}, "\
+               "Not alive watches: #{watches.count { |_name, w| !w.alive? }}, "\
+               "Watches: #{size}. Go to sleep..."
           sleep 0.5
         end
       end

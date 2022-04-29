@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RAILS_ROOT = ENV.fetch('GOD_TEST_RAILS_ROOT')
 
 port = 5000

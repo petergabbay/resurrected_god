@@ -1,7 +1,7 @@
 ## master
 
 * Major Changes
-  * Drop support for Ruby 2.5 and earlier  
+  * Drop support for Ruby 2.5 and earlier
     * Now Ruby 2.6+ is required.
   * Drop support for HipChat
     * HipChat has been out of service since February 2019.
@@ -9,9 +9,11 @@
     * Sending notices to Jabber requires `xmpp4r`, but this gem is not maintained.  
       (The last commit was made on 2014-12-03)
     * `xmpp4r` prints numerous warnings and they are quite annoying.
-* Minor Enhancements
+* Minor Changes
   * Expand `God.pid_file_directory` to the absolute path
     * Now `~/.god/pids` is expanded to `/home/john/.god/pids`.
+* Minor Enhancements
+  * Enable `frozen_string_literal` partially
   * Reduce included files to reduce the gem file size
   * Use Gemfile instead of `Gem::Specification#add_development_dependency`
   * Migrate CI from Travis CI to GitHub Actions

@@ -16,7 +16,8 @@ jobs:
           - '3.0'
           - 3.1
         # - ruby-head # Skip until rugged problem is resolved
-        # Waiting for the new version includes https://github.com/libgit2/rugged/pull/897
+        # https://github.com/libgit2/rugged/pull/897 was merged and released as v1.3.1.
+        # But gollum-rugged_adapter requires rugged ~> 1.1.0 now.
     steps:
       - name: Checkout code
         uses: actions/checkout@v3

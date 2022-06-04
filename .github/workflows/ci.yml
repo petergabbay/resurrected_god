@@ -53,7 +53,7 @@ jobs:
           bundler-cache: true
       - name: Run system test
         run: bundle exec rake system_test
-        continue-on-error: ${{ matrix.ruby == 'ruby-head' }}
+        continue-on-error: true
       - name: Upload coverage report # It will be merged into the coverage for unit test
         uses: codecov/codecov-action@v3
 

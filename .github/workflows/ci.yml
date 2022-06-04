@@ -15,7 +15,7 @@ jobs:
           - 2.7
           - '3.0'
           - 3.1
-        # - ruby-head # Skip until rugged2 problem is resolved
+        # - ruby-head # Skip until rugged problem is resolved
         # Waiting for the new version includes https://github.com/libgit2/rugged/pull/897
     steps:
       - name: Checkout code

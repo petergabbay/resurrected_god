@@ -1,4 +1,4 @@
-## master
+## 1.0.0 / unreleased
 
 * Major Changes
   * Drop support for Ruby 2.5 and earlier

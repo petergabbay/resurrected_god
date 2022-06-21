@@ -1,4 +1,4 @@
-## 1.0.0 / unreleased
+## 1.0.0 / 2022-06-22
 
 * Major Changes
   * Drop support for Ruby 2.5 and earlier

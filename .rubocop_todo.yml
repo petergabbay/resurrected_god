@@ -39,11 +39,6 @@ Lint/SuppressedException:
     - 'lib/god.rb'
     - 'lib/god/conditions/socket_responding.rb'
 
-# Offense count: 1
-Lint/UselessAssignment:
-  Exclude:
-    - 'lib/god/configurable.rb'
-
 # Offense count: 17
 Style/ClassVars:
   Exclude:
@@ -51,13 +46,6 @@ Style/ClassVars:
     - 'lib/god/system/process.rb'
     - 'lib/god/system/slash_proc_poller.rb'
     - 'test/test_event_handler.rb'
-
-# Offense count: 132
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: always, always_true, never
-Style/FrozenStringLiteralComment:
-  Enabled: false
 
 # Offense count: 3
 Style/MissingRespondToMissing:

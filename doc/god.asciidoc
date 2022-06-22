@@ -863,8 +863,8 @@ loaded.
 God allows you to load or reload configurations into an already running
 instance. There are a few things to consider when doing this:
 
-* Existng Watches with the same `name` as the incoming Watches will be
-  overidden by the new config.
+* Existing Watches with the same `name` as the incoming Watches will be
+  overridden by the new config.
 * All paths must be either absolute or relative to the path from which god was
   started.
 
@@ -1211,7 +1211,7 @@ end
 
 ----
 
-A bit longer, I know, but very straighforward once you understand how the
+A bit longer, I know, but very straightforward once you understand how the
 `transition` calls work. The `name`, `interval`, `start`, `stop`, and
 `pid_file` attributes should be familiar. We also specify the `clean_pid_file`
 behavior.

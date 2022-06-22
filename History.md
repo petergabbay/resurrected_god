@@ -7,6 +7,9 @@
   * Drop support for Sensu
   * Drop support for StatsD
   * Drop support for Twitter
+* Minor Enhancements
+  * Enable `frozen_string_literal` entirely
+  * Remove unused gems from Gemfile
 
 ## 1.0.0 / 2022-06-22
 

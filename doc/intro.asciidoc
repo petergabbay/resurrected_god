@@ -1,5 +1,4 @@
-God: The Ruby Framework for Process Management
-==============================================
+= God: The Ruby Framework for Process Management
 Tom Preston-Werner <tom@mojombo.com>
 
 God is an easy to configure, easy to extend monitoring framework written in
@@ -9,8 +8,7 @@ Keeping your server processes and tasks running should be a simple part of
 your deployment process. God aims to be the simplest, most powerful monitoring
 application available.
 
-Features
---------
+== Features
 
 * Config file is written in Ruby
 * Easily write your own custom conditions in Ruby

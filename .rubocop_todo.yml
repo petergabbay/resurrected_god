@@ -11,7 +11,6 @@
 Lint/DuplicateBranch:
   Exclude:
     - 'lib/god/conditions/http_response_code.rb'
-    - 'lib/god/contacts/prowl.rb'
 
 # Offense count: 1
 Lint/NoReturnInBeginEndBlocks:
@@ -104,9 +103,6 @@ Style/RescueStandardError:
     - 'lib/god/cli/command.rb'
     - 'lib/god/cli/run.rb'
     - 'lib/god/conditions/flapping.rb'
-    - 'lib/god/contacts/scout.rb'
-    - 'lib/god/contacts/statsd.rb'
-    - 'lib/god/contacts/twitter.rb'
     - 'lib/god/event_handler.rb'
     - 'lib/god/system/slash_proc_poller.rb'
     - 'test/configs/degrading_lambda/degrading_lambda.god'

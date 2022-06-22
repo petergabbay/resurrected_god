@@ -17,11 +17,8 @@ gem 'minitest'
 gem 'mocha'
 gem 'mustache'
 gem 'nokogiri'
-gem 'prowly'
 gem 'rake'
 gem 'rdoc'
-gem 'statsd-ruby'
-gem 'twitter'
 
 gem 'net-smtp' if RUBY_VERSION >= '3.1'
 

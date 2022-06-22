@@ -71,16 +71,10 @@ if $load_god
   end
 
   require 'god/contact'
-  load_contact(:campfire)
   load_contact(:email)
-  load_contact(:prowl)
-  load_contact(:scout)
-  load_contact(:statsd)
-  load_contact(:twitter)
   load_contact(:webhook)
   load_contact(:airbrake)
   load_contact(:slack)
-  load_contact(:sensu)
 
   $LOAD_PATH.unshift File.join(File.dirname(__FILE__), *%w[.. ext god])
 

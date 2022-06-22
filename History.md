@@ -1,3 +1,13 @@
+## master
+
+* Major Changes
+  * Drop support for Campfire
+  * Drop support for Prowl
+  * Drop support for Scout
+  * Drop support for Sensu
+  * Drop support for StatsD
+  * Drop support for Twitter
+
 ## 1.0.0 / 2022-06-22
 
 * Major Changes

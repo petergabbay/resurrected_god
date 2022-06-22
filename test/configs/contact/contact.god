@@ -1,16 +1,5 @@
 # frozen_string_literal: true
 
-# God::Contacts::Campfire.defaults do |d|
-#   d.subdomain = 'github'
-#   d.token = '9fb768e421975cc1c6ff3f4f8306f890cb46e24f'
-#   d.room = 'Notices'
-#   d.ssl = true
-# end
-#
-# God.contact(:campfire) do |c|
-#   c.name = 'tom4'
-# end
-
 # God.contact(:email) do |c|
 #   c.name = 'tom'
 #   c.group = 'developers'
@@ -27,26 +16,6 @@
 #   c.from_email = 'god@github.com'
 #   c.from_name = 'God'
 #   c.server_host = 'smtp.rs.github.com'
-# end
-
-# God.contact(:prowl) do |c|
-#   c.name = 'tom3'
-#   c.apikey = 'f0fc8e1f3121672686337a631527eac2f1b6031c'
-#   c.group = 'developers'
-# end
-
-# God.contact(:twitter) do |c|
-#   c.name = 'tom6'
-#   c.consumer_token = 'gOhjax6s0L3mLeaTtBWPw'
-#   c.consumer_secret = 'yz4gpAVXJHKxvsGK85tEyzQJ7o2FEy27H1KEWL75jfA'
-#   c.access_token = '17376380-qS391nCrgaP4HKXAmZtM38gB56xUXMhx1NYbjT6mQ'
-#   c.access_secret = 'uMwCDeU4OXlEBWFQBc3KwGyY8OdWCtAV0Jg5KVB0'
-# end
-
-# God.contact(:scout) do |c|
-#   c.name = 'tom5'
-#   c.client_key = '583a51b5-acbc-2421-a830-b6f3f8e4b04e'
-#   c.plugin_id = '230641'
 # end
 
 # God.contact(:webhook) do |c|

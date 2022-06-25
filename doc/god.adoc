@@ -1,3 +1,5 @@
+:source-highlighter: highlight.js
+
 == Installation
 
 The best way to get god is via rubygems:
@@ -89,6 +91,7 @@ mechanism. The output you see throughout this section will show both ways.
 
 After starting god, you should see some output like the following:
 
+[source,text]
 ----
 # Events
 
@@ -129,6 +132,7 @@ running, starting it, and then checking every five seconds to make sure it's
 up. If you'd like to see god work its magic, go ahead and kill the `simple`
 process. You should then see something like this:
 
+[source,text]
 ----
 # Events
 
@@ -195,6 +199,7 @@ server will continue to run. Start god again with the same command as before.
 Now instead of starting the `simple` process, it will notice that one is
 already running and simply switch to the `up` state.
 
+[source,text]
 ----
 # Events
 
@@ -230,6 +235,7 @@ $ god restart simple
 
 From the logs you can see god killing and restarting the process:
 
+[source,text]
 ----
 # Events
 
@@ -259,6 +265,7 @@ I [2011-12-07 14:51:14]  INFO: simple [ok] process is running (ProcessRunning)
 
 God will now start reporting on memory and CPU utilization of your process:
 
+[source,text]
 ----
 # Events and Polls
 
@@ -303,6 +310,7 @@ The following watches were affected:
 And in the foregrounded god terminal window, you'll see the log of what
 happened:
 
+[source,text]
 ----
 # Events
 
@@ -984,6 +992,7 @@ will be passed as-is to the notification subsystem.
 
 The above notification will arrive as an email similar to the following.
 
+[source,text]
 ----
 From: God &lt;god@example.com&gt;
 To: tom &lt;tom@example.com&gt;
@@ -1012,6 +1021,7 @@ God.contact(:email) do |c|
 end
 ----
 
+[source,text]
 ----
 to_email        - The String email address to which the email will be sent.
 to_name         - The String name corresponding to the recipient.

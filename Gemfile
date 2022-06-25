@@ -5,14 +5,14 @@ gemspec
 
 gem 'airbrake'
 gem 'daemons'
-gem 'gollum'
 gem 'json'
 gem 'minitest'
 gem 'mocha'
+gem 'net-smtp' if RUBY_VERSION >= '3.1'
 gem 'rake'
 gem 'rdoc'
 
-gem 'net-smtp' if RUBY_VERSION >= '3.1'
+gem 'asciidoctor'
 
 gem 'rubocop'
 gem 'rubocop-minitest'

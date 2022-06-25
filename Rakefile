@@ -65,15 +65,14 @@ desc 'Generate and view the site locally'
 task :site do
   # Generate the dynamic parts of the site.
   puts 'Generating dynamic...'
-  require 'gollum'
-  wiki = Gollum::Wiki.new('.', base_path: '/doc')
-  html = wiki.page('god', 'HEAD').formatted_data.tr("\342\200\231", "'")
+
+  require 'asciidoctor'
+  doc = Asciidoctor.load_file('./doc/god.adoc', safe: :safe, standalone: false)
   template = File.read('./site/index.template.html')
-  index = template.sub('{{ content }}', html)
+  index = template.sub('{{ content }}', doc.content)
   File.write('./site/index.html', index)
 
-  puts 'Done. Opening in browser...'
-  sh 'open site/index.html'
+  puts 'Done.'
 end
 
 desc 'Commit the local site to the gh-pages branch and deploy'

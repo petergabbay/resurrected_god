@@ -25,7 +25,7 @@ Documentation
 -------------
 
 See in-repo documentation at [doc](doc).  
-See online documentation at http://godrb.com.
+See online documentation at [here](https://mishina2228.github.io/resurrected_god/).
 
 Community
 ---------

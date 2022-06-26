@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
   <title>God - A Process Monitoring Framework in Ruby</title>
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
   <link href="stylesheets/layout.css" rel="stylesheet" type="text/css"/>
@@ -21,7 +20,7 @@
     <p>Keeping your server processes and tasks running should be a simple part of your deployment process. God aims to
       be the simplest, most powerful monitoring application available.</p>
     <p style="text-align: right">Tom Preston-Werner<br/><a href="mailto:tom@mojombo.com">tom@mojombo.com</a></p>
-    <p style="text-align: right">Google Group: <a href="http://groups.google.com/group/god-rb">http://groups.google.com/group/god-rb</a>
+    <p style="text-align: right">Google Group: <a href="https://groups.google.com/g/god-rb">https://groups.google.com/g/god-rb</a>
     </p>
   </div>
 
@@ -46,7 +45,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ [sudo] gem install god</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ [sudo] gem install resurrected_god</code></pre>
 </div>
 </div>
 </div>
@@ -1192,7 +1191,7 @@ sendmail_args   - The String args to send to sendmail (default "-i -t").</code><
 <div class="sect2">
 <h3 id="_webhook">Webhook</h3>
 <div class="paragraph">
-<p>Send a notice to a webhook (<a href="http://www.webhooks.org/" class="bare">http://www.webhooks.org/</a>).</p>
+<p>Send a notice to a webhook (<a href="https://www.webhooks.org" class="bare">https://www.webhooks.org</a>).</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1215,7 +1214,7 @@ format - The Symbol format [ :form | :json ] (default: :form).</pre>
 <div class="sect2">
 <h3 id="_airbrake">Airbrake</h3>
 <div class="paragraph">
-<p>Send a notice to airbrake (<a href="http://airbrake.io/" class="bare">http://airbrake.io/</a>).</p>
+<p>Send a notice to airbrake (<a href="https://airbrake.io" class="bare">https://airbrake.io</a>).</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1237,7 +1236,7 @@ end</code></pre>
 <div class="sect2">
 <h3 id="_slack">Slack</h3>
 <div class="paragraph">
-<p>Send a message to a channel in Slack (<a href="https://slack.com/" class="bare">https://slack.com/</a>).</p>
+<p>Send a message to a channel in Slack (<a href="https://slack.com" class="bare">https://slack.com</a>).</p>
 </div>
 <div class="paragraph">
 <p>First, set up an Incoming Webhook in your Slack account.</p>
@@ -1532,7 +1531,7 @@ conditions, making it simple to add tests that are application specific.</p>
 read this section.</p>
 </div>
 <div class="paragraph">
-<p>The codebase can be found at <a href="https://github.com/mojombo/god" class="bare">https://github.com/mojombo/god</a>. To get started,
+<p>The codebase can be found at <a href="https://github.com/mishina2228/resurrected_god" class="bare">https://github.com/mishina2228/resurrected_god</a>. To get started,
 fork god on GitHub into your own account and then pull that down to your local
 machine. This way you can easily submit changes via Pull Requests later on.</p>
 </div>
@@ -1542,19 +1541,19 @@ machine. This way you can easily submit changes via Pull Requests later on.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>We recommend using <a href="https://github.com/sstephenson/rbenv">rbenv</a> and
-<a href="https://github.com/sstephenson/ruby-build">ruby-build</a> to manage multiple
+<p>We recommend using <a href="https://github.com/rbenv/rbenv">rbenv</a> and
+<a href="https://github.com/rbenv/ruby-build">ruby-build</a> to manage multiple
 versions of Ruby and their separate gemsets. Any changes to god must work on
-both Ruby 1.8.7-p352 and 1.9.3-p0.</p>
+Ruby 2.6+.</p>
 </div>
 <div class="paragraph">
-<p>God uses <a href="http://gembundler.com/">bundler</a> to deal with development
+<p>God uses <a href="https://bundler.io">bundler</a> to deal with development
 dependencies. Once you have the code locally, you can pull in all the
 dependencies like so:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ cd god
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ cd resurrected_god
 $ bundle install</code></pre>
 </div>
 </div>
@@ -1598,14 +1597,14 @@ new test config showing off the usage of the feature.</p>
 <p>If you intend to contribute your changes back to god core, make sure you create
 a new branch and do your work there. Then, when your changes are ready to be
 shared with the world, push them to your fork and issue a Pull Request against
-mojombo/god. Make sure to describe your changes in detail and add relevant
+mishina2228/resurrected_god. Make sure to describe your changes in detail and add relevant
 tests.</p>
 </div>
 <div class="paragraph">
 <p>Any feature additions or changes should be accompanied by corresponding updates
-to the documentation. It can be found in the <code>docs</code> directory. The
-documentation is done in <a href="http://github.com/github/gollum">Gollum</a> format
-and then converted into the public site at <a href="http://godrb.com" class="bare">http://godrb.com</a>. To see the
+to the documentation. It can be found in the <code>doc</code> directory. The
+documentation is done in <a href="https://asciidoc.org">AsciiDoc</a> format
+and then converted into the public site at <a href="https://mishina2228.github.io/resurrected_god" class="bare">https://mishina2228.github.io/resurrected_god</a>. To see the
 generated site locally you&#8217;ll first need to commit your changes to git and then
 issue the following:</p>
 </div>
@@ -1623,7 +1622,7 @@ issue the following:</p>
 </div>
 
 <div id="footer">
-  <p>Brought to you by <a href="http://tom.preston-werner.com/">Tom Preston-Werner</a></p>
+  <p>Brought to you by <a href="https://tom.preston-werner.com">Tom Preston-Werner</a></p>
 </div>
 </body>
 </html>

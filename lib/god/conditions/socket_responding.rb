@@ -114,12 +114,14 @@ module God
           begin
             s = TCPSocket.new(addr, port)
           rescue SystemCallError
+            # NOOP
           end
           status = responding != s.nil?
         when 'unix'
           begin
             s = UNIXSocket.new(path)
           rescue SystemCallError
+            # NOOP
           end
           status = responding != s.nil?
         else

@@ -2,7 +2,6 @@
 
 require 'bundler/gem_tasks'
 require 'rake'
-require 'rdoc/task'
 
 require_relative 'lib/god/version'
 
@@ -41,13 +40,6 @@ Rake::TestTask.new(:system_test) do |test|
   test.libs << 'lib' << 'test'
   test.pattern = 'test/**/test_god_system.rb'
   test.verbose = true
-end
-
-Rake::RDocTask.new do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "#{name} #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
 desc 'Open an irb session preloaded with this library'

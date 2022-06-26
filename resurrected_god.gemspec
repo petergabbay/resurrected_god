@@ -28,8 +28,5 @@ Gem::Specification.new do |s|
   s.executables = ['god']
   s.extensions = %w[ext/god/extconf.rb]
 
-  s.rdoc_options = ['--charset=UTF-8']
-  s.extra_rdoc_files = %w[README.md]
-
   s.files = Dir['History.md', 'LICENSE', 'README.md', 'bin/**/*', 'ext/**/*', 'lib/**/*']
 end

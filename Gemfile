@@ -10,7 +10,6 @@ gem 'minitest'
 gem 'mocha'
 gem 'net-smtp' if RUBY_VERSION >= '3.1'
 gem 'rake'
-gem 'rdoc'
 
 gem 'asciidoctor'
 

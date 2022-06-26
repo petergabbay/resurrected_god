@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+  <title>God - A Process Monitoring Framework in Ruby</title>
+  <link href="stylesheets/layout.css" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/vs.min.css">
+  <script type="text/javascript"
+          src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+</head>
+<body id="page_home">
+<script>hljs.initHighlightingOnLoad()</script>
+<div id="mothership"></div>
+<div id="content">
+  <div class="banner"></div>
+
+  <div class="columnleft">
+    <h2>A Better Way to Monitor</h2>
+    <p>God is an easy to configure, easy to extend monitoring framework written in Ruby.</p>
+    <p>Keeping your server processes and tasks running should be a simple part of your deployment process. God aims to
+      be the simplest, most powerful monitoring application available.</p>
+    <p style="text-align: right">Tom Preston-Werner<br/><a href="mailto:tom@mojombo.com">tom@mojombo.com</a></p>
+    <p style="text-align: right">Google Group: <a href="http://groups.google.com/group/god-rb">http://groups.google.com/group/god-rb</a>
+    </p>
+  </div>
+
+  <div class="columnright">
+    <h2>Features</h2>
+    <ul class="features">
+      <li>Config file is written in Ruby</li>
+      <li>Easily write your own custom conditions in Ruby</li>
+      <li>Supports both poll and event based conditions</li>
+      <li>Different poll conditions can have different intervals</li>
+      <li>Integrated notification system (write your own too!)</li>
+      <li>Easily control non-daemonizing scripts</li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <div class="sect1">
+<h2 id="_installation">Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The best way to get god is via rubygems:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ [sudo] gem install god</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_requirements">Requirements</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>God currently only works on <strong>Linux (kernel 2.6.15+), BSD,</strong> and <strong>Darwin</strong>
+systems. No support for Windows is planned. Event based conditions on Linux
+systems require the <code>cn</code> (connector) kernel module loaded or compiled into
+the kernel and god must be run as root.</p>
+</div>
+<div class="paragraph">
+<p>The following systems have been tested. Help us test it on others!</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Darwin 10.4.10</p>
+</li>
+<li>
+<p>RedHat Fedora 6-15</p>
+</li>
+<li>
+<p>Ubuntu Dapper (no events)</p>
+</li>
+<li>
+<p>Ubuntu Feisty</p>
+</li>
+<li>
+<p>CentOS 4.5 (no events), 5, 6</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_quick_start">Quick Start</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Note: this quick start guide requires god 0.12.0 or above. You can check your
+version by running:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ god --version</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The easiest way to understand how god will make your life better is by trying
+out a simple example. To get you up and running quickly, I&#8217;ll show you how to
+keep a trivial server running.</p>
+</div>
+<div class="paragraph">
+<p>Open up a new directory and write a simple server. Let&#8217;s call it
+<code>simple.rb</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">loop do
+  puts 'Hello'
+  sleep 1
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we&#8217;ll write a god config file that tells god about our process. Place it
+in the same directory and call it <code>simple.god</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">God.watch do |w|
+  w.name = "simple"
+  w.start = "ruby /full/path/to/simple.rb"
+  w.keepalive
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is the simplest possible god configuration. We start by declaring a
+<code>God.watch</code> block.  A watch in god represents a process that we want to watch
+and control. Each watch must have, at minimum, a unique name and a command that
+tells god how to start the process. The <code>keepalive</code> declaration tells god to
+keep this process alive. If the process is not running when god starts, it will
+be started. If the process dies, it will be restarted.</p>
+</div>
+<div class="paragraph">
+<p>In this example the <code>simple</code> process runs foreground, so god will take care of
+daemonizing it and keeping track of the PID for us. When possible, it&#8217;s best to
+let god daemonize processes for us, that way we don&#8217;t have to worry about
+specifying and keeping track of PID files. Later on we&#8217;ll see how to manage
+processes that can&#8217;t run foreground or that require PID files to be specified.</p>
+</div>
+<div class="paragraph">
+<p>To run god, we give it the configuration file we wrote with <code>-c</code>. To see what&#8217;s
+going on, we can ask it to run foreground with <code>-D</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ god -c path/to/simple.god -D</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>There are two ways that god can monitor your process. The first and better way
+is with process events. Not every system supports it, but those that do will
+automatically use it. With events, god will know immediately when a process
+exits. For those systems without process event support, god will use a polling
+mechanism. The output you see throughout this section will show both ways.</p>
+</div>
+<div class="paragraph">
+<p>After starting god, you should see some output like the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text"># Events
+
+I [2011-12-10 15:24:34]  INFO: Loading simple.god
+I [2011-12-10 15:24:34]  INFO: Syslog enabled.
+I [2011-12-10 15:24:34]  INFO: Using pid file directory: /Users/tom/.god/pids
+I [2011-12-10 15:24:34]  INFO: Started on drbunix:///tmp/god.17165.sock
+I [2011-12-10 15:24:34]  INFO: simple move 'unmonitored' to 'init'
+I [2011-12-10 15:24:34]  INFO: simple moved 'unmonitored' to 'init'
+I [2011-12-10 15:24:34]  INFO: simple [trigger] process is not running (ProcessRunning)
+I [2011-12-10 15:24:34]  INFO: simple move 'init' to 'start'
+I [2011-12-10 15:24:34]  INFO: simple start: ruby /Users/tom/dev/mojombo/god/simple.rb
+I [2011-12-10 15:24:34]  INFO: simple moved 'init' to 'start'
+I [2011-12-10 15:24:34]  INFO: simple [trigger] process is running (ProcessRunning)
+I [2011-12-10 15:24:34]  INFO: simple move 'start' to 'up'
+I [2011-12-10 15:24:34]  INFO: simple registered 'proc_exit' event for pid 23298
+I [2011-12-10 15:24:34]  INFO: simple moved 'start' to 'up'
+
+# Polls
+
+I [2011-12-07 09:40:18]  INFO: Loading simple.god
+I [2011-12-07 09:40:18]  INFO: Syslog enabled.
+I [2011-12-07 09:40:18]  INFO: Using pid file directory: /Users/tom/.god/pids
+I [2011-12-07 09:40:18]  INFO: Started on drbunix:///tmp/god.17165.sock
+I [2011-12-07 09:40:18]  INFO: simple move 'unmonitored' to 'up'
+I [2011-12-07 09:40:18]  INFO: simple moved 'unmonitored' to 'up'
+I [2011-12-07 09:40:18]  INFO: simple [trigger] process is not running (ProcessRunning)
+I [2011-12-07 09:40:18]  INFO: simple move 'up' to 'start'
+I [2011-12-07 09:40:18]  INFO: simple start: ruby /Users/tom/dev/mojombo/god/simple.rb
+I [2011-12-07 09:40:19]  INFO: simple moved 'up' to 'up'
+I [2011-12-07 09:40:19]  INFO: simple [ok] process is running (ProcessRunning)
+I [2011-12-07 09:40:24]  INFO: simple [ok] process is running (ProcessRunning)
+I [2011-12-07 09:40:29]  INFO: simple [ok] process is running (ProcessRunning)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here you can see god starting up, noticing that the <code>simple</code> process isn&#8217;t
+running, starting it, and then checking every five seconds to make sure it&#8217;s
+up. If you&#8217;d like to see god work its magic, go ahead and kill the <code>simple</code>
+process. You should then see something like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text"># Events
+
+I [2011-12-10 15:33:38]  INFO: simple [trigger] process 23416 exited (ProcessExits)
+I [2011-12-10 15:33:38]  INFO: simple move 'up' to 'start'
+I [2011-12-10 15:33:38]  INFO: simple deregistered 'proc_exit' event for pid 23416
+I [2011-12-10 15:33:38]  INFO: simple start: ruby /Users/tom/dev/mojombo/god/simple.rb
+I [2011-12-10 15:33:38]  INFO: simple moved 'up' to 'start'
+I [2011-12-10 15:33:38]  INFO: simple [trigger] process is running (ProcessRunning)
+I [2011-12-10 15:33:38]  INFO: simple move 'start' to 'up'
+I [2011-12-10 15:33:38]  INFO: simple registered 'proc_exit' event for pid 23601
+I [2011-12-10 15:33:38]  INFO: simple moved 'start' to 'up'
+
+# Polls
+
+I [2011-12-07 09:54:59]  INFO: simple [ok] process is running (ProcessRunning)
+I [2011-12-07 09:55:04]  INFO: simple [ok] process is running (ProcessRunning)
+I [2011-12-07 09:55:09]  INFO: simple [trigger] process is not running (ProcessRunning)
+I [2011-12-07 09:55:09]  INFO: simple move 'up' to 'start'
+I [2011-12-07 09:55:09]  INFO: simple start: ruby /Users/tom/dev/mojombo/god/simple.rb
+I [2011-12-07 09:55:09]  INFO: simple moved 'up' to 'up'
+I [2011-12-07 09:55:09]  INFO: simple [ok] process is running (ProcessRunning)
+I [2011-12-07 09:55:14]  INFO: simple [ok] process is running (ProcessRunning)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>While keeping a process up is useful, it would be even better if we could make
+sure our process was behaving well and restart it when resource utilization
+exceeds our specifications. With a few additions, we can easily have our
+process restarted when memory usage or CPU goes above certain limits. Edit
+your <code>sample.god</code> config file to look like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">God.watch do |w|
+  w.name = "simple"
+  w.start = "ruby /full/path/to/simple.rb"
+  w.keepalive(memory_max: 150.megabytes,
+              cpu_max: 50.percent)
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here I&#8217;ve specified a <code>:memory_max</code> option to the <code>keepalive</code> command. Now if
+the process memory usage goes above 150 megabytes, god will restart it.
+Similarly, by setting the <code>:cpu_max</code>, god will restart my process if its CPU
+usage goes over 50%. By default these properties will be checked every 30
+seconds and will be acted upon if there is an overage for three out of any
+five checks. This prevents the process from getting restarted for temporary
+resource spikes.</p>
+</div>
+<div class="paragraph">
+<p>To test this out, modify your <code>simple.rb</code> server script to introduce a memory
+leak:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">data = +''
+loop do
+  puts 'Hello'
+  100000.times { data &lt;&lt; 'x' }
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ctrl-C out of the foregrounded god instance. Notice that your current <code>simple</code>
+server will continue to run. Start god again with the same command as before.
+Now instead of starting the <code>simple</code> process, it will notice that one is
+already running and simply switch to the <code>up</code> state.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text"># Events
+
+I [2011-12-10 15:36:00]  INFO: Loading simple.god
+I [2011-12-10 15:36:00]  INFO: Syslog enabled.
+I [2011-12-10 15:36:00]  INFO: Using pid file directory: /Users/tom/.god/pids
+I [2011-12-10 15:36:00]  INFO: Started on drbunix:///tmp/god.17165.sock
+I [2011-12-10 15:36:00]  INFO: simple move 'unmonitored' to 'init'
+I [2011-12-10 15:36:00]  INFO: simple moved 'unmonitored' to 'init'
+I [2011-12-10 15:36:00]  INFO: simple [trigger] process is running (ProcessRunning)
+I [2011-12-10 15:36:00]  INFO: simple move 'init' to 'up'
+I [2011-12-10 15:36:00]  INFO: simple registered 'proc_exit' event for pid 23601
+I [2011-12-10 15:36:00]  INFO: simple moved 'init' to 'up'
+
+# Polls
+
+I [2011-12-07 14:50:46]  INFO: Loading simple.god
+I [2011-12-07 14:50:46]  INFO: Syslog enabled.
+I [2011-12-07 14:50:46]  INFO: Using pid file directory: /Users/tom/.god/pids
+I [2011-12-07 14:50:47]  INFO: Started on drbunix:///tmp/god.17165.sock
+I [2011-12-07 14:50:47]  INFO: simple move 'unmonitored' to 'up'
+I [2011-12-07 14:50:47]  INFO: simple moved 'unmonitored' to 'up'
+I [2011-12-07 14:50:47]  INFO: simple [ok] process is running (ProcessRunning)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In order to get our new <code>simple</code> server running, we can issue a command to god
+to have our process restarted:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ god restart simple</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>From the logs you can see god killing and restarting the process:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text"># Events
+
+I [2011-12-10 15:38:13]  INFO: simple move 'up' to 'restart'
+I [2011-12-10 15:38:13]  INFO: simple deregistered 'proc_exit' event for pid 23601
+I [2011-12-10 15:38:13]  INFO: simple stop: default lambda killer
+I [2011-12-10 15:38:13]  INFO: simple sent SIGTERM
+I [2011-12-10 15:38:14]  INFO: simple process stopped
+I [2011-12-10 15:38:14]  INFO: simple start: ruby /Users/tom/dev/mojombo/god/simple.rb
+I [2011-12-10 15:38:14]  INFO: simple moved 'up' to 'restart'
+I [2011-12-10 15:38:14]  INFO: simple [trigger] process is running (ProcessRunning)
+I [2011-12-10 15:38:14]  INFO: simple move 'restart' to 'up'
+I [2011-12-10 15:38:14]  INFO: simple registered 'proc_exit' event for pid 23707
+I [2011-12-10 15:38:14]  INFO: simple moved 'restart' to 'up'
+
+# Polls
+
+I [2011-12-07 14:51:13]  INFO: simple [ok] process is running (ProcessRunning)
+I [2011-12-07 14:51:13]  INFO: simple move 'up' to 'restart'
+I [2011-12-07 14:51:13]  INFO: simple stop: default lambda killer
+I [2011-12-07 14:51:13]  INFO: simple sent SIGTERM
+I [2011-12-07 14:51:14]  INFO: simple process stopped
+I [2011-12-07 14:51:14]  INFO: simple start: ruby /Users/tom/dev/mojombo/god/simple.rb
+I [2011-12-07 14:51:14]  INFO: simple moved 'up' to 'up'
+I [2011-12-07 14:51:14]  INFO: simple [ok] process is running (ProcessRunning)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>God will now start reporting on memory and CPU utilization of your process:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text"># Events and Polls
+
+I [2011-12-07 14:54:37]  INFO: simple [ok] process is running (ProcessRunning)
+I [2011-12-07 14:54:37]  INFO: simple [ok] memory within bounds [2032kb] (MemoryUsage)
+I [2011-12-07 14:54:37]  INFO: simple [ok] cpu within bounds [0.0%%] (CpuUsage)
+I [2011-12-07 14:54:42]  INFO: simple [ok] process is running (ProcessRunning)
+I [2011-12-07 14:54:42]  INFO: simple [ok] memory within bounds [2032kb, 13492kb] (MemoryUsage)
+I [2011-12-07 14:54:42]  INFO: simple [ok] cpu within bounds [0.0%%, *99.7%%] (CpuUsage)
+I [2011-12-07 14:54:47]  INFO: simple [ok] process is running (ProcessRunning)
+I [2011-12-07 14:54:47]  INFO: simple [ok] memory within bounds [2032kb, 13492kb, 25568kb] (MemoryUsage)
+I [2011-12-07 14:54:47]  INFO: simple [ok] cpu within bounds [0.0%%, *99.7%%, *100.0%%] (CpuUsage)
+I [2011-12-07 14:54:52]  INFO: simple [ok] process is running (ProcessRunning)
+I [2011-12-07 14:54:52]  INFO: simple [ok] memory within bounds [2032kb, 13492kb, 25568kb, 37556kb] (MemoryUsage)
+I [2011-12-07 14:54:52]  INFO: simple [trigger] cpu out of bounds [0.0%%, *99.7%%, *100.0%%, *98.4%%] (CpuUsage)
+I [2011-12-07 14:54:52]  INFO: simple move 'up' to 'restart'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>On the last line of the above log you can see that CPU usage has gone above
+50% for three cycles and god will issue a restart operation. God will continue
+to monitor the <code>simple</code> process for as long as god is running and the process
+is set to be monitored.</p>
+</div>
+<div class="paragraph">
+<p>Now, before you kill the god process, let&#8217;s kill the <code>simple</code> server by asking
+god to stop it for us. In a new terminal, issue the command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ god stop simple</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You should see the following output:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Sending 'stop' command
+
+The following watches were affected:
+  simple</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And in the foregrounded god terminal window, you&#8217;ll see the log of what
+happened:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text"># Events
+
+I [2011-12-10 15:41:04]  INFO: simple stop: default lambda killer
+I [2011-12-10 15:41:04]  INFO: simple sent SIGTERM
+I [2011-12-10 15:41:05]  INFO: simple process stopped
+I [2011-12-10 15:41:05]  INFO: simple move 'up' to 'unmonitored'
+I [2011-12-10 15:41:05]  INFO: simple deregistered 'proc_exit' event for pid 23707
+I [2011-12-10 15:41:05]  INFO: simple moved 'up' to 'unmonitored'
+
+# Polls
+
+I [2011-12-07 09:59:59]  INFO: simple [ok] process is running (ProcessRunning)
+I [2011-12-07 10:00:04]  INFO: simple [ok] process is running (ProcessRunning)
+I [2011-12-07 10:00:07]  INFO: simple stop: default lambda killer
+I [2011-12-07 10:00:07]  INFO: simple sent SIGTERM
+I [2011-12-07 10:00:08]  INFO: simple process stopped
+I [2011-12-07 10:00:08]  INFO: simple move 'up' to 'unmonitored'
+I [2011-12-07 10:00:08]  INFO: simple moved 'up' to 'unmonitored'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now feel free to Ctrl-C out of god. Congratulations! You&#8217;ve just taken god for
+a test ride and seen how easy it is to keep your processes running.</p>
+</div>
+<div class="paragraph">
+<p>This is just the beginning of what god can do, and in reality, the <code>keepalive</code>
+command is a convenience method written using more advanced transitional and
+condition constructs that may be used directly. You can configure many
+different kinds of conditions to have your process restarted when memory or
+CPU are too high, when disk usage is above a threshold, when a process returns
+an HTTP error code on a specific URL, and many more. In addition you can write
+your own custom conditions and use them in your configuration files. Many
+different lifecycle controls are available alongside a sophisticated and
+extensible notifications system. Keep reading to find out what makes god
+different from other monitoring systems and how it can help you solve many of
+your process monitoring and control problems.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_config_files_are_ruby_code">Config Files are Ruby Code!</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now that you&#8217;ve seen how to get started quickly, let&#8217;s see how to use the more
+powerful aspects of god. Once again, the best way to learn will be through an
+example. The following configuration file is what I once used at gravatar.com
+to keep the mongrels running:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">RAILS_ROOT = "/Users/tom/dev/gravatar2"
+
+%w{8200 8201 8202}.each do |port|
+  God.watch do |w|
+    w.name = "gravatar2-mongrel-#{port}"
+
+    w.start = "mongrel_rails start -c #{RAILS_ROOT} -p #{port} \
+      -P #{RAILS_ROOT}/log/mongrel.#{port}.pid  -d"
+    w.stop = "mongrel_rails stop -P #{RAILS_ROOT}/log/mongrel.#{port}.pid"
+    w.restart = "mongrel_rails restart -P #{RAILS_ROOT}/log/mongrel.#{port}.pid"
+
+    w.pid_file = File.join(RAILS_ROOT, "log/mongrel.#{port}.pid")
+
+    w.behavior(:clean_pid_file)
+
+    w.start_if do |start|
+      start.condition(:process_running) do |c|
+        c.interval = 5.seconds
+        c.running = false
+      end
+    end
+
+    w.restart_if do |restart|
+      restart.condition(:memory_usage) do |c|
+        c.above = 150.megabytes
+        c.times = [3, 5] # 3 out of 5 intervals
+      end
+
+      restart.condition(:cpu_usage) do |c|
+        c.above = 50.percent
+        c.times = 5
+      end
+    end
+
+    # lifecycle
+    w.lifecycle do |on|
+      on.condition(:flapping) do |c|
+        c.to_state = [:start, :restart]
+        c.times = 5
+        c.within = 5.minute
+        c.transition = :unmonitored
+        c.retry_in = 10.minutes
+        c.retry_times = 5
+        c.retry_within = 2.hours
+      end
+    end
+  end
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>That&#8217;s a lot to take in at once, so I&#8217;ll break it down by section and explain
+what&#8217;s going on in each.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">RAILS_ROOT = "/var/www/gravatar2/current"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here I&#8217;ve set a constant that is used throughout the file. Keeping the
+<code>RAILS_ROOT</code> value in a constant makes it easy to adapt this script to other
+applications. Because the config file is Ruby code, I can set whatever
+variables or constants I want that make the configuration more concise and
+easier to work with.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">%w{8200 8201 8202}.each do |port|
+  ...
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Because the config file is written in actual Ruby code, we can construct loops
+and do other intelligent things that are impossible in your every day, run of
+the mill config file. I need to watch three mongrels, so I simply loop over
+their port numbers, eliminating duplication and making my life a whole lot
+easier.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">  God.watch do |w|
+    w.name = "gravatar2-mongrel-#{port}"
+
+    w.start = "mongrel_rails start -c #{RAILS_ROOT} -p #{port} \
+      -P #{RAILS_ROOT}/log/mongrel.#{port}.pid  -d"
+    w.stop = "mongrel_rails stop -P #{RAILS_ROOT}/log/mongrel.#{port}.pid"
+    w.restart = "mongrel_rails restart -P #{RAILS_ROOT}/log/mongrel.#{port}.pid"
+
+    w.pid_file = File.join(RAILS_ROOT, "log/mongrel.#{port}.pid")
+
+    ...
+  end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A <code>watch</code> represents a single process that has concrete start, stop, and/or
+restart operations. You can define as many watches as you like. In the example
+above, I&#8217;ve got some Rails instances running in Mongrels that I need to keep
+alive. Every watch must have a unique <code>name</code> so that it can be identified
+later on. The <code>start</code> and <code>stop</code> attributes specify the commands to start
+and stop the process. If no <code>restart</code> attribute is set, restart will be
+represented by a call to stop followed by a call to start. The
+optional <code>grace</code> attribute sets the amount of time following a
+start/stop/restart command to wait before resuming normal monitoring
+operations. If the process you&#8217;re watching runs as a daemon (as
+mine does), you&#8217;ll need to set the <code>pid_file</code> attribute.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">    w.behavior(:clean_pid_file)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Behaviors allow you to execute additional commands around start/stop/restart
+commands. In our case, if the process dies it will leave a PID file behind.
+The next time a start command is issued, it will fail, complaining about the
+leftover PID file. We&#8217;d like the PID file cleaned up before a start command is
+issued. The built-in behavior <code>clean_pid_file</code> will do just that.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">    w.start_if do |start|
+      start.condition(:process_running) do |c|
+        c.interval = 5.seconds
+        c.running = false
+      end
+    end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Watches contain conditions grouped by the action to execute should they return
+<code>true</code>. I start with a <code>start_if</code> block that contains a single condition.
+Conditions are specified by calling <code>condition</code> with an identifier, in this
+case <code>:process_running</code>. Each condition can specify a poll interval that will
+override the default watch interval. In this case, I want to check that the
+process is still running every 5 seconds instead of the 30 second interval
+that other conditions will inherit. The ability to set condition specific poll
+intervals makes it possible to run critical tests (such as :process_running)
+more often than less critical tests (such as :memory_usage and :cpu_usage).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">    w.restart_if do |restart|
+      restart.condition(:memory_usage) do |c|
+        c.above = 150.megabytes
+        c.times = [3, 5] # 3 out of 5 intervals
+      end
+
+      ...
+    end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Similar to <code>start_if</code> there is a <code>restart_if</code> command that groups conditions
+that should trigger a restart. The <code>memory_usage</code> condition will fail if the
+specified process is using too much memory. The maximum allowable amount of
+memory is specified with the <code>above</code> attribute (you can use the <code>kilobytes</code>,
+<code>megabytes</code>, or <code>gigabytes</code> helpers). The number of times the test needs to
+fail in order to trigger a restart is set with <code>times</code>. This can be either an
+integer or an array. An integer means it must fail that many times in a row
+while an array <code>[x, y]</code> means it must fail <code>x</code> times out of the last <code>y</code>
+tests.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">    w.restart_if do |restart|
+      ...
+
+      restart.condition(:cpu_usage) do |c|
+        c.above = 50.percent
+        c.times = 5
+      end
+    end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To keep an eye on CPU usage, I&#8217;ve employed the <code>cpu_usage</code> condition. When CPU
+usage for a Mongrel process is over 50% for 5 consecutive intervals, it will
+be restarted.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">    w.lifecycle do |on|
+      on.condition(:flapping) do |c|
+        c.to_state = [:start, :restart]
+        c.times = 5
+        c.within = 5.minute
+        c.transition = :unmonitored
+        c.retry_in = 10.minutes
+        c.retry_times = 5
+        c.retry_within = 2.hours
+      end
+    end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Conditions inside a <code>lifecycle</code> section are active as long as the process is being monitored (they live across state changes).</p>
+</div>
+<div class="paragraph">
+<p>The <code>:flapping</code> condition guards against the edge case wherein god rapidly
+starts or restarts your application. Things like server configuration changes
+or the unavailability of external services could make it impossible for my
+process to start. In that case, god will try to start my process over and over
+to no avail. The <code>:flapping</code> condition provides two levels of giving up on
+flapping processes. If I were to translate the options of the code above, it
+would be something like: If this watch is started or restarted five times
+within 5 minutes, then unmonitor it&#8230;&#8203;then after ten minutes, monitor it
+again to see if it was just a temporary problem; if the process is seen to be
+flapping five times within two hours, then give up completely.</p>
+</div>
+<div class="paragraph">
+<p>That&#8217;s it!</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_starting_and_controlling_god">Starting and Controlling God</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To start the god monitoring process as a daemon simply run the <code>god</code>
+executable passing in the path to the config file (you need to sudo if you&#8217;re
+using events on Linux or want to use the setuid/setgid functionality):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ sudo god -c /path/to/config.god</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>While you&#8217;re writing your config file, it can be helpful to run god in the
+foreground so you can see the log messages. You can do that with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ sudo god -c /path/to/config.god -D</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can start/restart/stop/monitor/unmonitor your Watches with the same
+utility like so:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ sudo god stop gravatar2-mongrel-8200</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_watching_non_daemon_processes">Watching Non-Daemon Processes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Need to watch a script that doesn&#8217;t have built in daemonization? No problem!
+God will daemonize and keep track of your process for you. If you don&#8217;t
+specify a <code>pid_file</code> attribute for a watch, it will be auto-daemonized and a
+PID file will be stored for it in <code>/var/run/god</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">God.pid_file_directory = '/home/tom/pids'
+
+# Watcher that auto-daemonizes and creates the pid file
+God.watch do |w|
+  w.name = 'mongrel'
+  w.pid_file = w.pid_file = File.join(RAILS_ROOT, "log/mongrel.pid")
+
+  w.start = "mongrel_rails start -P #{RAILS_ROOT}/log/mongrel.pid  -d"
+
+  # ...
+end
+
+# Watcher that does not auto-daemonize
+God.watch do |w|
+  w.name = 'worker'
+  # w.pid_file = is not set
+
+  w.start = "rake resque:worker"
+
+  # ...
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you&#8217;d rather have the PID file stored in a different location, you can
+set it at the top of your config:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">God.pid_file_directory = '/home/tom/pids'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The directory you specify must be writable by god.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_grouping_watches">Grouping Watches</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Watches can be assigned to groups. These groups can then be controlled
+together from the command line.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">  God.watch do |w|
+    ...
+
+    w.group = 'mongrels'
+
+    ...
+  end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above configuration now allows you to control the watch (and any others
+that are in the group) with a single command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ sudo god stop mongrels</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_invoke_commands_for_all_watches">Invoke Commands for all watches</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you need to invoke a command (e.g. Stop / Start / Restart) on all watches
+you can simply omit the second parameter. For example, to start all watches:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ sudo god start</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_redirecting_stdout_and_stderr_of_your_process">Redirecting STDOUT and STDERR of your Process</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By default, the STDOUT stream for your process is redirected to <code>/dev/null</code>.
+To get access to this output, you can redirect the stream either to a file or
+to a command.</p>
+</div>
+<div class="paragraph">
+<p>To redirect STDOUT to a file, set the <code>log</code> attribute to a file path. The file
+will be written in append mode and created if it does not exist.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">  God.watch do |w|
+    ...
+
+    w.log = '/var/log/myprocess.log'
+
+    ...
+  end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To redirect STDOUT to a command that will be run for you, set the <code>log_cmd</code>
+attribute to a command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">  God.watch do |w|
+    ...
+
+    w.log_cmd = '/usr/bin/logger'
+
+    ...
+  end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default, STDERR is redirected to STDOUT. You can redirect it to a file or a
+command just like STDOUT by setting the <code>err_log</code> or <code>err_log_cmd</code> attributes
+respectively.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_changing_uidgid_for_processes">Changing UID/GID for processes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is possible to have god run your start/stop/restart commands as a specific
+user/group. This can be done by setting the <code>uid</code> and/or <code>gid</code> attributes of a
+watch.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">  God.watch do |w|
+    ...
+
+    w.uid = 'tom'
+    w.gid = 'devs'
+
+    ...
+  end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This only works for commands specified as a string. Lambda commands are
+unaffected.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setting_the_working_directory">Setting the Working Directory</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By default, God sets the working directory to <code>/</code> before running your process.
+You can change this by setting the <code>dir</code> attribute on the watch.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">  God.watch do |w|
+    ...
+
+    w.dir = '/var/www/myapp'
+
+    ...
+  end</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setting_environment_variables">Setting environment variables</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can set any number of environment variables you wish via the <code>env</code>
+attribute of a watch.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">  God.watch do |w|
+    ...
+
+    w.env = { 'RAILS_ROOT' =&gt; "/var/www/myapp",
+              'RAILS_ENV' =&gt; "production" }
+
+    ...
+  end</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_chroot_to_change_the_file_system_root">Using chroot to Change the File System Root</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you want your process to run chrooted, simply use the <code>chroot</code> attribute on
+the watch. The specified directory must exist and have a <code>/dev/null</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">  God.watch do |w|
+    ...
+
+    w.chroot = '/var/myroot'
+
+    ...
+  end</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_lambda_commands">Lambda commands</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In addition to specifying start/stop/restart commands as strings (to be
+executed via the shell), you can specify a lambda that will be called.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">  God.watch do |w|
+    ...
+
+    w.start = lambda { ENV['APACHE'] ? `apachectl -k graceful` : `lighttpd restart` }
+
+    ...
+  end</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_customizing_the_default_stop_lambda">Customizing the Default Stop Lambda</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you do not provide a stop command, God will attempt to stop your process by
+first sending a SIGTERM. It will then wait for ten seconds for the process to
+exit. If after this time it still has not exited, it will be sent a SIGKILL.
+You can customize the stop signal and/or the time to wait for the process to
+exit by setting the <code>stop_signal</code> and <code>stop_timeout</code> attributes on the watch.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">  God.watch do |w|
+    ...
+
+    w.stop_signal = 'QUIT'
+    w.stop_timeout = 20.seconds
+
+    ...
+  end</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_loading_other_config_files">Loading Other Config Files</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You should feel free to separate your god configs into separate files for
+easier organization. You can load in other configs using Ruby&#8217;s normal <code>load</code>
+method, or use the convenience method <code>God.load</code> which allows for glob-style
+paths:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby"># load in all god configs
+God.load "/usr/local/conf/*.god"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>God won&#8217;t start its monitoring operations until all configurations have been
+loaded.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_dynamically_loading_config_files_into_an_already_running_god">Dynamically Loading Config Files Into an Already Running God</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>God allows you to load or reload configurations into an already running
+instance. There are a few things to consider when doing this:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Existing Watches with the same <code>name</code> as the incoming Watches will be
+overridden by the new config.</p>
+</li>
+<li>
+<p>All paths must be either absolute or relative to the path from which god was
+started.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To load a config into a running god, issue the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ sudo god load path/to/config.god</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Config files that are loaded dynamically can contain anything that a normal
+config file contains, however, global options such as <code>God.pid_file_directory</code>
+blocks will be ignored (and produce a warning in the logs).</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_getting_logs_for_a_single_watch">Getting Logs for a Single Watch</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Sifting through the god logs for statements specific to a single Watch can be
+frustrating when you have many of them. You can get the realtime logs for a
+single Watch via the command line:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ sudo god log local-3000</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will display log output for the 'local-3000' Watch and update every
+second with new log messages.</p>
+</div>
+<div class="paragraph">
+<p>You can also supply a shorthand to the log command that will match one of your
+watches. If it happens to match several, the shortest match will be used:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ sudo god log l3</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_notifications">Notifications</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>God has an extensible notification framework built in that makes it easy to
+have notifications sent when conditions are triggered. Each notification type
+has a set of configuration parameters that must be set. These parameters may
+be set globally via Contact Defaults or individually via Contact Instances.</p>
+</div>
+<div class="paragraph">
+<p><strong>Contact Defaults</strong> - Some parameters are unlikely to change on a per-contact
+basis. You should set those parameters via the defaults mechanism.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">God::Contacts::Email.defaults do |d|
+  d.from_email = 'god@example.com'
+  d.from_name = 'God'
+  d.delivery_method = :sendmail
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Contact Instances</strong> - Each contact must have a unique <code>name</code> set. You may
+optionally assign each contact to a <code>group</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">God.contact(:email) do |c|
+  c.name = 'tom'
+  c.group = 'developers'
+  c.to_email = 'tom@example.com'
+end
+
+God.contact(:email) do |c|
+  c.name = 'vanpelt'
+  c.group = 'developers'
+  c.to_email = 'vanpelt@example.com'
+end
+
+God.contact(:email) do |c|
+  c.name = 'kevin'
+  c.group = 'developers'
+  c.to_email = 'kevin@example.com'
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Condition Attachment</strong> - To have a specific contact notified when a condition
+is triggered, simply set the condition&#8217;s <code>notify</code> attribute to the name of the
+individual contact.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">  w.transition(:up, :start) do |on|
+    on.condition(:process_exits) do |c|
+      c.notify = 'tom'
+    end
+  end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>There are two ways to specify that a notification should be sent. The first,
+easier way is shown above. Every condition can take an optional <code>notify</code>
+attribute that specifies which contacts should be notified when the condition
+is triggered. The value can be a contact name or contact group <strong>or</strong> an array
+of contact names and/or contact groups.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">  w.transition(:up, :start) do |on|
+    on.condition(:process_exits) do |c|
+      c.notify = {:contacts =&gt; ['tom', 'developers'], :priority =&gt; 1, :category =&gt; 'product'}
+    end
+  end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The second way allows you to specify the <code>priority</code> and <code>category</code> in addition
+to the contacts. The extra attributes can be arbitrary integers or strings and
+will be passed as-is to the notification subsystem.</p>
+</div>
+<div class="paragraph">
+<p>The above notification will arrive as an email similar to the following.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">From: God &amp;lt;god@example.com&amp;gt;
+To: tom &amp;lt;tom@example.com&amp;gt;
+Subject: [god] mongrel-8600 [trigger] process exited (ProcessExits)
+
+Message: mongrel-8600 [trigger] process exited (ProcessExits)
+Host: candymountain.example.com
+Priority: 1
+Category: product</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_available_notification_types">Available Notification Types</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_email">Email</h3>
+<div class="paragraph">
+<p>Send a notice to an email address.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">God::Contacts::Email.defaults do |d|
+  ...
+end
+
+God.contact(:email) do |c|
+  ...
+end</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">to_email        - The String email address to which the email will be sent.
+to_name         - The String name corresponding to the recipient.
+from_email      - The String email address from which the email will be sent.
+from_name       - The String name corresponding to the sender.
+delivery_method - The Symbol delivery method. [ :smtp | :sendmail ]
+                  (default: :smtp).
+
+=== SMTP Options (when delivery_method = :smtp) ===
+server_host     - The String hostname of the SMTP server (default: localhost).
+server_port     - The Integer port of the SMTP server (default: 25).
+server_auth     - A Boolean or Symbol, false if no authentication else a symbol
+                  for the type of authentication [false | :plain | :login | :cram_md5]
+                  (default: false).
+
+=== SMTP Auth Options (when server_auth = true) ===
+server_domain   - The String domain.
+server_user     - The String username.
+server_password - The String password.
+
+=== Sendmail Options (when delivery_method = :sendmail) ===
+sendmail_path   - The String path to the sendmail executable
+                  (default: "/usr/sbin/sendmail").
+sendmail_args   - The String args to send to sendmail (default "-i -t").</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_webhook">Webhook</h3>
+<div class="paragraph">
+<p>Send a notice to a webhook (<a href="http://www.webhooks.org/" class="bare">http://www.webhooks.org/</a>).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">God::Contacts::Webhook.defaults do |d|
+  ...
+end
+
+God.contact(:webhook) do |c|
+  ...
+end</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>url    - The String webhook URL.
+format - The Symbol format [ :form | :json ] (default: :form).</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_airbrake">Airbrake</h3>
+<div class="paragraph">
+<p>Send a notice to airbrake (<a href="http://airbrake.io/" class="bare">http://airbrake.io/</a>).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">God::Contacts::Airbrake.defaults do |d|
+  ...
+end
+
+God.contact(:airbrake) do |c|
+  ...
+end</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>apikey - The String API key.</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_slack">Slack</h3>
+<div class="paragraph">
+<p>Send a message to a channel in Slack (<a href="https://slack.com/" class="bare">https://slack.com/</a>).</p>
+</div>
+<div class="paragraph">
+<p>First, set up an Incoming Webhook in your Slack account.</p>
+</div>
+<div class="paragraph">
+<p>Then, in your God configuration, set the defaults:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">God::Contacts::Slack.defaults do |d|
+  d.account = "foo"
+  d.token = "abc123abc123abc123"
+  c.notify_channel = true
+  c.format = '%{host} alert: %{message}'
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>account</code> is the name of your Slack account; if you view slack at
+"foo.slack.com", then your account is "foo". <code>token</code> is from your
+newly-created webhook, and will be a string of unintelligible
+characters.</p>
+</div>
+<div class="paragraph">
+<p>The <code>notify_channel</code> and <code>format</code> settings are optional. The first
+controls whether the message includes <code>@channel</code> (sending notifications
+to everyone in the channel); the second controls how the message is
+formatted. Acceptable values within the format are <code>priority</code>, <code>host</code>,
+<code>message</code>, <code>category</code>, and <code>time</code>.</p>
+</div>
+<div class="paragraph">
+<p>Once you&#8217;ve set the defaults, create contacts for the channels that you
+want to notify. You can create as many as you like, and they&#8217;ll look
+something like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">God.contact(:slack) do |c|
+  c.name = '#ops'
+  c.channel = '#ops'
+end</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_advanced_configuration_with_transitions_and_events">Advanced Configuration with Transitions and Events</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>So far you&#8217;ve been introduced to a simple poll-based config file and seen how
+to run it. Poll-based monitoring works great for simple things, but falls
+short for highly critical tasks. God has native support for kqueue/netlink
+events on BSD/Darwin/Linux systems. For instance, instead of using the
+<code>process_running</code> condition to poll for the status of your process, you can
+use the <code>process_exits</code> condition that will be notified <strong>immediately</strong> upon the
+exit of your process. This means less load on your system and shorter downtime
+after a crash.</p>
+</div>
+<div class="paragraph">
+<p>While the configuration syntax you saw in the previous example is very simple,
+it lacks the power that we need to deal with event based monitoring. In fact,
+the <code>start_if</code> and <code>restart_if</code> methods are really just calling out to a
+lower-level API. If we use the low-level API directly, we can harness the full
+power of god&#8217;s event based lifecycle system. Let&#8217;s look at another example
+config file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">RAILS_ROOT = "/Users/tom/dev/gravatar2"
+
+God.watch do |w|
+  w.name = "local-3000"
+
+  w.start = "mongrel_rails start -c #{RAILS_ROOT} -P #{RAILS_ROOT}/log/mongrel.pid -p 3000 -d"
+  w.stop = "mongrel_rails stop -P #{RAILS_ROOT}/log/mongrel.pid"
+  w.restart = "mongrel_rails restart -P #{RAILS_ROOT}/log/mongrel.pid"
+
+  w.pid_file = File.join(RAILS_ROOT, "log/mongrel.pid")
+
+  # clean pid files before start if necessary
+  w.behavior(:clean_pid_file)
+
+  # determine the state on startup
+  w.transition(:init, { true =&gt; :up, false =&gt; :start }) do |on|
+    on.condition(:process_running) do |c|
+      c.running = true
+    end
+  end
+
+  # determine when process has finished starting
+  w.transition([:start, :restart], :up) do |on|
+    on.condition(:process_running) do |c|
+      c.running = true
+    end
+
+    # failsafe
+    on.condition(:tries) do |c|
+      c.times = 5
+      c.transition = :start
+    end
+  end
+
+  # start if process is not running
+  w.transition(:up, :start) do |on|
+    on.condition(:process_exits)
+  end
+
+  # restart if memory or cpu is too high
+  w.transition(:up, :restart) do |on|
+    on.condition(:memory_usage) do |c|
+      c.interval = 20
+      c.above = 50.megabytes
+      c.times = [3, 5]
+    end
+
+    on.condition(:cpu_usage) do |c|
+      c.interval = 10
+      c.above = 10.percent
+      c.times = [3, 5]
+    end
+  end
+
+  # lifecycle
+  w.lifecycle do |on|
+    on.condition(:flapping) do |c|
+      c.to_state = [:start, :restart]
+      c.times = 5
+      c.within = 5.minute
+      c.transition = :unmonitored
+      c.retry_in = 10.minutes
+      c.retry_times = 5
+      c.retry_within = 2.hours
+    end
+  end
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A bit longer, I know, but very straightforward once you understand how the
+<code>transition</code> calls work. The <code>name</code>, <code>interval</code>, <code>start</code>, <code>stop</code>, and
+<code>pid_file</code> attributes should be familiar. We also specify the <code>clean_pid_file</code>
+behavior.</p>
+</div>
+<div class="paragraph">
+<p>Before jumping into the code, it&#8217;s important to understand the different
+states that a Watch can have, and how that state changes over time. At any
+given time, a Watch will be in one of the <code>init</code>, <code>up</code>, <code>start</code>, or <code>restart</code>
+states. As different conditions are satisfied, the Watch will progress from
+state to state, enabling and disabling conditions along the way.</p>
+</div>
+<div class="paragraph">
+<p>When god first starts, each Watch is placed in the <code>init</code> state.</p>
+</div>
+<div class="paragraph">
+<p>You&#8217;ll use the <code>transition</code> method to tell god how to transition between
+states. It takes two arguments. The first argument may be either a symbol or
+an array of symbols representing the state or states during which the
+specified conditions should be enabled. The second argument may be either a
+symbol or a hash. If it is a symbol, then that is the state that will be
+transitioned to if any of the conditions return <code>true</code>. If it is a hash, then
+that hash must have both <code>true</code> and <code>false</code> keys, each of which point to a
+symbol that represents the state to transition to given the corresponding
+return from the single condition that must be specified.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">  # determine the state on startup
+  w.transition(:init, { true =&gt; :up, false =&gt; :start }) do |on|
+    on.condition(:process_running) do |c|
+      c.running = true
+    end
+  end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The first transition block tells god what to do when the Watch is in the
+<code>init</code> state (first argument). This is where I tell god how to determine if my
+task is already running. Since I&#8217;m monitoring a process, I can use the
+<code>process_running</code> condition to determine whether the process is running. If
+the process is running, it will return true, otherwise it will return false.
+Since I sent a hash as the second argument to <code>transition</code>, the return from
+<code>process_running</code> will determine which of the two states will be transitioned
+to. If the process is running, the return is true and god will put the Watch
+into the <code>up</code> state. If the process is not running, the return is false and
+god will put the Watch into the <code>start</code> state.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">  # determine when process has finished starting
+  w.transition([:start, :restart], :up) do |on|
+    on.condition(:process_running) do |c|
+      c.running = true
+    end
+
+    ...
+  end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If god has determined that my process isn&#8217;t running, the Watch will be put
+into the <code>start</code> state. Upon entering this state, the <code>start</code> command that I
+specified on the Watch will be called. In addition, the above transition
+specifies a condition that should be enabled when in either the <code>start</code> or
+<code>restart</code> states. The condition is another <code>process_running</code>, however this
+time I&#8217;m only interested in moving to another state once it returns <code>true</code>. A
+<code>true</code> return from this condition means that the process is running and it&#8217;s
+ok to transition to the <code>up</code> state (second argument to <code>transition</code>).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">  # determine when process has finished starting
+  w.transition([:start, :restart], :up) do |on|
+    ...
+
+    # failsafe
+    on.condition(:tries) do |c|
+      c.times = 5
+      c.transition = :start
+    end
+  end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The other half of this transition uses the <code>tries</code> condition to ensure that
+god doesn&#8217;t get stuck in this state. It&#8217;s possible that the process could go
+down while the transition is being made, in which case god would end up
+polling forever to see if the process is up. Here I&#8217;ve specified that if this
+condition is called five times, god should override the normal transition
+destination and move to the <code>start</code> state instead. If you specify a
+<code>transition</code> attribute on any condition, that state will be transferred to
+instead of the normal transfer destination.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">  # start if process is not running
+  w.transition(:up, :start) do |on|
+    on.condition(:process_exits)
+  end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is where the event based system comes into play. Once in the <code>up</code> state,
+I want to be notified when my process exits. The <code>process_exits</code> condition
+registers a callback that will trigger a transition change when it is fired
+off. Event conditions (like this one) cannot be used in transitions that have
+a hash for the second argument (as they do not return true or false).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby hljs" data-lang="ruby">  # restart if memory or cpu is too high
+  w.transition(:up, :restart) do |on|
+    on.condition(:memory_usage) do |c|
+      c.interval = 20
+      c.above = 50.megabytes
+      c.times = [3, 5]
+    end
+
+    on.condition(:cpu_usage) do |c|
+      c.interval = 10
+      c.above = 10.percent
+      c.times = [3, 5]
+    end
+  end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice that I can have multiple transitions with the same start state. In this
+case, I want to have the <code>memory_usage</code> and <code>cpu_usage</code> poll conditions going
+at the same time that I listen for the process exit event. In the case of
+runaway CPU or memory usage, however, I want to transition to the <code>restart</code>
+state. When a Watch enters the <code>restart</code> state it will either call the
+<code>restart</code> command that you specified, or if none has been set, call the <code>stop</code>
+and then <code>start</code> commands.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_extend_god_with_your_own_conditions">Extend God with your own Conditions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>God was designed from the start to allow you to easily write your own custom
+conditions, making it simple to add tests that are application specific.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_contribute">Contribute</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you&#8217;d like to hack on god itself or contribute fixes or new functionality,
+read this section.</p>
+</div>
+<div class="paragraph">
+<p>The codebase can be found at <a href="https://github.com/mojombo/god" class="bare">https://github.com/mojombo/god</a>. To get started,
+fork god on GitHub into your own account and then pull that down to your local
+machine. This way you can easily submit changes via Pull Requests later on.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ git clone git@github.com:yourusername/god</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We recommend using <a href="https://github.com/sstephenson/rbenv">rbenv</a> and
+<a href="https://github.com/sstephenson/ruby-build">ruby-build</a> to manage multiple
+versions of Ruby and their separate gemsets. Any changes to god must work on
+both Ruby 1.8.7-p352 and 1.9.3-p0.</p>
+</div>
+<div class="paragraph">
+<p>God uses <a href="http://gembundler.com/">bundler</a> to deal with development
+dependencies. Once you have the code locally, you can pull in all the
+dependencies like so:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ cd god
+$ bundle install</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In order for process events to function during development you&#8217;ll need to
+compile the C extensions:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ cd ext/god
+$ ruby extconf.rb
+$ make
+$ cd ../..</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now you&#8217;re ready to run the tests and make sure everything is configured
+properly.  On Linux you&#8217;ll need to run the tests as root in order for the
+events system to load. On MacOS there is no need to run the tests as root.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ [sudo] bundle exec rake</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To run your development god to make sure config files and such still work
+properly, just run:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ [sudo] bundle exec god -c myconfig.god -D</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>There are a bunch of example config files for various scenarios in
+<code>test/configs</code> that you can try out. For big new features, it&#8217;s great to add a
+new test config showing off the usage of the feature.</p>
+</div>
+<div class="paragraph">
+<p>If you intend to contribute your changes back to god core, make sure you create
+a new branch and do your work there. Then, when your changes are ready to be
+shared with the world, push them to your fork and issue a Pull Request against
+mojombo/god. Make sure to describe your changes in detail and add relevant
+tests.</p>
+</div>
+<div class="paragraph">
+<p>Any feature additions or changes should be accompanied by corresponding updates
+to the documentation. It can be found in the <code>docs</code> directory. The
+documentation is done in <a href="http://github.com/github/gollum">Gollum</a> format
+and then converted into the public site at <a href="http://godrb.com" class="bare">http://godrb.com</a>. To see the
+generated site locally you&#8217;ll first need to commit your changes to git and then
+issue the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ bundle exec rake site</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will open the site in your browser so you can check for correctness.</p>
+</div>
+</div>
+</div>
+  </div>
+</div>
+
+<div id="footer">
+  <p>Brought to you by <a href="http://tom.preston-werner.com/">Tom Preston-Werner</a></p>
+</div>
+</body>
+</html>

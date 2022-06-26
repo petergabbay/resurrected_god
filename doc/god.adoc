@@ -1050,7 +1050,7 @@ sendmail_args   - The String args to send to sendmail (default "-i -t").
 
 === Webhook
 
-Send a notice to a webhook (http://www.webhooks.org/).
+Send a notice to a webhook (https://www.webhooks.org).
 
 [source,ruby]
 ----
@@ -1070,7 +1070,7 @@ format - The Symbol format [ :form | :json ] (default: :form).
 
 === Airbrake
 
-Send a notice to airbrake (http://airbrake.io/).
+Send a notice to airbrake (https://airbrake.io).
 
 [source,ruby]
 ----
@@ -1089,7 +1089,7 @@ apikey - The String API key.
 
 === Slack
 
-Send a message to a channel in Slack (https://slack.com/).
+Send a message to a channel in Slack (https://slack.com).
 
 First, set up an Incoming Webhook in your Slack account.
 

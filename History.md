@@ -7,10 +7,13 @@
   * Drop support for Sensu
   * Drop support for StatsD
   * Drop support for Twitter
+* Bug fixes
+  * Use `String#+@` to avoid modify frozen String in `God.running_load`
 * Minor Enhancements
   * Enable `frozen_string_literal` entirely
   * Remove unused gems from Gemfile
   * Regenerate documents by using AsciiDoctor
+  * Avoid modify constant `CONTACT_DEPS`
 
 ## 1.0.0 / 2022-06-22
 

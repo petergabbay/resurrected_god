@@ -4,7 +4,7 @@
 }
 
 body {
-    font: normal .8em/1.5em "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    font: normal .92em/1.5em "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
     color: #484848;
     background: #E6EAE9 url(../images/bg_grey.gif);
 }
@@ -27,7 +27,7 @@ a:active {
 }
 
 #content {
-    width: 700px;
+    width: 800px;
     margin: 3px auto;
     border: 1px solid #444;
     padding: 0 24px;
@@ -37,6 +37,7 @@ a:active {
 
 .banner {
     margin-top: 24px;
+    margin-inline: auto;
     border: 1px solid #ddd;
     width: 698px;
     height: 150px;
@@ -49,7 +50,7 @@ a:active {
 
 .columnleft {
     float: left;
-    width: 345px;
+    width: 395px;
     margin-bottom: 20px;
 }
 
@@ -59,7 +60,7 @@ a:active {
 
 .columnright {
     float: right;
-    width: 325px;
+    width: 375px;
     margin-bottom: 20px;
 }
 
@@ -82,10 +83,6 @@ h3 {
 
 p {
     margin-bottom: 1em;
-}
-
-p code {
-    font-size: 1.2em;
 }
 
 ul {
@@ -115,4 +112,12 @@ pre {
     background-color: #fff;
     margin: 1em 0;
     font-size: 1.2em;
+}
+
+code {
+    font-family: Consolas, Monaco, monospace;
+}
+
+pre code {
+    font-size: 0.8em;
 }

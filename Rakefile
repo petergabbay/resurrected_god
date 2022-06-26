@@ -70,7 +70,7 @@ task :site do
   doc = Asciidoctor.load_file('./doc/god.adoc', safe: :safe, standalone: false)
   template = File.read('./site/index.template.html')
   index = template.sub('{{ content }}', doc.content)
-  File.write('./site/index.html', index)
+  File.write('./docs/index.html', index)
 
   puts 'Done.'
 end

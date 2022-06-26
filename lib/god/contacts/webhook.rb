@@ -8,7 +8,6 @@
 require 'net/http'
 require 'uri'
 
-CONTACT_DEPS[:webhook] = ['json']
 CONTACT_DEPS[:webhook].each do |d|
   require d
 end

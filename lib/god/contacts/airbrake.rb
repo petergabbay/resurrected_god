@@ -4,7 +4,6 @@
 #
 # apikey - The String API key.
 
-CONTACT_DEPS[:airbrake] = ['airbrake']
 CONTACT_DEPS[:airbrake].each do |d|
   require d
 end

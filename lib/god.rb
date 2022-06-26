@@ -62,7 +62,11 @@ if $load_god
   require 'god/cli/version'
   require 'god/cli/command'
 
-  CONTACT_DEPS = {}
+  CONTACT_DEPS = {
+    webhook: ['json'],
+    slack: ['json'],
+    airbrake: ['airbrake']
+  }.freeze
   CONTACT_LOAD_SUCCESS = {}
 
   def load_contact(name)

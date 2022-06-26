@@ -11,7 +11,6 @@
 require 'net/http'
 require 'uri'
 
-CONTACT_DEPS[:slack] = ['json']
 CONTACT_DEPS[:slack].each do |d|
   require d
 end

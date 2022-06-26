@@ -549,7 +549,7 @@ if $load_god
     #                          from the system (if 'remove' or 'stop' was
     #                          specified as the action).
     def self.running_load(code, filename, action = nil)
-      errors = ''
+      error_message = +''
       loaded_watches = []
       unloaded_watches = []
       jobs = []
@@ -594,17 +594,17 @@ if $load_god
         LOG.finish_capture
       rescue Exception => e
         # Don't ever let running_load take down god.
-        errors << LOG.finish_capture
+        error_message << LOG.finish_capture
 
         unless e.instance_of?(SystemExit)
-          errors << e.message << "\n"
-          errors << e.backtrace.join("\n")
+          error_message << e.message << "\n"
+          error_message << e.backtrace.join("\n")
         end
       end
 
       jobs.each(&:join)
 
-      [loaded_watches, errors, unloaded_watches]
+      [loaded_watches, error_message, unloaded_watches]
     end
 
     # Load the given file(s) according to the given glob.

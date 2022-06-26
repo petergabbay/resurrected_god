@@ -3,22 +3,6 @@
 require 'bundler/gem_tasks'
 require 'rake'
 
-require_relative 'lib/god/version'
-
-#############################################################################
-#
-# Helper functions
-#
-#############################################################################
-
-def name
-  @name ||= Dir['*.gemspec'].first.split('.').first
-end
-
-def version
-  God::VERSION
-end
-
 #############################################################################
 #
 # Standard tasks
@@ -44,7 +28,7 @@ end
 
 desc 'Open an irb session preloaded with this library'
 task :console do
-  sh "irb -r ./lib/#{name}.rb"
+  sh 'irb -r ./lib/god.rb'
 end
 
 #############################################################################
@@ -64,27 +48,5 @@ task :site do
   index = template.sub('{{ content }}', doc.content)
   File.write('./docs/index.html', index)
 
-  puts 'Done.'
-end
-
-desc 'Commit the local site to the gh-pages branch and deploy'
-task :site_release do
-  # Ensure the gh-pages dir exists so we can generate into it.
-  puts 'Checking for gh-pages dir...'
-  unless File.exist?('./gh-pages')
-    puts 'No gh-pages directory found. Run the following commands first:'
-    puts '  `git clone git@github.com:mojombo/god gh-pages'
-    puts '  `cd gh-pages'
-    puts '  `git checkout gh-pages`'
-    exit(1)
-  end
-
-  # Copy the rest of the site over.
-  puts 'Copying static...'
-  sh 'cp -R site/* gh-pages/'
-
-  # Commit the changes
-  sha = `git log`.match(/[a-z0-9]{40}/)[0]
-  sh "cd gh-pages && git add . && git commit -m 'Updating to #{sha}.' && git push"
   puts 'Done.'
 end

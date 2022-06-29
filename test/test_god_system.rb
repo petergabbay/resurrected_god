@@ -174,8 +174,8 @@ class TestGodSystem < MiniTest::Test
           size = God.watches.size
           break if all_running && size >= 100
 
-          puts "Alive watches: #{watches.count { |_name, w| w.alive? }}, "\
-               "Not alive watches: #{watches.count { |_name, w| !w.alive? }}, "\
+          puts "Alive watches: #{watches.count { |_name, w| w.alive? }}, " \
+               "Not alive watches: #{watches.count { |_name, w| !w.alive? }}, " \
                "Watches: #{size}. Go to sleep..."
           sleep 2
         end
@@ -205,8 +205,8 @@ class TestGodSystem < MiniTest::Test
           size = God.watches.size
           break if all_running && size >= 100
 
-          puts "Alive watches: #{watches.count { |_name, w| w.alive? }}, "\
-               "Not alive watches: #{watches.count { |_name, w| !w.alive? }}, "\
+          puts "Alive watches: #{watches.count { |_name, w| w.alive? }}, " \
+               "Not alive watches: #{watches.count { |_name, w| !w.alive? }}, " \
                "Watches: #{size}. Go to sleep..."
           sleep 2
         end

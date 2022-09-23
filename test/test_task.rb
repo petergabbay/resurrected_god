@@ -77,8 +77,8 @@ class TestTask < Minitest::Test
 
   def test_action_should_raise_not_implemented_on_non_string_or_lambda_action
     @task.driver.stubs(:in_driver_context?).returns(true)
+    @task.foo = 7
     assert_raises NotImplementedError do
-      @task.foo = 7
       @task.action(:foo, nil)
     end
   end

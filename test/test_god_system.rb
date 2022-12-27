@@ -37,7 +37,7 @@ class TestGodSystem < MiniTest::Test
         class << self
           undef :terminate
 
-          alias_method :terminate, :orig_terminate # rubocop:disable Lint/DuplicateMethods
+          alias_method :terminate, :orig_terminate
         end
       end
     end

@@ -253,7 +253,7 @@ module God
               $stdout.reopen(w)
               r.close
               pid = self.spawn(command)
-              puts pid.to_s # send pid back to forker
+              puts pid # send pid back to forker
               exit!(0)
             end
 

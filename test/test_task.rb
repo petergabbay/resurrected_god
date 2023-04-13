@@ -36,7 +36,7 @@ class TestTask < Minitest::Test
     @task.transition(:foo, :bar)
 
     assert_equal 5, @task.metrics.size
-    assert_equal Conditions::Always, @task.metrics[:foo].first.conditions.first.class
+    assert_instance_of Conditions::Always, @task.metrics[:foo].first.conditions.first
   end
 
   # method_missing

@@ -15,10 +15,10 @@ class TestDriver < Minitest::Test
     eq.push(God::TimedEvent.new(0.1))
     t = Thread.new do
       # This pop will see an event immediately available, so no wait.
-      assert_equal TimedEvent, eq.pop.class
+      assert_instance_of TimedEvent, eq.pop
 
       # This pop will happen before the next event is due, so wait.
-      assert_equal TimedEvent, eq.pop.class
+      assert_instance_of TimedEvent, eq.pop
     end
 
     t.join

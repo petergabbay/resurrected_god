@@ -4,7 +4,7 @@ require_relative 'helper'
 
 class TestBehavior < Minitest::Test
   def test_generate_should_return_an_object_corresponding_to_the_given_type
-    assert_equal Behaviors::FakeBehavior, Behavior.generate(:fake_behavior, nil).class
+    assert_instance_of Behaviors::FakeBehavior, Behavior.generate(:fake_behavior, nil)
   end
 
   def test_generate_should_raise_on_invalid_type

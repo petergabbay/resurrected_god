@@ -9,7 +9,7 @@ class TestCondition < Minitest::Test
   # generate
 
   def test_generate_should_return_an_object_corresponding_to_the_given_type
-    assert_equal Conditions::ProcessRunning, Condition.generate(:process_running, nil).class
+    assert_instance_of Conditions::ProcessRunning, Condition.generate(:process_running, nil)
   end
 
   def test_generate_should_raise_on_invalid_type

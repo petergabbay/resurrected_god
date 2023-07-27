@@ -3,7 +3,7 @@
 require_relative 'lib/god/version'
 
 Gem::Specification.new do |s|
-  s.name = 'resurrected_god'
+  s.name = 'god'
   s.version = God::VERSION
 
   s.summary = 'Process monitoring framework.'

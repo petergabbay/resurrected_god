@@ -6,7 +6,7 @@ The best way to get god is via rubygems:
 
 [source,bash]
 ----
-$ [sudo] gem install resurrected_god
+$ [sudo] gem install god
 ----
 
 == Requirements
@@ -1387,7 +1387,7 @@ dependencies like so:
 
 [source,bash]
 ----
-$ cd resurrected_god
+$ cd god
 $ bundle install
 ----
 
